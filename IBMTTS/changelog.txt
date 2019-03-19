@@ -1,0 +1,35 @@
+18-06-2018:
+	unused imported modules were deleted.
+	fixed crashing expression for spanish language.
+	added utf-8 coding header in order to fix some reg expressions.
+
+13-07-2018:
+	changed  pauses from p0 to p1.
+	all french fixes were placed in the same conditional.
+	now uses x in (1, 2) instead of x==1 or x==2 for all cases.
+	added "!" to punctuation list.
+
+15-07-2018:
+	added "-" to punctuation list.
+	added pauses for dash "-" symbol.
+	comma "," is replaced by dash "-" at the end of a string because eloquence seems to ignore commas at the end.
+	deleted "should_pause=False" parameter in xspeaktext because it isn't used anywere in the code. It was used to fix audio issues but currently seems to be unused.
+	incorrect behavior when spelling text has been fixed.
+	xspeakText changed to processText to clarify code.
+
+12-08-2018:
+	maxRate changed from 250 to 156.
+	added rateBoost setting. Enable this option to increase rate by 1.6x.
+
+16-09-2018:
+	Fixed rate param conversion when rate boost is active.
+16/03/2019
+	Deleted Queue import in ibmeci.py, since this module is not used here.
+	Updated code for compatibility with python 3.
+	Defined unicode function for backward compatibility with python 2.7.
+	added b prefix to strings to treat them as byteStrings, since python 3 strings are unicode by default.
+	CHANGED isinstance(item,basestring) TO STR.
+	Updated auto language detection to simplify the code and compatibility for python 3.
+	Updated processText function.
+	Now in _imbesi uses io.BytesIO rater than cStringIo.StringIO
+	added seek(0) since BytesIO doesn't update it automatically when truncate.
