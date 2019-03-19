@@ -136,10 +136,11 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 			else:
 				log.error("Unknown speech: %s"%item)
 		if last is not None and not last[-1] in punctuation: outlist.append((_ibmeci.speak, (b'`p1.',)))
-		outlist.append((_ibmeci.index, (0xffff,)))
+		outlist.append((_ibmeci.setEndStringMark, (None,)))
+		
 		outlist.append((_ibmeci.speak, (b"`ts0",)))
 		outlist.append((_ibmeci.synth,()))
-		_ibmeci.synth_queue.put(outlist)
+		_ibmeci.synthQueue.put(outlist)
 		_ibmeci.process()
 
 	def processText(self,text):

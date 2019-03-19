@@ -25,7 +25,7 @@ bgt = None
 samples=3300
 buffer = create_string_buffer(samples*2)
 bgQueue = queue.Queue()
-synth_queue = queue.Queue()
+synthQueue = queue.Queue()
 stopped = threading.Event()
 started = threading.Event()
 param_event = threading.Event()
@@ -74,7 +74,7 @@ handle = None
 
 class eciThread(threading.Thread):
 	def run(self):
-		global vparams, params, speaking
+		global vparams, params, speaking, endMarkersCount
 		global tid, dll, handle
 		tid = windll.kernel32.GetCurrentThreadId()
 		msg = wintypes.MSG()
@@ -109,6 +109,7 @@ class eciThread(threading.Thread):
 				except:
 						pass
 				player.stop()
+				endMarkersCount = 0
 			elif msg.message == WM_PARAM:
 				dll.eciSetParam(handle, msg.lParam, msg.wParam)
 				params[msg.lParam] = msg.wParam
@@ -181,8 +182,7 @@ def _bgExec(func, *args, **kwargs):
 def setLast(lp):
 	global lastindex
 	lastindex = lp
-	#we can use this to set player idle
-# player.idle()
+
 def bgPlay(stri):
 	if len(stri) == 0: return
 	# Sometimes player.feed() tries to open the device when it's already open,
@@ -204,7 +204,7 @@ def bgPlay(stri):
 curindex=None
 @Callback
 def callback (h, ms, lp, dt):
-	global gb, curindex, speaking
+	global gb, curindex, speaking, END_STRING_MARK, endMarkersCount
 	if not speaking:
 		return 2
 #We need to buffer x amount of audio, and send the indexes after it.
@@ -220,16 +220,18 @@ def callback (h, ms, lp, dt):
 			gb.truncate(0)
 			gb.seek(0)
 	elif ms==2: #index
-		if lp != 0xffff: #end of string
+		if lp != END_STRING_MARK: #end of string
 			curindex = lp
 		else: #We reached the end of string
-			if gb.tell() >= 0:
+			if gb.tell() > 0:
 				_bgExec(bgPlay, gb.getvalue())
 				gb.seek(0)
 				gb.truncate(0)
 			if curindex is not None:
 				_bgExec(setLast, curindex)
 				curindex=None
+			endMarkersCount -=1
+			if endMarkersCount == 0: _bgExec(player.idle)
 	return 1
 
 class BgThread(threading.Thread):
@@ -278,6 +280,13 @@ def speak(text):
 def index(x):
 	dll.eciInsertIndex(handle, x)
 
+END_STRING_MARK = 0xffff
+endMarkersCount = 0
+def setEndStringMark(x):
+	global endMarkersCount, END_STRING_MARK
+	dll.eciInsertIndex(handle, END_STRING_MARK)
+	endMarkersCount+=1
+
 def synth():
 	global speaking
 	speaking = True
@@ -321,7 +330,7 @@ def process():
 		user32.PostThreadMessageA(tid, WM_PROCESS, 0, 0)
 
 def internal_process_queue():
-	lst = synth_queue.get()
+	lst = synthQueue.get()
 	for (func, args) in lst:
 		func(*args)
 
