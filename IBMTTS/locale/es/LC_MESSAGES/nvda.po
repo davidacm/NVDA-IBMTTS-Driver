@@ -71,11 +71,15 @@ msgstr "Inglés americano"
 msgid "British English"
 msgstr "Inglés británico"
 
+#: ibmeci.py:90
+msgid "Rate boos&t"
+msgstr "&Turbo de voz"
+
 #: ibmeci.py:91
 msgid "Head Size"
 msgstr "Tamaño de la cabeza"
 
-#: ibmeci.py:81
+#: ibmeci.py:91
 msgid "Roughness"
 msgstr "Carraspeo"
 

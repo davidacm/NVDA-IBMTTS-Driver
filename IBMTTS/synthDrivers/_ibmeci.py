@@ -230,8 +230,7 @@ def callback (h, ms, lp, dt):
 			if curindex is not None:
 				_bgExec(setLast, curindex)
 				curindex=None
-			endMarkersCount -=1
-			if endMarkersCount == 0: _bgExec(player.idle)
+			_bgExec(endStringEvent)
 	return 1
 
 class BgThread(threading.Thread):
@@ -240,7 +239,6 @@ class BgThread(threading.Thread):
 		self.setDaemon(True)
 
 	def run(self):
-		global isSpeaking
 		try:
 			while True:
 				func, args, kwargs = bgQueue.get()
@@ -254,12 +252,6 @@ class BgThread(threading.Thread):
 def _bgExec(func, *args, **kwargs):
 	global bgQueue
 	bgQueue.put((func, args, kwargs))
-def str2mem(str):
-	buf = c_buffer(str)
-	blen = sizeof(buf)
-	ptr = windll.kernel32.GlobalAlloc(0x40, blen)
-	cdll.msvcrt.memcpy(ptr, addressof(buf), blen)
-	return ptr
 
 def initialize():
 	global eci, player, bgt, dll, handle
@@ -286,6 +278,7 @@ def setEndStringMark(x):
 	global endMarkersCount, END_STRING_MARK
 	dll.eciInsertIndex(handle, END_STRING_MARK)
 	endMarkersCount+=1
+
 
 def synth():
 	global speaking
@@ -350,3 +343,14 @@ def getVoiceByLanguage(lang):
 		elif v[3] == lang:
 			return v
 	return langs['enu']
+
+def endStringEvent():
+	global speaking, endMarkersCount
+	endMarkersCount -=1
+	if endMarkersCount == 0:
+		speaking = False
+		threading.Timer(0.3, idlePlayer).start()
+
+def idlePlayer():
+	global player, speaking, endMarkersCount
+	if not speaking and endMarkersCount == 0: player.idle()
