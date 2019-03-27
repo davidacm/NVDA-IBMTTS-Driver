@@ -1,5 +1,5 @@
 ﻿#coding=utf-8
-#Copyright (C) 2009 - 2018 David CM, released under the GPL.
+#Copyright (C) 2009 - 2019 David CM, released under the GPL.
 #synthDrivers/ibmeci.py
 
 import synthDriverHandler, speech, languageHandler, config, os, re
@@ -250,7 +250,7 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 
 	def _getAvailableVoices(self):
 		o = OrderedDict()
-		for name in os.listdir(_ibmeci.synthPath):
+		for name in os.listdir(_ibmeci.ttsPath):
 			if name.lower().endswith('.syn'):
 				info = _ibmeci.langs[name.lower()[:3]]
 				o[str(info[0])] = VoiceInfo(str(info[0]), info[1], info[2])

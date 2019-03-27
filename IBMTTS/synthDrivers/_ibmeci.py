@@ -1,18 +1,23 @@
-#Copyright (C) 2009 - 2018 David CM, released under the GPL.
+# -*- coding: UTF-8 -*-
+#Copyright (C) 2009 - 2019 David CM, released under the GPL.
+#synthDrivers/_ibmeci.py
 
-import threading, time, nvwave, config, languageHandler
+
 from ctypes import *
 from io import BytesIO
 from os import path
-from logHandler import log
-
 try:
 	# Python 2.7 imports
 	import Queue as queue 
 except ImportError:
 	# Python 3 import
 	import queue
-import addonHandler
+
+import time, threading
+import nvwave, config, languageHandler, addonHandler
+from logHandler import log
+import settingsDB
+
 addonHandler.initTranslation()
 
 
@@ -30,6 +35,9 @@ stopped = threading.Event()
 started = threading.Event()
 param_event = threading.Event()
 Callback = WINFUNCTYPE(c_int, c_int, c_int, c_int, c_void_p)
+
+# ECI constants.
+#speech parameters
 hsz=1
 pitch=2
 fluctuation=3
@@ -37,8 +45,8 @@ rgh=4
 bth=5
 rate=6
 vlm=7
-lastindex=0
 
+lastindex=0
 langs={'esp': (131072, _('Castilian Spanish'), 'es_ES', 'es'),
 'esm': (131073, _('Latin American Spanish'), 'es_ME', 'es_CO'),
 'ptb': (458752, _('Brazilian Portuguese'), 'pt_BR', 'pt'),
@@ -54,7 +62,7 @@ langs={'esp': (131072, _('Castilian Spanish'), 'es_ES', 'es'),
 'eng': (65537, _('British English'), 'en_UK', '')}
 
 avLangs=0
-synthPath=""
+ttsPath=""
 dllName=""
 WM_PROCESS = 1025
 WM_SILENCE = 1026
@@ -67,7 +75,6 @@ WM_INDEX=1032
 params = {}
 vparams = {}
 
-audio_queue = queue.Queue()
 #We can only have one of each in NVDA. Make this global
 dll = None
 handle = None
@@ -87,10 +94,10 @@ class eciThread(threading.Thread):
 		self.dictionaryHandle = dll.eciNewDict(handle)
 		dll.eciSetDict(handle, self.dictionaryHandle)
 #0 = main dictionary
-		if path.exists(path.join(synthPath, "main.dic")):
-			dll.eciLoadDict(handle, self.dictionaryHandle, 0, path.join(synthPath, "main.dic"))
-		if path.exists(path.join(synthPath, "root.dic")):
-			dll.eciLoadDict(handle, self.dictionaryHandle, 1, path.join(synthPath, "root.dic"))
+		if path.exists(path.join(ttsPath, "main.dic")):
+			dll.eciLoadDict(handle, self.dictionaryHandle, 0, path.join(ttsPath, "main.dic"))
+		if path.exists(path.join(ttsPath, "root.dic")):
+			dll.eciLoadDict(handle, self.dictionaryHandle, 1, path.join(ttsPath, "root.dic"))
 		params[9] = dll.eciGetParam(handle, 9)
 		started.set()
 		while True:
@@ -135,35 +142,31 @@ class eciThread(threading.Thread):
 				user32.DispatchMessageA(byref(msg))
 
 def eciCheck():
-	global synthPath, dllName
-	synthPath=path.abspath(path.dirname(__file__))
-	f  =open(path.join(synthPath, "ibmtts.cfg"), "r")
-	cfg = {k[0].strip(): k[1].strip() for k in [k.split("=") for k in f.readlines()]}
-	f.close()
-	dllName = cfg['dllName']
-	if  path.isabs(cfg['TTSPath']):
-		synthPath = cfg['TTSPath']
-	else:
-		synthPath = path.join(synthPath, cfg['TTSPath'])
-		iniCheck()
-	return path.exists(synthPath)
+	global ttsPath, dllName
+	dllName = config.conf['ibmeci']['dllName']
+	ttsPath =  config.conf['ibmeci']['TTSPath']
+	
+	if  not path.isabs(ttsPath):
+		ttsPath = path.join(path.abspath(path.dirname(__file__)), ttsPath)
+		if path.exists(ttsPath): iniCheck()
+	return path.exists(ttsPath)
 
 def iniCheck():
-	ini=open(path.join(synthPath, dllName[:-3] +"ini"), "r+")
+	ini=open(path.join(ttsPath, dllName[:-3] +"ini"), "r+")
 	ini.seek(12)
 	tml=ini.readline()[:-9]
-	if tml != synthPath:
+	if tml != ttsPath:
 		ini.seek(12)
 		tmp=ini.read()
 		ini.seek(12)
-		ini.write(tmp.replace(tml, synthPath))
+		ini.write(tmp.replace(tml, ttsPath))
 		ini.truncate()
 	ini.close()
 
 def eciNew():
 	global avLangs
 	eciCheck()
-	eci = windll.LoadLibrary(path.join(synthPath, dllName))
+	eci = windll.LoadLibrary(path.join(ttsPath, dllName))
 	b=c_int()
 	eci.eciGetAvailableLanguages(0,byref(b))
 	avLangs=(c_int*b.value)()
@@ -205,8 +208,7 @@ curindex=None
 @Callback
 def callback (h, ms, lp, dt):
 	global gb, curindex, speaking, END_STRING_MARK, endMarkersCount
-	if not speaking:
-		return 2
+	#if not speaking: return 2
 #We need to buffer x amount of audio, and send the indexes after it.
 #Accuracy is lost with this method, but it should stop the say all breakage.
 
