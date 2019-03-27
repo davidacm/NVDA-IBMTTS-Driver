@@ -3,7 +3,7 @@
   We can not distribute the IBMTTS libraries. So it is just the driver.
   If you want to improve this driver, feel free to send your pull requests!
 
-## Features:
+# Features:
 * Voice, variant, rate, pitch, inflection and volume  setting support.
 * Extra head size, Roughness, Breathiness parameters settings support. Create your own voice!
 * Enable or disable backquote voice tags. Disable it to protect yourself from malisious codes from jokers, enable it to do many fun things with the synthesizer. Safe fun guaranteed!
@@ -20,6 +20,6 @@
   This is just the driver, you must   get the libraries from  somewhere else.
 
 # Installation.
-  Just install it as a NVDA add-on. Then edit the config.cfg file located in the synthDrivers folder of this add-on to set the path and dll name.
-  Default path is set to "IBMTTS" inside synthDrivers. So if you want, you can copy your IBMTTS installation here.
+  Just install it as a NVDA add-on. Then open NVDA dialog settings, and set the IBMTTS folder files in the IBMTTS category.
+  Also in this category you can copy the external IBMTTS files into Add-on.
   Please note: if the synthesizer is inside the add-on, the driver will update the ini library paths automatically. So you can use it on portable NVDA versions.
