@@ -1,5 +1,6 @@
 # -*- coding: UTF-8 -*-
 #Copyright (C) 2009 - 2019 David CM, released under the GPL.
+# Author: David CM <dhf360@gmail.com> and others.
 #synthDrivers/_ibmeci.py
 
 

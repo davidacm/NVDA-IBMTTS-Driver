@@ -1,8 +1,9 @@
-﻿#coding=utf-8
+# -*- coding: UTF-8 -*-
 #Copyright (C) 2009 - 2019 David CM, released under the GPL.
+# Author: David CM <dhf360@gmail.com> and others.
 #synthDrivers/ibmeci.py
 
-import synthDriverHandler, speech, languageHandler, config, os, re
+import six, synthDriverHandler, speech, languageHandler, config, os, re
 from collections import OrderedDict
 from six import string_types
 from synthDriverHandler import SynthDriver,VoiceInfo,BooleanSynthSetting,NumericSynthSetting
@@ -289,6 +290,6 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 
 
 def resub(dct, s):
-	for r in dct.keys():
+	for r in six.iterkeys(dct):
 		s = r.sub(dct[r], s)
 	return s

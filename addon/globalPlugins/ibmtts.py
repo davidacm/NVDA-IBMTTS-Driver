@@ -1,6 +1,7 @@
 # -*- coding: UTF-8 -*-
 #Copyright (C) 2009 - 2019 David CM, released under the GPL.
-#synthDrivers/_ibmeci.py
+# Author: David CM <dhf360@gmail.com> and others.
+#globalPlugins/ibmtts.py
 
 import os, wx, winUser
 from os import path
