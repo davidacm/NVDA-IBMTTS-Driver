@@ -94,7 +94,7 @@ class eciThread(threading.Thread):
 		dll.eciSetParam(handle,3, 1) #dictionary off
 		self.dictionaryHandle = dll.eciNewDict(handle)
 		dll.eciSetDict(handle, self.dictionaryHandle)
-#0 = main dictionary
+		#0 = main dictionary
 		if path.exists(path.join(ttsPath, "main.dic")):
 			dll.eciLoadDict(handle, self.dictionaryHandle, 0, path.join(ttsPath, "main.dic"))
 		if path.exists(path.join(ttsPath, "root.dic")):
@@ -124,9 +124,9 @@ class eciThread(threading.Thread):
 				param_event.set()
 			elif msg.message == WM_VPARAM:
 				(param, val) = msg.wParam, msg.lParam
-#don't set unless we have to
-#This doesn't fix the rate problem, though.
-#    if param in vparams and vparams[param] == val: continue
+				# don't set unless we have to
+				#This doesn't fix the rate problem, though.
+				#if param in vparams and vparams[param] == val: continue
 				dll.eciSetVoiceParam(handle, 0, msg.wParam, msg.lParam)
 				vparams[msg.wParam] = msg.lParam
 				param_event.set()
@@ -143,14 +143,20 @@ class eciThread(threading.Thread):
 				user32.DispatchMessageA(byref(msg))
 
 def eciCheck():
-	global ttsPath, dllName
+	global ttsPath, dllName, dll
 	dllName = config.conf['ibmeci']['dllName']
 	ttsPath =  config.conf['ibmeci']['TTSPath']
 	
 	if  not path.isabs(ttsPath):
 		ttsPath = path.join(path.abspath(path.dirname(__file__)), ttsPath)
 		if path.exists(ttsPath): iniCheck()
-	return path.exists(ttsPath)
+	if not path.exists(ttsPath): return False
+	if dll: return True
+	try:
+		windll.LoadLibrary(path.join(ttsPath, dllName)).eciVersion
+		return True
+	except:
+		return False
 
 def iniCheck():
 	ini=open(path.join(ttsPath, dllName[:-3] +"ini"), "r+")
@@ -259,6 +265,8 @@ def _bgExec(func, *args, **kwargs):
 def initialize():
 	global eci, player, bgt, dll, handle
 	player = nvwave.WavePlayer(1, 11025, 16, outputDevice=config.conf["speech"]["outputDevice"])
+	if not eciCheck():
+		raise RuntimeError("No IBMTTS  synthesizer  available")
 	eci = eciThread()
 	eci.start()
 	started.wait()
