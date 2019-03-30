@@ -35,13 +35,14 @@ addon_info = {
 }
 
 
-import os.path
+from os import path
 
 # Define the python files that are the sources of your add-on.
 # You can use glob expressions here, they will be expanded.
-pythonSources = [os.path.join("addon", "synthDrivers", "*.py"),
-	os.path.join("addon", "globalPlugins", "ibmtts.py"),
-	os.path.join("addon", "synthDrivers", "ibmtts", "*.*"),]
+pythonSources = [path.join("addon", "synthDrivers", "*.py"),
+	path.join("addon", "globalPlugins", "ibmtts.py"),
+	path.join('addon', 'installTasks.py'),
+	path.join("addon", "synthDrivers", "ibmtts", "*.*")]
 
 # Files that contain strings for translation. Usually your python sources
 i18nSources = pythonSources + ["buildVars.py"]

@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: 'IBMTTS' '19.2b1'\n"
+"Project-Id-Version: 'IBMTTS' '19.2b2'\n"
 "Report-Msgid-Bugs-To: 'nvda-translations@freelists.org'\n"
-"POT-Creation-Date: 2019-03-28 17:27-0600\n"
+"POT-Creation-Date: 2019-03-30 14:53-0600\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -116,84 +116,109 @@ msgid ""
 "distributions)"
 msgstr ""
 
-#. Translators: The message displayed in the dialog that allows you to look for the IBMTTS library.
-#: addon\globalPlugins\ibmtts.py:39
+#: addon\globalPlugins\ibmtts.py:41
 msgid "Select the IBMTTS library (dll)"
 msgstr ""
 
 #. Translators: the label for the dynamic link library extension (dll) file type
-#: addon\globalPlugins\ibmtts.py:41
+#: addon\globalPlugins\ibmtts.py:43
 #, python-brace-format
 msgid "dynamic link library (*.{ext})"
 msgstr ""
 
-#. Translators: The message displayed in the dialog that inform you the specified library is invalid.
-#: addon\globalPlugins\ibmtts.py:51
-msgid "The specified dll file seems to be an incorrect IBMTTS library"
+#. Translators: The message displayed when the IBMTTS files folder and library name have  been set.
+#: addon\globalPlugins\ibmtts.py:52
+msgid ""
+"The IBMTTS files location has been set. If you want  to use it with a "
+"portable version of NVDA, please use the \"Copy IBMTTS files into driver add-"
+"on\" button"
 msgstr ""
 
-#: addon\globalPlugins\ibmtts.py:52
+#. Translators: The title displayed when the IBMTTS files folder and library name have been set.
+#. Translators: The title  displayed when copying IBMTTS fails to Add-on was successful.
+#: addon\globalPlugins\ibmtts.py:54 addon\globalPlugins\ibmtts.py:101
+msgid "Success"
+msgstr ""
+
+#. Translators: The message displayed in the dialog that inform you the specified library is invalid.
+#: addon\globalPlugins\ibmtts.py:58
+msgid ""
+"The specified dll file seems to be an incorrect IBMTTS library. Would you "
+"like to select another library?"
+msgstr ""
+
+#: addon\globalPlugins\ibmtts.py:59
 msgid "Error loading library"
 msgstr ""
 
 #. Translators: The message displayed when the current source path is relative.
-#: addon\globalPlugins\ibmtts.py:59
+#: addon\globalPlugins\ibmtts.py:66
 msgid "Relative paths are not allowed."
 msgstr ""
 
-#: addon\globalPlugins\ibmtts.py:59 addon\globalPlugins\ibmtts.py:97
+#: addon\globalPlugins\ibmtts.py:66 addon\globalPlugins\ibmtts.py:104
 msgid "Error"
 msgstr ""
 
 #. Translators: A message to ask the user to copy IBMTTS fails to Add-on folder.
-#: addon\globalPlugins\ibmtts.py:62
+#: addon\globalPlugins\ibmtts.py:69
 msgid ""
 "Are you sure to copy IBMTTS files to local NVDA driver Add-on? It may not "
 "work in some IBMTTS distributions."
 msgstr ""
 
 #. Translators: The title of the Asking dialog displayed when trying to copy IBMTTS files.
-#: addon\globalPlugins\ibmtts.py:64
+#: addon\globalPlugins\ibmtts.py:71
 msgid "Copy IBMTTS files"
 msgstr ""
 
 #. Translators: The title of the dialog presented while IBMTTS files  are being copied.
-#: addon\globalPlugins\ibmtts.py:68
+#: addon\globalPlugins\ibmtts.py:75
 msgid "Copying files"
 msgstr ""
 
 #. Translators: The message displayed while IBMTTS files are being copied.
-#: addon\globalPlugins\ibmtts.py:70
+#: addon\globalPlugins\ibmtts.py:77
 msgid "Please wait while IBMTTS files  are copied into add-on."
 msgstr ""
 
 #. Translators: a message dialog asking to retry or cancel when copying IBMTTS fails.
-#: addon\globalPlugins\ibmtts.py:78
+#: addon\globalPlugins\ibmtts.py:85
 msgid ""
 "Unable to copy a file. Perhaps it is currently being used by another process "
 "or you have run out of disc space on the drive you are copying to."
 msgstr ""
 
 #. Translators: the title of a retry cancel dialog when copying IBMTTS fails
-#: addon\globalPlugins\ibmtts.py:80
+#: addon\globalPlugins\ibmtts.py:87
 msgid "Error Copying"
 msgstr ""
 
 #. Translators: The message displayed when copying IBMTTS fails to Add-on was successful.
-#: addon\globalPlugins\ibmtts.py:92
+#: addon\globalPlugins\ibmtts.py:99
 msgid ""
 "Successfully copied IBMTTS fails. The local copy will be used after restart "
 "NVDA."
 msgstr ""
 
-#. Translators: The title  displayed when copying IBMTTS fails to Add-on was successful.
-#: addon\globalPlugins\ibmtts.py:94
-msgid "Success"
+#. Translators: The message displayed when errors were found while trying to copy IBMTTS files to Add-on.
+#: addon\globalPlugins\ibmtts.py:104
+msgid "Error copying IBMTTS fails"
 msgstr ""
 
-#. Translators: The message displayed when errors were found while trying to copy IBMTTS files to Add-on.
-#: addon\globalPlugins\ibmtts.py:97
-msgid "Error copying IBMTTS fails"
+#. # Translators: message box when user is installing the addon in NVDA.
+#: addon\installTasks.py:7
+msgid ""
+"The synthesizer won't be available until you set   IBMTTS files. NVDA won't "
+"show this synthesizer in teh synthesizers list because you need to set the "
+"IBMTTS files location first.\n"
+"To do it open the NVDA settings dialog, select IBMTTS category and use the "
+"\"Browse for  IBMTTS library\" button to select the IBMTTS files folder."
+msgstr ""
+
+#. Translators: title of message box when user is installing NVDA
+#: addon\installTasks.py:14
+msgid "IBMTTS driver for NVDA"
 msgstr ""
 
 #. Add-on summary, usually the user visible name of the addon.

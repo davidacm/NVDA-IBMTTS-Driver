@@ -36,21 +36,28 @@ class IBMTTSSettingsPanel(SettingsPanel):
 
 	def _onBrowseClick(self, evt):
 		# Translators: The message displayed in the dialog that allows you to look for the IBMTTS library.
-		fd = wx.FileDialog(self, message=_("Select the IBMTTS library (dll)"),
-		# Translators: the label for the dynamic link library extension (dll) file type
-		wildcard=(_("dynamic link library (*.{ext})")+"|*.{ext}").format(ext="dll"),
-		defaultDir="c:", style=wx.FD_OPEN)
-		if fd.ShowModal() == wx.ID_OK:
+		p= 'c:'
+		while True:
+			fd = wx.FileDialog(self, message=_("Select the IBMTTS library (dll)"),
+			# Translators: the label for the dynamic link library extension (dll) file type
+			wildcard=(_("dynamic link library (*.{ext})")+"|*.{ext}").format(ext="dll"),
+			defaultDir=path.dirname(p), style=wx.FD_OPEN)
+			if not fd.ShowModal() == wx.ID_OK: break
 			p = fd.GetPath()
 			try:
 				windll.LoadLibrary(p).eciVersion
 				self._ttsPath.SetValue(path.dirname(p))
 				self._dllName.SetValue(path.basename(p))
+				# Translators: The message displayed when the IBMTTS files folder and library name have  been set.
+				gui.messageBox(_('The IBMTTS files location has been set. If you want  to use it with a portable version of NVDA, please use the "Copy IBMTTS files into driver add-on" button'),
+					# Translators: The title displayed when the IBMTTS files folder and library name have been set.
+					_("Success"),wx.OK|wx.ICON_INFORMATION,self)
+				break
 			except:
 				# Translators: The message displayed in the dialog that inform you the specified library is invalid.
-				gui.messageBox(_("The specified dll file seems to be an incorrect IBMTTS library"),
+				if gui.messageBox(_("The specified dll file seems to be an incorrect IBMTTS library. Would you like to select another library?"),
 				_("Error loading library"),
-				style=wx.OK | wx.CENTER | wx.ICON_ERROR)
+				style=wx.YES | wx.NO | wx.CENTER | wx.ICON_ERROR) == wx.NO: break
 
 	def _onSetLocalClick(self, evt):
 		# Translators: The message displayed when the current source path is relative.
