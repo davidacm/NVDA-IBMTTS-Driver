@@ -17,7 +17,7 @@ except ImportError:
 import time, threading
 import nvwave, config, languageHandler, addonHandler
 from logHandler import log
-import settingsDB
+import _settingsDB
 
 addonHandler.initTranslation()
 

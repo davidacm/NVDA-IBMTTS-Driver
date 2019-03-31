@@ -7,7 +7,7 @@ import os, wx, winUser
 from os import path
 from ctypes import windll
 import config, gui, globalPluginHandler, addonHandler
-from synthDrivers import settingsDB
+from synthDrivers import _settingsDB
 from logHandler import log
 from gui import SettingsPanel
 addonHandler.initTranslation()
@@ -126,3 +126,4 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 	def __init__(self):
 		super(GlobalPlugin, self).__init__()
 		gui.settingsDialogs.NVDASettingsDialog.categoryClasses.append(IBMTTSSettingsPanel)
+
