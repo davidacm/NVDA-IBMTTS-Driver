@@ -285,7 +285,7 @@ def index(x):
 
 END_STRING_MARK = 0xffff
 endMarkersCount = 0
-def setEndStringMark(x):
+def setEndStringMark():
 	global endMarkersCount, END_STRING_MARK
 	dll.eciInsertIndex(handle, END_STRING_MARK)
 	endMarkersCount+=1

@@ -136,11 +136,11 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 				log.debugWarning("Unsupported speech command: %s"%item)
 			else:
 				log.error("Unknown speech: %s"%item)
-		if last is not None and not last[-1] in punctuation: outlist.append((_ibmeci.speak, (b'`p1.',)))
-		outlist.append((_ibmeci.setEndStringMark, (None,)))
+		if last is not None and not last[-1] in punctuation: outlist.append((_ibmeci.speak, (b'`p1',)))
+		outlist.append((_ibmeci.setEndStringMark, ()))
 		
 		outlist.append((_ibmeci.speak, (b"`ts0",)))
-		outlist.append((_ibmeci.synth,()))
+		outlist.append((_ibmeci.synth, ()))
 		_ibmeci.synthQueue.put(outlist)
 		_ibmeci.process()
 
