@@ -24,7 +24,7 @@
   Also in this category you can copy the external IBMTTS files into Add-on.
   Please note: if the synthesizer is inside the add-on, the driver will update the ini library paths automatically. So you can use it on portable NVDA versions.
 
-#packaging it for distribution.
+# Packaging it for distribution.
   Open a command line, change to the Add-on root folder  and run the scons command. The created add-on, if there were no errors, is placed in the root directory.
 
 ## Notes:

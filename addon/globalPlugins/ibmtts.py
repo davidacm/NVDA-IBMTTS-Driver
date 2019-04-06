@@ -65,7 +65,7 @@ class IBMTTSSettingsPanel(SettingsPanel):
 			# Translators: The message displayed when the current source path is relative.
 			gui.messageBox(_("Relative paths are not allowed."), _("Error"), wx.OK|wx.ICON_ERROR, self)
 			return
-		# Translators: A message to ask the user to copy IBMTTS fails to Add-on folder.
+		# Translators: A message to ask the user to copy IBMTTS files to Add-on folder.
 		if gui.messageBox(_("Are you sure to copy IBMTTS files to local NVDA driver Add-on? It may not work in some IBMTTS distributions."),
 			# Translators: The title of the Asking dialog displayed when trying to copy IBMTTS files.
 			_("Copy IBMTTS files"),
@@ -81,9 +81,9 @@ class IBMTTSSettingsPanel(SettingsPanel):
 					res = True
 					break
 				except Exception:
-					# Translators: a message dialog asking to retry or cancel when copying IBMTTS fails.
+					# Translators: a message dialog asking to retry or cancel when copying IBMTTS files.
 					message=_("Unable to copy a file. Perhaps it is currently being used by another process or you have run out of disc space on the drive you are copying to.")
-					# Translators: the title of a retry cancel dialog when copying IBMTTS fails
+					# Translators: the title of a retry cancel dialog when copying IBMTTS files.
 					title=_("Error Copying")
 					if winUser.MessageBox(None,message,title,winUser.MB_RETRYCANCEL) != winUser.IDRETRY:
 						res=False
@@ -95,13 +95,13 @@ class IBMTTSSettingsPanel(SettingsPanel):
 				self._ttsPath.SetValue("ibmtts")
 				# this parameter is saved even if the user doesn't click accept button.
 				config.conf['ibmeci']['TTSPath'] = self._ttsPath.GetValue()
-				# Translators: The message displayed when copying IBMTTS fails to Add-on was successful.
-				gui.messageBox(_("Successfully copied IBMTTS fails. The local copy will be used after restart NVDA."),
-					# Translators: The title  displayed when copying IBMTTS fails to Add-on was successful.
+				# Translators: The message displayed when copying IBMTTS files to Add-on was successful.
+				gui.messageBox(_("Successfully copied IBMTTS files. The local copy will be used after restart NVDA."),
+					# Translators: The title  displayed when copying IBMTTS files to Add-on was successful.
 					_("Success"),wx.OK|wx.ICON_INFORMATION,self)
 			else:
 				# Translators: The message displayed when errors were found while trying to copy IBMTTS files to Add-on.
-				gui.messageBox(_("Error copying IBMTTS fails"), _("Error"), wx.OK|wx.ICON_ERROR, self)
+				gui.messageBox(_("Error copying IBMTTS files"), _("Error"), wx.OK|wx.ICON_ERROR, self)
 
 	def copyTtsFiles(self):
 		import installer
@@ -127,3 +127,5 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		super(GlobalPlugin, self).__init__()
 		gui.settingsDialogs.NVDASettingsDialog.categoryClasses.append(IBMTTSSettingsPanel)
 
+
+#__all__ = ['settingsDB']

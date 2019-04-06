@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: 'IBMTTS' '19.2b2'\n"
+"Project-Id-Version: 'IBMTTS' '19.2b4'\n"
 "Report-Msgid-Bugs-To: 'nvda-translations@freelists.org'\n"
-"POT-Creation-Date: 2019-03-30 14:53-0600\n"
+"POT-Creation-Date: 2019-04-06 16:17-0600\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -135,7 +135,7 @@ msgid ""
 msgstr ""
 
 #. Translators: The title displayed when the IBMTTS files folder and library name have been set.
-#. Translators: The title  displayed when copying IBMTTS fails to Add-on was successful.
+#. Translators: The title  displayed when copying IBMTTS files to Add-on was successful.
 #: addon\globalPlugins\ibmtts.py:54 addon\globalPlugins\ibmtts.py:101
 msgid "Success"
 msgstr ""
@@ -160,7 +160,7 @@ msgstr ""
 msgid "Error"
 msgstr ""
 
-#. Translators: A message to ask the user to copy IBMTTS fails to Add-on folder.
+#. Translators: A message to ask the user to copy IBMTTS files to Add-on folder.
 #: addon\globalPlugins\ibmtts.py:69
 msgid ""
 "Are you sure to copy IBMTTS files to local NVDA driver Add-on? It may not "
@@ -182,28 +182,28 @@ msgstr ""
 msgid "Please wait while IBMTTS files  are copied into add-on."
 msgstr ""
 
-#. Translators: a message dialog asking to retry or cancel when copying IBMTTS fails.
+#. Translators: a message dialog asking to retry or cancel when copying IBMTTS files.
 #: addon\globalPlugins\ibmtts.py:85
 msgid ""
 "Unable to copy a file. Perhaps it is currently being used by another process "
 "or you have run out of disc space on the drive you are copying to."
 msgstr ""
 
-#. Translators: the title of a retry cancel dialog when copying IBMTTS fails
+#. Translators: the title of a retry cancel dialog when copying IBMTTS files.
 #: addon\globalPlugins\ibmtts.py:87
 msgid "Error Copying"
 msgstr ""
 
-#. Translators: The message displayed when copying IBMTTS fails to Add-on was successful.
+#. Translators: The message displayed when copying IBMTTS files to Add-on was successful.
 #: addon\globalPlugins\ibmtts.py:99
 msgid ""
-"Successfully copied IBMTTS fails. The local copy will be used after restart "
+"Successfully copied IBMTTS files. The local copy will be used after restart "
 "NVDA."
 msgstr ""
 
 #. Translators: The message displayed when errors were found while trying to copy IBMTTS files to Add-on.
 #: addon\globalPlugins\ibmtts.py:104
-msgid "Error copying IBMTTS fails"
+msgid "Error copying IBMTTS files"
 msgstr ""
 
 #. # Translators: message box when user is installing the addon in NVDA.
