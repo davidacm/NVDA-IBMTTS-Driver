@@ -127,5 +127,6 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		super(GlobalPlugin, self).__init__()
 		gui.settingsDialogs.NVDASettingsDialog.categoryClasses.append(IBMTTSSettingsPanel)
 
-
-#__all__ = ['settingsDB']
+	def terminate(self):
+		super(GlobalPlugin, self).terminate()
+		gui.settingsDialogs.NVDASettingsDialog.categoryClasses.remove(IBMTTSSettingsPanel)
