@@ -7,16 +7,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: IBMTTS for NVDA\n"
 "Report-Msgid-Bugs-To: 'nvda-translations@freelists.org'\n"
-"POT-Creation-Date: 2019-04-06 16:09-0600\n"
-"PO-Revision-Date: 2019-04-06 16:11-0600\n"
-"Last-Translator: David CM <dhf360@gmail.com>\n"
+"POT-Creation-Date: 2019-04-22 03:38-0600\n"
+"PO-Revision-Date: 2019-04-22 12:45+0200\n"
+"Last-Translator: Rémy Ruiz <remyruiz@gmail.com>\n"
 "Language-Team: José Manuel Delicado <jmdaweb@hotmail.com>\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.2.1\n"
+"X-Generator: Poedit 1.8.12\n"
 "X-Poedit-SourceCharset: iso-8859-1\n"
 
 #: addon\synthDrivers\_ibmeci.py:51
@@ -223,29 +223,42 @@ msgstr ""
 msgid "Error copying IBMTTS files"
 msgstr "Error al copiar los archivos de IBMTTS"
 
-#. # Translators: message box when user is installing the addon in NVDA.
-#: addon\installTasks.py:7
+#. Translators: the message  shown if the driver can't find libraries during installation.
+#: addon\installTasks.py:9
 msgid ""
 "The synthesizer won't be available until you set   IBMTTS files. NVDA won't "
 "show this synthesizer in teh synthesizers list because you need to set the "
 "IBMTTS files location first.\n"
-"To do it open the NVDA settings dialog, select IBMTTS category and use the "
-"\"Browse for  IBMTTS library\" button to select the IBMTTS files folder."
+"\tTo do it open the NVDA settings dialog, select IBMTTS category and use the "
+"\"Browse for  IBMTTS library\" button to select the IBMTTS files folder.\n"
 msgstr ""
 "El sintetizador no estará disponible hasta que establezcas los archivos de "
 "IBMTTS. NVDA no mostrará este sintetizador en la lista de sintetizadores "
 "porque necesitas establecer la ubicación de archivos del sintetizador "
 "primero.\n"
-"Para hacer esto abre el diálogo de configuraciones de NVDA, selecciona la "
+"\tPara hacer esto abre el diálogo de configuraciones de NVDA, selecciona la "
 "categoría IBMTTS y use el botón para seleccionar la carpeta de archivos "
-"IBMTTS."
+"IBMTTS.\n"
+
+#. Translators: message box when user is installing the addon in NVDA.
+#: addon\installTasks.py:13
+msgid ""
+"if you are using another copy of IBMTTS or similar with a different name, "
+"you should not load this driver in the same NVDA session. If you do it, NVDA "
+"will fail.\n"
+"To resolve it switch to another synthesizer (E.G espeak) then restart NVDA. "
+"Afther that, you can use this new driver."
+msgstr ""
+"Si estás usando otra copia de IBMTTS o similar con un nombre distinto, no "
+"deberías cargar este controlador durante la misma sesión de NVDA. Si lo "
+"haces, NVDA fallará.\n"
+"Para resolver esto cambia a otro sintetizador (EJ. Espeak) entonces reinicia "
+"NVDA. Después de eso, podrás usar este nuevo controlador."
 
 #. Translators: title of message box when user is installing NVDA
-#: addon\installTasks.py:14
-#, fuzzy
-#| msgid "IBMTTS driver"
+#: addon\installTasks.py:19
 msgid "IBMTTS driver for NVDA"
-msgstr "Controlador de IBMTTS"
+msgstr "Controlador de IBMTTS para NVDA"
 
 #. Add-on summary, usually the user visible name of the addon.
 #. Translators: Summary for this add-on to be shown on installation and add-on information.

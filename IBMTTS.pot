@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: 'IBMTTS' '19.2b4'\n"
+"Project-Id-Version: 'IBMTTS' '19.2b6'\n"
 "Report-Msgid-Bugs-To: 'nvda-translations@freelists.org'\n"
-"POT-Creation-Date: 2019-04-06 16:17-0600\n"
+"POT-Creation-Date: 2019-04-22 03:38-0600\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -206,18 +206,28 @@ msgstr ""
 msgid "Error copying IBMTTS files"
 msgstr ""
 
-#. # Translators: message box when user is installing the addon in NVDA.
-#: addon\installTasks.py:7
+#. Translators: the message  shown if the driver can't find libraries during installation.
+#: addon\installTasks.py:9
 msgid ""
 "The synthesizer won't be available until you set   IBMTTS files. NVDA won't "
 "show this synthesizer in teh synthesizers list because you need to set the "
 "IBMTTS files location first.\n"
-"To do it open the NVDA settings dialog, select IBMTTS category and use the "
-"\"Browse for  IBMTTS library\" button to select the IBMTTS files folder."
+"\tTo do it open the NVDA settings dialog, select IBMTTS category and use the "
+"\"Browse for  IBMTTS library\" button to select the IBMTTS files folder.\n"
+msgstr ""
+
+#. Translators: message box when user is installing the addon in NVDA.
+#: addon\installTasks.py:13
+msgid ""
+"if you are using another copy of IBMTTS or similar with a different name, "
+"you should not load this driver in the same NVDA session. If you do it, NVDA "
+"will fail.\n"
+"To resolve it switch to another synthesizer (E.G espeak) then restart NVDA. "
+"Afther that, you can use this new driver."
 msgstr ""
 
 #. Translators: title of message box when user is installing NVDA
-#: addon\installTasks.py:14
+#: addon\installTasks.py:19
 msgid "IBMTTS driver for NVDA"
 msgstr ""
 

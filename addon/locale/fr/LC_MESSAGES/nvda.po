@@ -5,17 +5,17 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 'IBMTTS' '19.2b4'\n"
+"Project-Id-Version: IBMTTS for NVDA\n"
 "Report-Msgid-Bugs-To: 'nvda-translations@freelists.org'\n"
-"POT-Creation-Date: 2019-04-06 16:17-0600\n"
-"PO-Revision-Date: 2019-04-06 16:19-0600\n"
+"POT-Creation-Date: 2019-04-22 12:29+0200\n"
+"PO-Revision-Date: 2019-04-22 12:48+0200\n"
 "Last-Translator: Rémy Ruiz <remyruiz@gmail.com>\n"
 "Language-Team: \n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.2.1\n"
+"X-Generator: Poedit 1.8.12\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: addon\synthDrivers\_ibmeci.py:51
@@ -223,25 +223,40 @@ msgstr ""
 msgid "Error copying IBMTTS files"
 msgstr "Erreur lors de la copie des fichiers IBMTTS"
 
-#. # Translators: message box when user is installing the addon in NVDA.
-#: addon\installTasks.py:7
+#. Translators: the message  shown if the driver can't find libraries during installation.
+#: addon\installTasks.py:9
 msgid ""
 "The synthesizer won't be available until you set   IBMTTS files. NVDA won't "
 "show this synthesizer in teh synthesizers list because you need to set the "
 "IBMTTS files location first.\n"
-"To do it open the NVDA settings dialog, select IBMTTS category and use the "
-"\"Browse for  IBMTTS library\" button to select the IBMTTS files folder."
+"\tTo do it open the NVDA settings dialog, select IBMTTS category and use the "
+"\"Browse for  IBMTTS library\" button to select the IBMTTS files folder.\n"
 msgstr ""
 "Le synthétiseur ne sera disponible que lorsque vous aurez défini les "
 "fichiers IBMTTS. NVDA n’affiche pas ce synthétiseur dans la liste des "
 "synthétiseurs, car vous devez d’abord définir l’emplacement des fichiers "
 "IBMTTS.\n"
-"Pour ce faire, ouvrez le dialogue des paramètres NVDA, sélectionnez la "
+"\tPour ce faire, ouvrez le dialogue des paramètres NVDA, sélectionnez la "
 "catégorie IBMTTS et utilisez le bouton \"Rechercher une bibliothèque IBMTTS"
-"\" pour sélectionner le dossier de fichiers IBMTTS."
+"\" pour sélectionner le dossier de fichiers IBMTTS.\n"
+
+#. Translators: message box when user is installing the addon in NVDA.
+#: addon\installTasks.py:13
+msgid ""
+"if you are using another copy of IBMTTS or similar with a different name, "
+"you should not load this driver in the same NVDA session. If you do it, NVDA "
+"will fail.\n"
+"To resolve it switch to another synthesizer (E.G espeak) then restart NVDA. "
+"Afther that, you can use this new driver."
+msgstr ""
+"Si vous utilisez une autre copie d'IBMTTS ou similaire avec un nom "
+"différent, vous ne devez pas charger ce pilote au cours de la même session "
+"NVDA. Si vous le faites, NVDA échouera.\n"
+"Pour résoudre ce changement de synthétiseur (par exemple, eSpeak), "
+"redémarrez NVDA. Après cela, vous pouvez utiliser ce nouveau pilote."
 
 #. Translators: title of message box when user is installing NVDA
-#: addon\installTasks.py:14
+#: addon\installTasks.py:19
 msgid "IBMTTS driver for NVDA"
 msgstr "Pilote IBMTTS pour NVDA"
 
@@ -256,3 +271,19 @@ msgstr "Pilote IBMTTS"
 #: buildVars.py:20
 msgid "This is the IBMTTS synthesizer driver for NVDA."
 msgstr "Ceci est le pilote du synthétiseur IBMTTS pour NVDA."
+
+#~ msgid ""
+#~ "The synthesizer won't be available until you set   IBMTTS files. NVDA "
+#~ "won't show this synthesizer in teh synthesizers list because you need to "
+#~ "set the IBMTTS files location first.\n"
+#~ "To do it open the NVDA settings dialog, select IBMTTS category and use "
+#~ "the \"Browse for  IBMTTS library\" button to select the IBMTTS files "
+#~ "folder."
+#~ msgstr ""
+#~ "Le synthétiseur ne sera disponible que lorsque vous aurez défini les "
+#~ "fichiers IBMTTS. NVDA n’affiche pas ce synthétiseur dans la liste des "
+#~ "synthétiseurs, car vous devez d’abord définir l’emplacement des fichiers "
+#~ "IBMTTS.\n"
+#~ "Pour ce faire, ouvrez le dialogue des paramètres NVDA, sélectionnez la "
+#~ "catégorie IBMTTS et utilisez le bouton \"Rechercher une bibliothèque "
+#~ "IBMTTS\" pour sélectionner le dossier de fichiers IBMTTS."
