@@ -227,7 +227,7 @@ msgstr "Error al copiar los archivos de IBMTTS"
 #: addon\installTasks.py:9
 msgid ""
 "The synthesizer won't be available until you set   IBMTTS files. NVDA won't "
-"show this synthesizer in teh synthesizers list because you need to set the "
+"show this synthesizer in teh synthesizers lists because you need to set the "
 "IBMTTS files location first.\n"
 "\tTo do it open the NVDA settings dialog, select IBMTTS category and use the "
 "\"Browse for  IBMTTS library\" button to select the IBMTTS files folder.\n"

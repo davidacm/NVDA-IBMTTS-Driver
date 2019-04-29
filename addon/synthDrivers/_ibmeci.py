@@ -14,38 +14,55 @@ except ImportError:
 	# Python 3 import
 	import queue
 
-import time, threading
-import nvwave, config, languageHandler, addonHandler
+import threading, time
+import config, languageHandler, nvwave, addonHandler
 from logHandler import log
 import _settingsDB
 
 addonHandler.initTranslation()
 
+class  ECIParam:
+	eciSynthMode=0
+	eciInputType=1
+	eciTextMode=2
+	eciDictionary=3
+	eciSampleRate = 5
+	eciWantPhonemeIndices = 7
+	eciRealWorldUnits=8
+	eciLanguageDialect=9
+	eciNumberMode=10
+	eciWantWordIndex = 12
 
-gb = BytesIO()
-speaking=False
+class ECIVoiceParam:
+	params = range(1,8)
+	eciGender, eciHeadSize, eciPitchBaseline, eciPitchFluctuation, eciRoughness, eciBreathiness, eciSpeed, eciVolume = range(8)
+	
+	
+class ECIDictVolume:
+	eciMainDict, eciRootDict, eciAbbvDict, eciMainDictExt = range(4)
+
+class ECIMessage:
+	eciWaveformBuffer, eciPhonemeBuffer, eciIndexReply, eciPhonemeIndexReply, eciWordIndexReply = range(5)
+
+class ECICallbackReturn:
+	eciDataNotProcessed, eciDataProcessed, eciDataAbort= range(3)
+
 user32 = windll.user32
-eci = None
-tid = None
-bgt = None
+audioStream = BytesIO()
+speaking=False
+eciThread = None
+eciQueue = queue.Queue()
+eciThreadId = None
+callbackThread = None
+callbackQueue = queue.Queue()
 samples=3300
 buffer = create_string_buffer(samples*2)
-bgQueue = queue.Queue()
-synthQueue = queue.Queue()
+
+
 stopped = threading.Event()
 started = threading.Event()
 param_event = threading.Event()
-Callback = WINFUNCTYPE(c_int, c_int, c_int, c_int, c_void_p)
 
-# ECI constants.
-#speech parameters
-hsz=1
-pitch=2
-fluctuation=3
-rgh=4
-bth=5
-rate=6
-vlm=7
 
 lastindex=0
 langs={'esp': (131072, _('Castilian Spanish'), 'es_ES', 'es'),
@@ -80,18 +97,18 @@ vparams = {}
 dll = None
 handle = None
 
-class eciThread(threading.Thread):
+class EciThread(threading.Thread):
 	def run(self):
 		global vparams, params, speaking, endMarkersCount
-		global tid, dll, handle
-		tid = windll.kernel32.GetCurrentThreadId()
+		global eciThreadId, dll, handle
+		eciThreadId = windll.kernel32.GetCurrentThreadId()
 		msg = wintypes.MSG()
 		user32.PeekMessageA(byref(msg), None, 0x400, 0x400, 0)
 		(dll, handle) = eciNew()
 		dll.eciRegisterCallback(handle, callback, None)
 		dll.eciSetOutputBuffer(handle, samples, pointer(buffer))
-		dll.eciSetParam(handle,1, 1)
-		dll.eciSetParam(handle,3, 1) #dictionary off
+		dll.eciSetParam(handle, ECIParam.eciInputType, 1)
+		dll.eciSetParam(handle, ECIParam.eciDictionary, 1) #dictionary off
 		self.dictionaryHandle = dll.eciNewDict(handle)
 		dll.eciSetDict(handle, self.dictionaryHandle)
 		#0 = main dictionary
@@ -99,21 +116,22 @@ class eciThread(threading.Thread):
 			dll.eciLoadDict(handle, self.dictionaryHandle, 0, path.join(ttsPath, "main.dic"))
 		if path.exists(path.join(ttsPath, "root.dic")):
 			dll.eciLoadDict(handle, self.dictionaryHandle, 1, path.join(ttsPath, "root.dic"))
-		params[9] = dll.eciGetParam(handle, 9)
+		params[ECIParam.eciLanguageDialect] = dll.eciGetParam(handle, ECIParam.eciLanguageDialect)
 		started.set()
 		while True:
 			user32.GetMessageA(byref(msg), 0, 0, 0)
 			user32.TranslateMessage(byref(msg))
 			if msg.message == WM_PROCESS:
-				internal_process_queue()
+				processEciQueue()
 			elif msg.message == WM_SILENCE:
 				speaking=False
-				gb.seek(0)
-				gb.truncate(0)
+				audioStream.seek(0)
+				audioStream.truncate(0)
 				dll.eciStop(handle)
 				try:
 					while True:
-						bgQueue.get_nowait()
+						callbackQueue.get_nowait()
+						callbackQueue.task_done()
 				except:
 						pass
 				player.stop()
@@ -132,7 +150,7 @@ class eciThread(threading.Thread):
 				param_event.set()
 			elif msg.message == WM_COPYVOICE:
 				dll.eciCopyVoice(handle, msg.wParam, 0)
-				for i in (rate, pitch, vlm, fluctuation, hsz, rgh, bth):
+				for i in ECIVoiceParam.params:
 					vparams[i] = dll.eciGetVoiceParam(handle, 0, i)
 				param_event.set()
 			elif msg.message == WM_KILL:
@@ -141,6 +159,12 @@ class eciThread(threading.Thread):
 				break
 			else:
 				user32.DispatchMessageA(byref(msg))
+
+def processEciQueue():
+	lst = eciQueue.get()
+	for (func, args) in lst:
+		func(*args)
+	eciQueue.task_done()
 
 def eciCheck():
 	global ttsPath, dllName, dll
@@ -181,14 +205,14 @@ def eciNew():
 	if 'ibmtts' in config.conf['speech'] and config.conf['speech']['ibmtts']['voice'] != '':
 		handle=eci.eciNewEx(int(config.conf['speech']['ibmtts']['voice']))
 	else: handle=eci.eciNewEx(getVoiceByLanguage(languageHandler.getLanguage())[0])
-	for i in (rate, pitch, vlm, fluctuation, hsz, rgh, bth):
+	for i in ECIVoiceParam.params:
 		vparams[i] = eci.eciGetVoiceParam(handle, 0, i)
 	return eci,handle
 
 @WINFUNCTYPE(c_int,c_int,c_int,c_long,c_void_p)
-def _bgExec(func, *args, **kwargs):
-	global bgQueue
-	bgQueue.put((func, args, kwargs))
+def _callbackExec(func, *args, **kwargs):
+	global callbackQueue
+	callbackQueue.put((func, args, kwargs))
 def setLast(lp):
 	global lastindex
 	lastindex = lp
@@ -212,37 +236,34 @@ def bgPlay(stri):
 	log.error("Eloq speech failed to feed one buffer.")
 
 curindex=None
+Callback = WINFUNCTYPE(c_int, c_int, c_int, c_int, c_void_p)
 @Callback
 def callback (h, ms, lp, dt):
-	global gb, curindex, speaking, END_STRING_MARK, endMarkersCount
-	#if not speaking: return 2
-#We need to buffer x amount of audio, and send the indexes after it.
-#Accuracy is lost with this method, but it should stop the say all breakage.
-
-	if speaking and ms == 0: #audio data
-		gb.write(string_at(buffer, lp*2))
-		if gb.tell() >= samples*2:
-			_bgExec(bgPlay, gb.getvalue())
+	global audioStream, curindex, speaking, END_STRING_MARK, endMarkersCount
+	if speaking and ms == ECIMessage.eciWaveformBuffer:
+		audioStream.write(string_at(buffer, lp*2))
+		if audioStream.tell() >= samples*2:
+			_callbackExec(bgPlay, audioStream.getvalue())
 			if curindex is not None:
-				_bgExec(setLast, curindex)
+				_callbackExec(setLast, curindex)
 				curindex=None
-			gb.truncate(0)
-			gb.seek(0)
-	elif ms==2: #index
+			audioStream.truncate(0)
+			audioStream.seek(0)
+	elif ms==ECIMessage.eciIndexReply:
 		if lp != END_STRING_MARK: #end of string
 			curindex = lp
 		else: #We reached the end of string
-			if gb.tell() > 0:
-				_bgExec(bgPlay, gb.getvalue())
-				gb.seek(0)
-				gb.truncate(0)
+			if audioStream.tell() > 0:
+				_callbackExec(bgPlay, audioStream.getvalue())
+				audioStream.seek(0)
+				audioStream.truncate(0)
 			if curindex is not None:
-				_bgExec(setLast, curindex)
+				_callbackExec(setLast, curindex)
 				curindex=None
-			_bgExec(endStringEvent)
-	return 1
+			_callbackExec(endStringEvent)
+	return ECICallbackReturn.eciDataProcessed
 
-class BgThread(threading.Thread):
+class CallbackThread(threading.Thread):
 	def __init__(self):
 		threading.Thread.__init__(self)
 		self.setDaemon(True)
@@ -250,34 +271,34 @@ class BgThread(threading.Thread):
 	def run(self):
 		try:
 			while True:
-				func, args, kwargs = bgQueue.get()
+				func, args, kwargs = callbackQueue.get()
 				if not func:
 					break
 				func(*args, **kwargs)
-				bgQueue.task_done()
+				callbackQueue.task_done()
 		except:
-			log.error("bgThread.run", exc_info=True)
+			log.error("CallbackThread.run", exc_info=True)
 
-def _bgExec(func, *args, **kwargs):
-	global bgQueue
-	bgQueue.put((func, args, kwargs))
+def _callbackExec(func, *args, **kwargs):
+	global callbackQueue
+	callbackQueue.put((func, args, kwargs))
 
 def initialize():
-	global eci, player, bgt, dll, handle
+	global callbackThread, dll, eciThread, handle, player
 	player = nvwave.WavePlayer(1, 11025, 16, outputDevice=config.conf["speech"]["outputDevice"])
 	if not eciCheck():
 		raise RuntimeError("No IBMTTS  synthesizer  available")
-	eci = eciThread()
-	eci.start()
+	eciThread = EciThread()
+	eciThread.start()
 	started.wait()
 	started.clear()
-	bgt = BgThread()
-	bgt.start()
+	callbackThread = CallbackThread()
+	callbackThread.start()
 
 def speak(text):
 #Sometimes the synth slows down for one string of text. Why?
 #Trying to fix it here.
-	if rate in vparams: text = b"`vs%d%s" % (vparams[rate], text)
+	if ECIVoiceParam.eciSpeed in vparams: text = b"`vs%d%s" % (vparams[ECIVoiceParam.eciSpeed], text)
 	dll.eciAddText(handle, text)
 
 def index(x):
@@ -297,46 +318,43 @@ def synth():
 	dll.eciSynthesize(handle)
 
 def stop():
-	user32.PostThreadMessageA(tid, WM_SILENCE, 0, 0)
+	user32.PostThreadMessageA(eciThreadId, WM_SILENCE, 0, 0)
 
 def pause(switch):
 	player.pause(switch)
 
 def terminate():
-	global bgt, player
-	user32.PostThreadMessageA(tid, WM_KILL, 0, 0)
+	global callbackThread, eciThread, player
+	user32.PostThreadMessageA(eciThreadId, WM_KILL, 0, 0)
 	stopped.wait()
 	stopped.clear()
-	bgQueue.put((None, None, None))
-	eci.join()
-	bgt.join()
+	callbackQueue.put((None, None, None))
+	eciThread.join()
+	callbackThread.join()
 	player.close()
 	player = None
-	bgt = None
+	callbackThread = None
+	eciThread= None
+	dll=None
 
 def set_voice(vl):
-		user32.PostThreadMessageA(tid, WM_PARAM, int(vl), 9)
+		user32.PostThreadMessageA(eciThreadId, WM_PARAM, int(vl), ECIParam.eciLanguageDialect)
 
 def getVParam(pr):
 	return vparams[pr]
 
 def setVParam(pr, vl):
-	user32.PostThreadMessageA(tid, WM_VPARAM, pr, vl)
+	user32.PostThreadMessageA(eciThreadId, WM_VPARAM, pr, vl)
 	param_event.wait()
 	param_event.clear()
 
 def setVariant(v):
-	user32.PostThreadMessageA(tid, WM_COPYVOICE, v, 0)
+	user32.PostThreadMessageA(eciThreadId, WM_COPYVOICE, v, 0)
 	param_event.wait()
 	param_event.clear()
 
 def process():
-		user32.PostThreadMessageA(tid, WM_PROCESS, 0, 0)
-
-def internal_process_queue():
-	lst = synthQueue.get()
-	for (func, args) in lst:
-		func(*args)
+		user32.PostThreadMessageA(eciThreadId, WM_PROCESS, 0, 0)
 
 def eciVersion():
 	ptr="       "
@@ -361,6 +379,7 @@ def endStringEvent():
 	if endMarkersCount == 0:
 		speaking = False
 		threading.Timer(0.3, idlePlayer).start()
+
 
 def idlePlayer():
 	global player, speaking, endMarkersCount
