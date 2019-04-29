@@ -5,7 +5,7 @@
 
 # Caractéristiques :
 * Prise en charge des  paramètres de voix, variante, débit, hauteur, inflexion et volume.
-* Prise en charge des  paramètres supplémentaire taille de la tête, enrouement , respiration.  Créez votre propre voix !
+* Prise en charge des  paramètres supplémentaire taille de la tête, raucité, souffle.  Créez votre propre voix !
 * Activer ou désactiver les balises de changement de voix. Désactivez-les pour vous protéger contre les codes malveillants des  farceurs, activez-les pour permettre de faire beaucoup de choses amusantes avec le synthétiseur. Un plaisir garanti en toute sécurité !
 * Voix turbo. Si le synthétiseur ne vous parle pas assez vite, activez  la voix turbo et obtenez la vitesse maximale !
 * Changement automatique de langue. Laissez le synthétiseur parler dans la bonne langue !
