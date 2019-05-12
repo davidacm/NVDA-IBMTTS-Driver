@@ -3,7 +3,6 @@
 # Author: David CM <dhf360@gmail.com> and others.
 #synthDrivers/_ibmeci.py
 
-
 from ctypes import *
 from io import BytesIO
 from os import path
@@ -57,7 +56,7 @@ callbackThread = None
 callbackQueue = queue.Queue()
 samples=3300
 buffer = create_string_buffer(samples*2)
-
+idleTimer = threading.Timer(0.3, time.sleep) # fake timer because this can't be None.
 
 stopped = threading.Event()
 started = threading.Event()
@@ -313,8 +312,9 @@ def setEndStringMark():
 
 
 def synth():
-	global speaking
+	global idleTimer, speaking
 	speaking = True
+	idleTimer.cancel()
 	dll.eciSynthesize(handle)
 
 def stop():
@@ -331,6 +331,7 @@ def terminate():
 	callbackQueue.put((None, None, None))
 	eciThread.join()
 	callbackThread.join()
+	idleTimer.cancel()
 	player.close()
 	player = None
 	callbackThread = None
@@ -374,13 +375,13 @@ def getVoiceByLanguage(lang):
 	return langs['enu']
 
 def endStringEvent():
-	global speaking, endMarkersCount
+	global idleTimer, speaking, endMarkersCount
 	endMarkersCount -=1
 	if endMarkersCount == 0:
 		speaking = False
-		threading.Timer(0.3, idlePlayer).start()
-
+		idleTimer = threading.Timer(0.3, idlePlayer)
+		idleTimer.start()
 
 def idlePlayer():
-	global player, speaking, endMarkersCount
-	if not speaking and endMarkersCount == 0: player.idle()
+	global player, speaking
+	if not speaking: player.idle()
