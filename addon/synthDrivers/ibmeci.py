@@ -89,7 +89,7 @@ langsAnnotations={
 
 class SynthDriver(synthDriverHandler.SynthDriver):
 	supportedSettings=(SynthDriver.VoiceSetting(), SynthDriver.VariantSetting(),
-	SynthDriver.RateSetting(), BooleanSynthSetting("rateBoost", _("Rate boos&t")),
+	SynthDriver.RateSetting(), BooleanSynthSetting("rateBoost", _("Rate boos&t"), True),
 	SynthDriver.PitchSetting(), SynthDriver.InflectionSetting(), SynthDriver.VolumeSetting(), NumericSynthSetting("hsz", _("Head Size"), False), NumericSynthSetting("rgh", _("Roughness"), False), NumericSynthSetting("bth", _("Breathiness"), False), BooleanSynthSetting("backquoteVoiceTags", _("Enable backquote voice &tags"), False))
 	description='IBMTTS'
 	name='ibmeci'
