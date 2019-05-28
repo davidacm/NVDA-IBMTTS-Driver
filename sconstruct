@@ -8,7 +8,6 @@ import gettext
 import os
 import os.path
 import zipfile
-import six
 import buildVars
 
 def md2html(source, dest):
@@ -21,7 +20,7 @@ def md2html(source, dest):
 	}
 	with codecs.open(source, "r", "utf-8") as f:
 		mdText = f.read()
-		for k, v in six.iteritems(headerDic):
+		for k, v in headerDic.items():
 			mdText = mdText.replace(k, v, 1)
 		htmlText = markdown.markdown(mdText)
 	with codecs.open(dest, "w", "utf-8") as f:
