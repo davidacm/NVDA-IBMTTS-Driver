@@ -6,16 +6,23 @@
 import six, synthDriverHandler, speech, languageHandler, config, os, re
 from collections import OrderedDict
 from six import string_types
-from synthDriverHandler import SynthDriver,VoiceInfo,BooleanSynthSetting,NumericSynthSetting
+from synthDriverHandler import SynthDriver,VoiceInfo
 from logHandler import log
-import _ibmeci
-from _ibmeci import ECIVoiceParam
+from synthDrivers import _ibmeci
+from synthDrivers._ibmeci import ECIVoiceParam
 import addonHandler
 addonHandler.initTranslation()
 
-try:
+try: # for python 2.7
 	unicode
+	from synthDriverHandler import BooleanSynthSetting as BooleanDriverSetting,NumericSynthSetting as NumericDriverSetting
+	class synthIndexReached:
+		@classmethod
+		def notify (cls, synth=None, index=None): pass
+	synthDoneSpeaking = synthIndexReached
 except:
+	from driverHandler import BooleanDriverSetting,NumericDriverSetting
+	from synthDriverHandler import synthIndexReached, synthDoneSpeaking
 	def unicode(s):
 		return s
 
@@ -88,18 +95,34 @@ langsAnnotations={
 }
 
 class SynthDriver(synthDriverHandler.SynthDriver):
-	supportedSettings=(SynthDriver.VoiceSetting(), SynthDriver.VariantSetting(),
-	SynthDriver.RateSetting(), BooleanSynthSetting("rateBoost", _("Rate boos&t"), True),
-	SynthDriver.PitchSetting(), SynthDriver.InflectionSetting(), SynthDriver.VolumeSetting(), NumericSynthSetting("hsz", _("Head Size"), False), NumericSynthSetting("rgh", _("Roughness"), False), NumericSynthSetting("bth", _("Breathiness"), False), BooleanSynthSetting("backquoteVoiceTags", _("Enable backquote voice &tags"), False))
+	supportedSettings=(SynthDriver.VoiceSetting(), SynthDriver.VariantSetting(), SynthDriver.RateSetting(),
+		BooleanDriverSetting("rateBoost", _("Rate boos&t"), True),
+		SynthDriver.PitchSetting(), SynthDriver.InflectionSetting(), SynthDriver.VolumeSetting(),
+		NumericDriverSetting("hsz", _("Head Size"), False),
+		NumericDriverSetting("rgh", _("Roughness"), False),
+		NumericDriverSetting("bth", _("Breathiness"), False),
+		BooleanDriverSetting("backquoteVoiceTags", _("Enable backquote voice &tags"), False))
+	supportedCommands = {
+		speech.IndexCommand,
+		speech.CharacterModeCommand,
+		speech.LangChangeCommand,
+		speech.BreakCommand,
+		speech.PitchCommand,
+		speech.RateCommand,
+		speech.VolumeCommand
+	}
+	supportedNotifications = {synthIndexReached, synthDoneSpeaking}
+
 	description='IBMTTS'
 	name='ibmeci'
 	speakingLanguage=""
+	
 	@classmethod
 	def check(cls):
 		return _ibmeci.eciCheck()
-		
+
 	def __init__(self):
-		_ibmeci.initialize()
+		_ibmeci.initialize(self._onIndexReached, self._onDoneSpeaking)
 		# This information doesn't really need to be displayed, and makes IBMTTS unusable if the addon is not in the same drive as NVDA executable.
 		# But display it only on debug mode in case of it can be useful
 		log.debug("Using IBMTTS version %s" % _ibmeci.eciVersion())
@@ -108,6 +131,11 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 		self.speakingLanguage=lang
 		self.variant="1"
 
+	PROSODY_ATTRS = {
+		speech.PitchCommand: "`vs",
+		speech.VolumeCommand: "`vv",
+		speech.RateCommand: "vb",
+	}
 
 	def speak(self,speechSequence):
 		last = None
@@ -133,14 +161,14 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 					outlist.append((_ibmeci.speak, (langsAnnotations[defaultLanguage],)))
 					self.speakingLanguage = defaultLanguage
 			elif isinstance(item,speech.CharacterModeCommand):
-				outlist.append((_ibmeci.speak, (b"`ts1" if item.state else "b`ts0",)))
+				outlist.append((_ibmeci.speak, (b"`ts1" if item.state else b"`ts0",)))
 			elif isinstance(item,speech.BreakCommand):
 				outlist.append((_ibmeci.speak, (b' `p%d ' %item.time,)))
 			elif isinstance(item,speech.SpeechCommand):
 				log.debugWarning("Unsupported speech command: %s"%item)
 			else:
 				log.error("Unknown speech: %s"%item)
-		if last is not None and not last[-1] in punctuation: outlist.append((_ibmeci.speak, (b'`p1. ',)))
+		if last is not None and not str(last[-1]) in punctuation: outlist.append((_ibmeci.speak, (b'`p1. ',)))
 		outlist.append((_ibmeci.setEndStringMark, ()))
 		outlist.append((_ibmeci.synth, ()))
 		_ibmeci.eciQueue.put(outlist)
@@ -285,6 +313,9 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 
 	def _get_variant(self): return self._variant
 
+	def _onIndexReached(self, index): synthIndexReached.notify(synth=self, index=index)
+
+	def _onDoneSpeaking(self): synthDoneSpeaking.notify(synth=self)
 
 def resub(dct, s):
 	for r in six.iterkeys(dct):
