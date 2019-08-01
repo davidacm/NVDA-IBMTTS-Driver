@@ -16,7 +16,7 @@ except ImportError:
 import threading, time
 import config, languageHandler, nvwave, addonHandler
 from logHandler import log
-import _settingsDB
+from . import _settingsDB
 
 addonHandler.initTranslation()
 
@@ -54,6 +54,9 @@ eciQueue = queue.Queue()
 eciThreadId = None
 callbackThread = None
 callbackQueue = queue.Queue()
+onIndexReached = None
+onDoneSpeaking = None
+
 samples=3300
 buffer = create_string_buffer(samples*2)
 idleTimer = threading.Timer(0.3, time.sleep) # fake timer because this can't be None.
@@ -215,6 +218,7 @@ def _callbackExec(func, *args, **kwargs):
 def setLast(lp):
 	global lastindex
 	lastindex = lp
+	onIndexReached(lp)
 
 def bgPlay(stri):
 	if len(stri) == 0: return
@@ -249,7 +253,7 @@ def callback (h, ms, lp, dt):
 			audioStream.truncate(0)
 			audioStream.seek(0)
 	elif ms==ECIMessage.eciIndexReply:
-		if lp != END_STRING_MARK: #end of string
+		if lp != END_STRING_MARK: # not end of string
 			curindex = lp
 		else: #We reached the end of string
 			if audioStream.tell() > 0:
@@ -282,8 +286,10 @@ def _callbackExec(func, *args, **kwargs):
 	global callbackQueue
 	callbackQueue.put((func, args, kwargs))
 
-def initialize():
-	global callbackThread, dll, eciThread, handle, player
+def initialize(indexCallback, doneCallback):
+	global callbackThread, dll, eciThread, handle, onIndexReached, onDoneSpeaking, player
+	onIndexReached = indexCallback
+	onDoneSpeaking = doneCallback
 	player = nvwave.WavePlayer(1, 11025, 16, outputDevice=config.conf["speech"]["outputDevice"])
 	if not eciCheck():
 		raise RuntimeError("No IBMTTS  synthesizer  available")
@@ -379,6 +385,7 @@ def endStringEvent():
 	endMarkersCount -=1
 	if endMarkersCount == 0:
 		speaking = False
+		onDoneSpeaking()
 		idleTimer = threading.Timer(0.3, idlePlayer)
 		idleTimer.start()
 
