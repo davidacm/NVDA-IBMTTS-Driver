@@ -50,16 +50,16 @@ user32 = windll.user32
 audioStream = BytesIO()
 speaking=False
 eciThread = None
-eciQueue = queue.Queue()
+eciQueue = None
 eciThreadId = None
 callbackThread = None
-callbackQueue = queue.Queue()
+callbackQueue = None
 onIndexReached = None
 onDoneSpeaking = None
 
 samples=3300
 buffer = create_string_buffer(samples*2)
-idleTimer = threading.Timer(0.3, time.sleep) # fake timer because this can't be None.
+idleTimer = None
 
 stopped = threading.Event()
 started = threading.Event()
@@ -176,6 +176,7 @@ def eciCheck():
 	if  not path.isabs(ttsPath):
 		ttsPath = path.join(path.abspath(path.dirname(__file__)), ttsPath)
 		if path.exists(ttsPath): iniCheck()
+	print (ttsPath, path.exists(ttsPath))
 	if not path.exists(ttsPath): return False
 	if dll: return True
 	try:
@@ -287,16 +288,19 @@ def _callbackExec(func, *args, **kwargs):
 	callbackQueue.put((func, args, kwargs))
 
 def initialize(indexCallback, doneCallback):
-	global callbackThread, dll, eciThread, handle, onIndexReached, onDoneSpeaking, player
+	global callbackQueue, callbackThread, eciQueue, eciThread, idleTimer, onIndexReached, onDoneSpeaking, player
 	onIndexReached = indexCallback
 	onDoneSpeaking = doneCallback
+	idleTimer = threading.Timer(0.3, time.sleep) # fake timer because this can't be None.
 	player = nvwave.WavePlayer(1, 11025, 16, outputDevice=config.conf["speech"]["outputDevice"])
 	if not eciCheck():
 		raise RuntimeError("No IBMTTS  synthesizer  available")
+	eciQueue = queue.Queue()
 	eciThread = EciThread()
 	eciThread.start()
 	started.wait()
 	started.clear()
+	callbackQueue = queue.Queue()
 	callbackThread = CallbackThread()
 	callbackThread.start()
 
@@ -330,19 +334,16 @@ def pause(switch):
 	player.pause(switch)
 
 def terminate():
-	global callbackThread, eciThread, player
+	global callbackQueue, callbackThread, dll, eciQueue,eciThread, handle, idleTimer, onDoneSpeaking, onIndexReached, player
 	user32.PostThreadMessageA(eciThreadId, WM_KILL, 0, 0)
 	stopped.wait()
 	stopped.clear()
 	callbackQueue.put((None, None, None))
 	eciThread.join()
 	callbackThread.join()
-	idleTimer.cancel()
+	idleTimer.cancel()	
 	player.close()
-	player = None
-	callbackThread = None
-	eciThread= None
-	dll=None
+	callbackQueue= callbackThread= dll= eciQueue=eciThread= handle= idleTimer= onDoneSpeaking= onIndexReached= player = None
 
 def set_voice(vl):
 		user32.PostThreadMessageA(eciThreadId, WM_PARAM, int(vl), ECIParam.eciLanguageDialect)
