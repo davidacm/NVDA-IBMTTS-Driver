@@ -186,14 +186,14 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 			text = text.replace('quil', 'qil') #Sometimes this string make everything buggy with IBMTTS in French
 		if self._backquoteVoiceTags:
 			text = text.replace('`', ' ') #no embedded commands
+			text = text.encode('mbcs', 'replace')
 			text = resub(anticrash_res, text)
 			#this converts to ansi for anticrash. If this breaks with foreign langs, we can remove it.
-			text = text.encode('mbcs', 'replace')
 		else:
 			#this converts to ansi for anticrash. If this breaks with foreign langs, we can remove it.
 			text = text.encode('mbcs', 'replace')
-			text = resub(anticrash_res, text)
 			text = text.replace(b'`', b' ') #no embedded commands
+			text = resub(anticrash_res, text)
 		text = pause_re.sub(br'\1 `p1\2\3', text)
 		text = time_re.sub(br'\1:\2 \3', text)
 		return text
