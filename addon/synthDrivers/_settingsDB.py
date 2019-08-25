@@ -10,3 +10,10 @@ confspec = {
 	"TTSPath": "string(default='ibmtts')"
 }
 config.conf.spec["ibmeci"]=confspec
+
+def setConfig():
+	d=config.conf['ibmeci'].dict()
+	if 'ibmeci' not in config.conf.profiles[0]: config.conf.profiles[0]['ibmeci'] = d
+	if 'TTSPath' not in config.conf.profiles[0]['ibmeci']: config.conf.profiles[0]['ibmeci']['TTSPath'] = d['TTSPath']
+	if 'dllName' not in config.conf.profiles[0]['ibmeci']: config.conf.profiles[0]['ibmeci']['dllName'] = d['dllName']
+setConfig()

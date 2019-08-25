@@ -35,8 +35,7 @@ class  ECIParam:
 class ECIVoiceParam:
 	params = range(1,8)
 	eciGender, eciHeadSize, eciPitchBaseline, eciPitchFluctuation, eciRoughness, eciBreathiness, eciSpeed, eciVolume = range(8)
-	
-	
+
 class ECIDictVolume:
 	eciMainDict, eciRootDict, eciAbbvDict, eciMainDictExt = range(4)
 
@@ -46,44 +45,9 @@ class ECIMessage:
 class ECICallbackReturn:
 	eciDataNotProcessed, eciDataProcessed, eciDataAbort= range(3)
 
-user32 = windll.user32
-audioStream = BytesIO()
-speaking=False
-eciThread = None
-eciQueue = None
-eciThreadId = None
-callbackThread = None
-callbackQueue = None
-onIndexReached = None
-onDoneSpeaking = None
-
+# constants
 samples=3300
-buffer = create_string_buffer(samples*2)
-idleTimer = None
-
-stopped = threading.Event()
-started = threading.Event()
-param_event = threading.Event()
-
-
-lastindex=0
-langs={'esp': (131072, _('Castilian Spanish'), 'es_ES', 'es'),
-'esm': (131073, _('Latin American Spanish'), 'es_ME', 'es_CO'),
-'ptb': (458752, _('Brazilian Portuguese'), 'pt_BR', 'pt'),
-'fra': (196608, _('French'), 'fr_FR', 'fr'),
-'frc': (196609, _('French Canadian'), 'fr_CA', ''),
-'fin': (589824, _('Finnish'), 'fi_FI', 'fi'),
-'chs': (393216, _('Chinese'), 'zh_GB', 'zh'),
-'jpn': (524288, _('Japanese'), 'ja_JA', 'jp'),
-'kor': (655360, _('Korean'), 'ko_KO', 'ko'),
-'deu': (262144, _('German'), 'de_DE', 'de'),
-'ita': (327680, _('Italian'), 'it_IT', 'it'),
-'enu': (65536, _('American English'), 'en_US', 'en'),
-'eng': (65537, _('British English'), 'en_UK', '')}
-
-avLangs=0
-ttsPath=""
-dllName=""
+user32 = windll.user32
 WM_PROCESS = 1025
 WM_SILENCE = 1026
 WM_PARAM = 1027
@@ -92,12 +56,51 @@ WM_COPYVOICE=1029
 WM_KILL=1030
 WM_SYNTH=1031
 WM_INDEX=1032
-params = {}
-vparams = {}
 
+langs={
+	'esp': (131072, _('Castilian Spanish'), 'es_ES', 'es'),
+	'esm': (131073, _('Latin American Spanish'), 'es_ME', 'es_CO'),
+	'ptb': (458752, _('Brazilian Portuguese'), 'pt_BR', 'pt'),
+	'fra': (196608, _('French'), 'fr_FR', 'fr'),
+	'frc': (196609, _('French Canadian'), 'fr_CA', ''),
+	'fin': (589824, _('Finnish'), 'fi_FI', 'fi'),
+	'chs': (393216, _('Chinese'), 'zh_GB', 'zh'),
+	'jpn': (524288, _('Japanese'), 'ja_JA', 'jp'),
+	'kor': (655360, _('Korean'), 'ko_KO', 'ko'),
+	'deu': (262144, _('German'), 'de_DE', 'de'),
+	'ita': (327680, _('Italian'), 'it_IT', 'it'),
+	'enu': (65536, _('American English'), 'en_US', 'en'),
+	'eng': (65537, _('British English'), 'en_UK', '')
+}
+
+audioStream = BytesIO()
+speaking=False
+eciThread = None
+callbackQueue = None
+callbackThread = None
+eciQueue = None
+eciThreadId = None
+idleTimer = None
+onIndexReached = None
+onDoneSpeaking = None
+
+buffer = create_string_buffer(samples*2)
+
+
+stopped = threading.Event()
+started = threading.Event()
+param_event = threading.Event()
+lastindex=0
+avLangs=0
+ttsPath=""
+dllName=""
 #We can only have one of each in NVDA. Make this global
 dll = None
 handle = None
+
+params = {}
+vparams = {}
+
 
 class EciThread(threading.Thread):
 	def run(self):
@@ -170,13 +173,12 @@ def processEciQueue():
 
 def eciCheck():
 	global ttsPath, dllName, dll
-	dllName = config.conf['ibmeci']['dllName']
-	ttsPath =  config.conf['ibmeci']['TTSPath']
+	dllName = config.conf.profiles[0]['ibmeci']['dllName']
+	ttsPath =  config.conf.profiles[0]['ibmeci']['TTSPath']
 	
 	if  not path.isabs(ttsPath):
 		ttsPath = path.join(path.abspath(path.dirname(__file__)), ttsPath)
 		if path.exists(ttsPath): iniCheck()
-	print (ttsPath, path.exists(ttsPath))
 	if not path.exists(ttsPath): return False
 	if dll: return True
 	try:
@@ -216,6 +218,7 @@ def eciNew():
 def _callbackExec(func, *args, **kwargs):
 	global callbackQueue
 	callbackQueue.put((func, args, kwargs))
+
 def setLast(lp):
 	global lastindex
 	lastindex = lp
@@ -305,9 +308,10 @@ def initialize(indexCallback, doneCallback):
 	callbackThread.start()
 
 def speak(text):
-#Sometimes the synth slows down for one string of text. Why?
-#Trying to fix it here.
-	if ECIVoiceParam.eciSpeed in vparams: text = b"`vs%d%s" % (vparams[ECIVoiceParam.eciSpeed], text)
+	# deleted the following fix because is incompatible with NVDA's speech change command. Now send it from speak in ibmeci.py
+	#Sometimes the synth slows down for one string of text. Why?
+	#Trying to fix it here.
+	# if ECIVoiceParam.eciSpeed in vparams: text = b"`vs%d%s" % (vparams[ECIVoiceParam.eciSpeed], text)
 	dll.eciAddText(handle, text)
 
 def index(x):
