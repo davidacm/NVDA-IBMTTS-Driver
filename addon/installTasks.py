@@ -1,6 +1,7 @@
 # -*- coding: UTF-8 -*-
 #Copyright (C) 2009 - 2019 David CM, released under the GPL.
 # Author: David CM <dhf360@gmail.com> and others.
+# note: this file doesn't get settings from the base profile to avoid issues when updating from older versions.
 
 from synthDrivers import _settingsDB
 import config, gui, os, wx, addonHandler

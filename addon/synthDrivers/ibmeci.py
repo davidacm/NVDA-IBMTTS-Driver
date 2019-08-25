@@ -28,7 +28,7 @@ except:
 
 
 punctuation = "-,.?!:;"
-minRate=0
+minRate=40
 maxRate=156
 
 pause_re = re.compile(br'([a-zA-Z])([-.(),:;!?])( |$)')
@@ -37,61 +37,61 @@ time_re = re.compile(br"(\d):(\d+):(\d+)")
 anticrash_res = {
 	re.compile(br'\b(|\d+|\W+)(|un|anti|re)c(ae|\xe6)sur', re.I): br'\1\2seizur',
 	re.compile(br"\b(|\d+|\W+)h'(r|v)[e]", re.I): br"\1h ' \2 e",
-# re.compile(r"\b(|\d+|\W+)wed[h]esday", re.I): r"\1wed hesday",
-re.compile(br'hesday'): b' hesday',
-		re.compile(br"\b(|\d+|\W+)tz[s]che", re.I): br"\1tz sche"
+	# re.compile(r"\b(|\d+|\W+)wed[h]esday", re.I): r"\1wed hesday",
+	re.compile(br'hesday'): b' hesday',
+	re.compile(br"\b(|\d+|\W+)tz[s]che", re.I): br"\1tz sche"
 }
 
 english_fixes = {
-re.compile(r'(\w+)\.([a-zA-Z]+)'): r'\1 dot \2',
-re.compile(r'([a-zA-Z0-9_]+)@(\w+)'): r'\1 at \2',
+	re.compile(r'(\w+)\.([a-zA-Z]+)'): r'\1 dot \2',
+	re.compile(r'([a-zA-Z0-9_]+)@(\w+)'): r'\1 at \2',
 }
-french_fixes = {
-re.compile(r'([a-zA-Z0-9_]+)@(\w+)'): r'\1 arobase \2',
-}
+french_fixes = { re.compile(r'([a-zA-Z0-9_]+)@(\w+)'): r'\1 arobase \2' }
 spanish_fixes = {
-#for emails
-re.compile(r'([a-zA-Z0-9_]+)@(\w+)'): r'\1 arroba \2',
-re.compile(u'([€$]\d{1,3})((\s\d{3})+\.\d{2})'): r'\1 \2',
+	#for emails
+	re.compile(r'([a-zA-Z0-9_]+)@(\w+)'): r'\1 arroba \2',
+	re.compile(u'([€$]\d{1,3})((\s\d{3})+\.\d{2})'): r'\1 \2',
 }
 
 
-variants = {1:"Reed",
-2:"Shelley",
-3:"Bobby",
-4:"Rocko",
-5:"Glen",
-6:"Sandy",
-7:"Grandma",
-8:"Grandpa"}
+variants = {
+	1:"Reed",
+	2:"Shelley",
+	3:"Bobby",
+	4:"Rocko",
+	5:"Glen",
+	6:"Sandy",
+	7:"Grandma",
+	8:"Grandpa"
+}
 
 # For langChangeCommand
 langsAnnotations={
-"en":b"`l1",
-"en_US":b"`l1.0",
-"en_UK":b"`l1.1",
-"en_GB":b"`l1.1",
-"es":b"`l2",
-"es_ES":b"`l2.0",
-"es_ME":b"`l2.1",
-"fr":b"`l3",
-"fr_FR":b"`l3.0",
-"fr_CA":b"`l3.1",
-"de":b"`l4",
-"de_DE":b"`l4",
-"it":b"`l5",
-"it_IT":b"`l5",
-"zh":b"`l6",
-"zh_gb":b"`l6.0",
-"pt":b"`l7",
-"pt_BR":b"`l7.0",
-"pt_PT":b"`l7.1",
-"ja":b"`l8",
-"ja_ja":b"`l8.0",
-"ko":b"`l10",
-"ko_ko":b"`l10.0",
-"fi":b"`l9",
-"fi_FI":b"`l9.0"
+	"en":b"`l1",
+	"en_US":b"`l1.0",
+	"en_UK":b"`l1.1",
+	"en_GB":b"`l1.1",
+	"es":b"`l2",
+	"es_ES":b"`l2.0",
+	"es_ME":b"`l2.1",
+	"fr":b"`l3",
+	"fr_FR":b"`l3.0",
+	"fr_CA":b"`l3.1",
+	"de":b"`l4",
+	"de_DE":b"`l4",
+	"it":b"`l5",
+	"it_IT":b"`l5",
+	"zh":b"`l6",
+	"zh_gb":b"`l6.0",
+	"pt":b"`l7",
+	"pt_BR":b"`l7.0",
+	"pt_PT":b"`l7.1",
+	"ja":b"`l8",
+	"ja_ja":b"`l8.0",
+	"ko":b"`l10",
+	"ko_ko":b"`l10.0",
+	"fi":b"`l9",
+	"fi_FI":b"`l9.0"
 }
 
 class SynthDriver(synthDriverHandler.SynthDriver):
@@ -132,19 +132,20 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 		self.variant="1"
 
 	PROSODY_ATTRS = {
-		speech.PitchCommand: "`vs",
-		speech.VolumeCommand: "`vv",
-		speech.RateCommand: "vb",
+		speech.PitchCommand: b'vb',
+		speech.VolumeCommand: b'vv',
+		speech.RateCommand: b'vs',
 	}
 
 	def speak(self,speechSequence):
 		last = None
 		defaultLanguage=self.language
 		outlist = []
-		outlist.append((_ibmeci.speak, (b"`ts0",)))
+		outlist.append((_ibmeci.speak, (b'`ts0 `pp0 `vb%d `vs%d `vv%d ' %(self.pitch, _ibmeci.getVParam(ECIVoiceParam.eciSpeed), self.volume),)))
 		for item in speechSequence:
 			if isinstance(item, string_types):
 				s = self.processText(unicode(item))
+				if not s: continue
 				outlist.append((_ibmeci.speak, (s,)))
 				last = s
 			elif isinstance(item,speech.IndexCommand):
@@ -164,11 +165,13 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 				outlist.append((_ibmeci.speak, (b"`ts1" if item.state else b"`ts0",)))
 			elif isinstance(item,speech.BreakCommand):
 				outlist.append((_ibmeci.speak, (b' `p%d ' %item.time,)))
-			elif isinstance(item,speech.SpeechCommand):
-				log.debugWarning("Unsupported speech command: %s"%item)
+			elif type(item) in self.PROSODY_ATTRS:
+				val = max(0, min(item.newValue, 100))
+				if type(item) == speech.RateCommand: val = self.percentToRate(val)
+				outlist.append((_ibmeci.speak, (b' `%s%d ' %(self.PROSODY_ATTRS[type(item)], val),)))
 			else:
-				log.error("Unknown speech: %s"%item)
-		if last is not None and not str(last[-1]) in punctuation: outlist.append((_ibmeci.speak, (b'`p1. ',)))
+				log.error("Unknown speech: %s" %item)
+		if last and str(last[-1]) not in punctuation: outlist.append((_ibmeci.speak, (b'`p1. ',)))
 		outlist.append((_ibmeci.setEndStringMark, ()))
 		outlist.append((_ibmeci.synth, ()))
 		_ibmeci.eciQueue.put(outlist)
@@ -181,9 +184,8 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 		if _ibmeci.params[9] in (196609, 196608):
 			text = resub(french_fixes, text)
 			text = text.replace('quil', 'qil') #Sometimes this string make everything buggy with IBMTTS in French
-		#if not self._backquoteVoiceTags: text = text.replace(u'‵', ' ')
 		if self._backquoteVoiceTags:
-			text = "`pp0 `vv%d %s" % (self.getVParam(ECIVoiceParam.eciVolume), text.replace('`', ' ')) #no embedded commands
+			text = text.replace('`', ' ') #no embedded commands
 			text = resub(anticrash_res, text)
 			#this converts to ansi for anticrash. If this breaks with foreign langs, we can remove it.
 			text = text.encode('mbcs', 'replace')
@@ -191,7 +193,7 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 			#this converts to ansi for anticrash. If this breaks with foreign langs, we can remove it.
 			text = text.encode('mbcs', 'replace')
 			text = resub(anticrash_res, text)
-			text = b"`pp0 `vv%d %s" % (self.getVParam(ECIVoiceParam.eciVolume), text.replace(b'`', b' ')) #no embedded commands
+			text = text.replace(b'`', b' ') #no embedded commands
 		text = pause_re.sub(br'\1 `p1\2\3', text)
 		text = time_re.sub(br'\1:\2 \3', text)
 		return text
@@ -224,55 +226,59 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 
 
 	def _get_rate(self):
-		val = self.getVParam(ECIVoiceParam.eciSpeed)
+		val = _ibmeci.getVParam(ECIVoiceParam.eciSpeed)
 		if self._rateBoost: val=int(round(val/self.RATE_BOOST_MULTIPLIER))
 		return self._paramToPercent(val, minRate, maxRate)
 
-	def _set_rate(self,vl):
-		val = self._percentToParam(vl, minRate, maxRate)
+	def percentToRate(self, val):
+		val = self._percentToParam(val, minRate, maxRate)
 		if self._rateBoost: val = int(round(val *self.RATE_BOOST_MULTIPLIER))
+		return val
+
+	def _set_rate(self,val):
+		val = self.percentToRate(val)
 		self._rate = val
-		self.setVParam(ECIVoiceParam.eciSpeed, val)
+		_ibmeci.setVParam(ECIVoiceParam.eciSpeed, val)
 
 	def _get_pitch(self):
-		return self.getVParam(ECIVoiceParam.eciPitchBaseline)
+		return _ibmeci.getVParam(ECIVoiceParam.eciPitchBaseline)
 
 	def _set_pitch(self,vl):
-		self.setVParam(ECIVoiceParam.eciPitchBaseline,vl)
+		_ibmeci.setVParam(ECIVoiceParam.eciPitchBaseline,vl)
 
 	def _get_volume(self):
-		return self.getVParam(ECIVoiceParam.eciVolume)
+		return _ibmeci.getVParam(ECIVoiceParam.eciVolume)
 
 	def _set_volume(self,vl):
-		self.setVParam(ECIVoiceParam.eciVolume,int(vl))
+		_ibmeci.setVParam(ECIVoiceParam.eciVolume,int(vl))
 
 	def _set_inflection(self,vl):
 		vl = int(vl)
-		self.setVParam(ECIVoiceParam.eciPitchFluctuation,vl)
+		_ibmeci.setVParam(ECIVoiceParam.eciPitchFluctuation,vl)
 
 	def _get_inflection(self):
-		return self.getVParam(ECIVoiceParam.eciPitchFluctuation)
+		return _ibmeci.getVParam(ECIVoiceParam.eciPitchFluctuation)
 
 	def _set_hsz(self,vl):
 		vl = int(vl)
-		self.setVParam(ECIVoiceParam.eciHeadSize,vl)
+		_ibmeci.setVParam(ECIVoiceParam.eciHeadSize,vl)
 
 	def _get_hsz(self):
-		return self.getVParam(ECIVoiceParam.eciHeadSize)
+		return _ibmeci.getVParam(ECIVoiceParam.eciHeadSize)
 
 	def _set_rgh(self,vl):
 		vl = int(vl)
-		self.setVParam(ECIVoiceParam.eciRoughness,vl)
+		_ibmeci.setVParam(ECIVoiceParam.eciRoughness,vl)
 
 	def _get_rgh(self):
-		return self.getVParam(ECIVoiceParam.eciRoughness)
+		return _ibmeci.getVParam(ECIVoiceParam.eciRoughness)
 
 	def _set_bth(self,vl):
 		vl = int(vl)
-		self.setVParam(ECIVoiceParam.eciBreathiness,vl)
+		_ibmeci.setVParam(ECIVoiceParam.eciBreathiness,vl)
 
 	def _get_bth(self):
-		return self.getVParam(ECIVoiceParam.eciBreathiness)
+		return _ibmeci.getVParam(ECIVoiceParam.eciBreathiness)
 
 	def _getAvailableVoices(self):
 		o = OrderedDict()
@@ -286,14 +292,9 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 		return str(_ibmeci.params[_ibmeci.ECIParam.eciLanguageDialect])
 	def _set_voice(self,vl):
 		_ibmeci.set_voice(vl)
-	def getVParam(self,pr):
-		return _ibmeci.getVParam(pr)
-
-	def setVParam(self, pr,vl):
-		_ibmeci.setVParam(pr, vl)
-
+	
 	def _get_lastIndex(self):
-#fix?
+		#fix?
 		return _ibmeci.lastindex
 
 	def cancel(self):
@@ -307,9 +308,9 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 		global variants
 		self._variant = v if int(v) in variants else "1"
 		_ibmeci.setVariant(int(v))
-		self.setVParam(ECIVoiceParam.eciSpeed, self._rate)
-#  if 'ibmtts' in config.conf['speech']:
-#   config.conf['speech']['ibmtts']['pitch'] = self.pitch
+		_ibmeci.setVParam(ECIVoiceParam.eciSpeed, self._rate)
+		#if 'ibmtts' in config.conf['speech']:
+		#config.conf['speech']['ibmtts']['pitch'] = self.pitch
 
 	def _get_variant(self): return self._variant
 
