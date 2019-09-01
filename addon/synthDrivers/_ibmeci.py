@@ -177,7 +177,7 @@ def eciCheck():
 	ttsPath =  config.conf.profiles[0]['ibmeci']['TTSPath']
 	
 	if  not path.isabs(ttsPath):
-		ttsPath = path.join(path.abspath(path.dirname(__file__)), ttsPath)
+		ttsPath = path.abspath(path.join(path.abspath(path.dirname(__file__)), ttsPath))
 		if path.exists(ttsPath): iniCheck()
 	if not path.exists(ttsPath): return False
 	if dll: return True
@@ -364,6 +364,9 @@ def setVParam(pr, vl):
 	user32.PostThreadMessageA(eciThreadId, WM_VPARAM, pr, vl)
 	param_event.wait()
 	param_event.clear()
+
+def setProsodyParam(pr, vl):
+	dll.eciSetVoiceParam(handle, 0, pr, vl)
 
 def setVariant(v):
 	user32.PostThreadMessageA(eciThreadId, WM_COPYVOICE, v, 0)
