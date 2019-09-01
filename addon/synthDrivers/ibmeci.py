@@ -46,13 +46,14 @@ english_fixes = {
 	re.compile(r'(\w+)\.([a-zA-Z]+)'): r'\1 dot \2',
 	re.compile(r'([a-zA-Z0-9_]+)@(\w+)'): r'\1 at \2',
 }
+
 french_fixes = { re.compile(r'([a-zA-Z0-9_]+)@(\w+)'): r'\1 arobase \2' }
+
 spanish_fixes = {
 	#for emails
 	re.compile(r'([a-zA-Z0-9_]+)@(\w+)'): r'\1 arroba \2',
 	re.compile(u'([€$]\d{1,3})((\s\d{3})+\.\d{2})'): r'\1 \2',
 }
-
 
 variants = {
 	1:"Reed",
@@ -132,20 +133,19 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 		self.variant="1"
 
 	PROSODY_ATTRS = {
-		speech.PitchCommand: b'vb',
-		speech.VolumeCommand: b'vv',
-		speech.RateCommand: b'vs',
+		speech.PitchCommand: ECIVoiceParam.eciPitchBaseline,
+		speech.VolumeCommand: ECIVoiceParam.eciVolume,
+		speech.RateCommand: ECIVoiceParam.eciSpeed,
 	}
 
 	def speak(self,speechSequence):
 		last = None
 		defaultLanguage=self.language
 		outlist = []
-		outlist.append((_ibmeci.speak, (b'`ts0 `pp0 `vb%d `vs%d `vv%d ' %(self.pitch, _ibmeci.getVParam(ECIVoiceParam.eciSpeed), self.volume),)))
+		outlist.append((_ibmeci.speak, (b"`ts0",)))
 		for item in speechSequence:
 			if isinstance(item, string_types):
 				s = self.processText(unicode(item))
-				if not s: continue
 				outlist.append((_ibmeci.speak, (s,)))
 				last = s
 			elif isinstance(item,speech.IndexCommand):
@@ -168,10 +168,10 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 			elif type(item) in self.PROSODY_ATTRS:
 				val = max(0, min(item.newValue, 100))
 				if type(item) == speech.RateCommand: val = self.percentToRate(val)
-				outlist.append((_ibmeci.speak, (b' `%s%d ' %(self.PROSODY_ATTRS[type(item)], val),)))
+				outlist.append((_ibmeci.setProsodyParam, (self.PROSODY_ATTRS[type(item)], val)))
 			else:
-				log.error("Unknown speech: %s" %item)
-		if last and str(last[-1]) not in punctuation: outlist.append((_ibmeci.speak, (b'`p1. ',)))
+				log.error("Unknown speech: %s"%item)
+		if last is not None and not str(last[-1]) in punctuation: outlist.append((_ibmeci.speak, (b'`p1. ',)))
 		outlist.append((_ibmeci.setEndStringMark, ()))
 		outlist.append((_ibmeci.synth, ()))
 		_ibmeci.eciQueue.put(outlist)
@@ -185,18 +185,19 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 			text = resub(french_fixes, text)
 			text = text.replace('quil', 'qil') #Sometimes this string make everything buggy with IBMTTS in French
 		if self._backquoteVoiceTags:
-			text = text.replace('`', ' ') #no embedded commands
-			text = text.encode('mbcs', 'replace')
-			text = resub(anticrash_res, text)
 			#this converts to ansi for anticrash. If this breaks with foreign langs, we can remove it.
+			text = text.replace('`', ' ').encode('mbcs', 'replace') #no embedded commands
+			text = b"`pp0 `vv%d %s" % (_ibmeci.getVParam(ECIVoiceParam.eciVolume), text)
+			text = resub(anticrash_res, text)
 		else:
 			#this converts to ansi for anticrash. If this breaks with foreign langs, we can remove it.
 			text = text.encode('mbcs', 'replace')
-			text = text.replace(b'`', b' ') #no embedded commands
 			text = resub(anticrash_res, text)
+			text = b"`pp0 `vv%d %s" % (_ibmeci.getVParam(ECIVoiceParam.eciVolume), text.replace(b'`', b' ')) #no embedded commands
 		text = pause_re.sub(br'\1 `p1\2\3', text)
 		text = time_re.sub(br'\1:\2 \3', text)
 		return text
+
 
 	def pause(self,switch):
 		_ibmeci.pause(switch)
@@ -223,7 +224,6 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 			rate = self.rate
 			self._rateBoost = enable
 			self.rate = rate
-
 
 	def _get_rate(self):
 		val = _ibmeci.getVParam(ECIVoiceParam.eciSpeed)
