@@ -10,6 +10,8 @@ install:
     pip install scons
 
     pip install markdown
+
+    pip install six
 build_script:
 - cmd: scons
 artifacts:
