@@ -26,7 +26,7 @@ class IBMTTSSettingsPanel(SettingsPanel):
 		self._browseButton = sHelper.addItem (wx.Button (self, label = _("&Browse for  IBMTTS library...")))
 		self._browseButton.Bind(wx.EVT_BUTTON, self._onBrowseClick)
 		# Translators: This is the button to copy external IBMTTS files into synth driver Add-on.
-		self._setLocalButton = sHelper.addItem (wx.Button (self, label = _("&Copy IBMTTS files into driver add-on (may not work for some IBMTTS distributions)")))
+		self._setLocalButton = sHelper.addItem (wx.Button (self, label = _("&Copy IBMTTS files in an  add-on (may not work for some IBMTTS distributions)")))
 		self._setLocalButton.Bind(wx.EVT_BUTTON, self._onSetLocalClick)
 		self._setValues()
 
@@ -66,7 +66,8 @@ class IBMTTSSettingsPanel(SettingsPanel):
 			gui.messageBox(_("Relative paths are not allowed."), _("Error"), wx.OK|wx.ICON_ERROR, self)
 			return
 		# Translators: A message to ask the user to copy IBMTTS files to Add-on folder.
-		if gui.messageBox(_("Are you sure to copy IBMTTS files to local NVDA driver Add-on? It may not work in some IBMTTS distributions."),
+		if gui.messageBox(_('''Are you sure to copy IBMTTS files to local NVDA installation and register a new add-on called "eciLibraries" to store the libraries? It may not work in some IBMTTS distributions.
+		Note: after it, if you want to uninstall this add-on, you'll need to uninstall two add-ons in order to  delete IBMTTS files completelly from NVDA. This one and "eciLibraries"'''),
 			# Translators: The title of the Asking dialog displayed when trying to copy IBMTTS files.
 			_("Copy IBMTTS files"),
 			wx.YES|wx.NO|wx.ICON_QUESTION, self) == wx.YES:
@@ -92,7 +93,7 @@ class IBMTTSSettingsPanel(SettingsPanel):
 			progressDialog.done()
 			del progressDialog
 			if res:
-				self._ttsPath.SetValue("ibmtts")
+				self._ttsPath.SetValue(r"..\..\eciLibraries")
 				# this parameter is saved even if the user doesn't click accept button.
 				config.conf.profiles[0]['ibmeci']['TTSPath'] = self._ttsPath.GetValue()
 				# Translators: The message displayed when copying IBMTTS files to Add-on was successful.
@@ -106,7 +107,7 @@ class IBMTTSSettingsPanel(SettingsPanel):
 	def copyTtsFiles(self):
 		import installer
 		fp = self._ttsPath.GetValue()
-		tp = path.join(path.abspath(path.join(path.dirname(path.abspath(__file__)), "..")), r"synthDrivers\ibmtts")
+		tp = path.abspath(path.join(path.abspath(path.dirname(__file__)), r"..\..\eciLibraries"))
 		for curSourceDir,subDirs,files in os.walk(fp):
 			if curSourceDir == fp: curDestDir=tp
 			else:
@@ -116,6 +117,17 @@ class IBMTTSSettingsPanel(SettingsPanel):
 				sourceFilePath=path.join(curSourceDir,f)
 				destFilePath=path.join(curDestDir,f)
 				installer.tryCopyFile(sourceFilePath,destFilePath)
+		# Create a manifest, so NVDA recognizes the folder as an add-on
+		with open(path.join(tp, "manifest.ini"), "w") as f:
+			f.write('''name = eciLibraries
+summary = IBMTTS libraries
+description = """You can put the libraries for IBMTTS driver here."""
+author = NVDA User
+version = 0.1
+url = None
+minimumNVDAVersion = 2012.1.1
+lastTestedNVDAVersion = 2030.1.1
+updateChannel = None''')
 
 	def onSave(self):
 		config.conf.profiles[0]['ibmeci']['dllName'] = self._dllName.GetValue()
