@@ -23,11 +23,14 @@
 # Instalación.
   Simplemente instálelo como cualquier otro complemento de NVDA. Después abre el diálogo de configuraciones de NVDA, y en la categoría IBMTTS establezca la ruta de los archivos de IBMTTS.
   En esta categoría también puedes copiar los archivos externos de IBMTTS dentro del complemento.
-  Nota: si el sintetizador se encuentra dentro del complemento, el controlador actualizará las rutas del archivo ini automáticamente. Así que puedes usarlo en versiones portables de NVDA.
   
+
 # Empaquetar el complemento para su distribución.
   Abra una línea de comandos, cambie al directorio raíz del complemento y ejecute el comando scons. El complemento creado, si no hay errores, será puesto en la carpeta raíz del complemento.
 
 ## Notas:
+
+* si el sintetizador está dentro de este complemento o en el complemento "eciLibraries", el controlador actualizará las rutas del archivo ini automáticamente. Así que puedes usarlo en versiones portables de NVDA.
+* cuando utilice el botón "Copiar archivos IBMTTS en un add-on", creará un nuevo add-on en NVDA. Por lo tanto, si desea desinstalar IBMTTS, necesitará desinstalar dos complementos: "Controlador de IBMTTS" y "Eci libraries".
 * Las herramientas scons y gettext de este proyecto son compatibles con python 3 únicamente. No funcionan en python 2.7.
 * Puede agregar  los archivos extra requeridos de IBMTTS dentro del complemento (para uso personal solamente). Simplemente cópielos dentro de "addon\synthDrivers\ibmtts". Ajuste el nombre de la librería por defecto en "settingsDB.py" si es necesario.

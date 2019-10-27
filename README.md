@@ -21,12 +21,14 @@
 
 # Installation.
   Just install it as a NVDA add-on. Then open NVDA dialog settings, and set the IBMTTS folder files in the IBMTTS category.
-  Also in this category you can copy the external IBMTTS files into Add-on.
-  Please note: if the synthesizer is inside the add-on, the driver will update the ini library paths automatically. So you can use it on portable NVDA versions.
+  Also in this category you can copy the external IBMTTS files into an Add-on to use it locally.
 
 # Packaging it for distribution.
   Open a command line, change to the Add-on root folder  and run the scons command. The created add-on, if there were no errors, is placed in the root directory.
 
 ## Notes:
+
+* if the synthesizer is inside the add-on or in "eciLibraries" add-on, the driver will update the ini library paths automatically. So you can use it on portable NVDA versions.
+* when you use the "Copy IBMTTS files in an  add-on" button, it will create a new add-on. So, if you want to uninstall IBMTTS, you'll need to uninstall two add-ons: "IBMTTS driver" and "Eci libraries".
 * scons and gettext tools on this project are  compatible with python 3 only. Doesn't work with python 2.7.
 * You can put the extra IBMTTS required files in the add-on (for personal use only). Just copy them in "addon\synthDrivers\ibmtts" folder. Adjust the default library name in "settingsDB.py" if necessary.
