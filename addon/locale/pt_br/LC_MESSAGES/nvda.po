@@ -5,90 +5,90 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 'IBMTTS' '20.02b3'\n"
+"Project-Id-Version: 'IBMTTS' '19.8b5'\n"
 "Report-Msgid-Bugs-To: 'nvda-translations@freelists.org'\n"
-"POT-Creation-Date: 2020-02-20 10:45+0100\n"
-"PO-Revision-Date: 2020-02-24 00:53+0100\n"
-"Last-Translator: Chris\n"
+"POT-Creation-Date: 2019-04-22 03:38-0600\n"
+"PO-Revision-Date: 2019-08-27 18:44-0500\n"
 "Language-Team: \n"
-"Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.6.11\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 2.2.3\n"
+"Last-Translator: \n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Language: pt_BR\n"
+
+#: addon\synthDrivers\_ibmeci.py:51
+msgid "Castilian Spanish"
+msgstr "Espanhol castelhano"
+
+#: addon\synthDrivers\_ibmeci.py:52
+msgid "Latin American Spanish"
+msgstr "Espanhol latino-americano"
+
+#: addon\synthDrivers\_ibmeci.py:53
+msgid "Brazilian Portuguese"
+msgstr "Portugues do Brasil"
+
+#: addon\synthDrivers\_ibmeci.py:54
+msgid "French"
+msgstr "francês"
+
+#: addon\synthDrivers\_ibmeci.py:55
+msgid "French Canadian"
+msgstr "Frances canadense"
+
+#: addon\synthDrivers\_ibmeci.py:56
+msgid "Finnish"
+msgstr "finlandês"
+
+#: addon\synthDrivers\_ibmeci.py:57
+msgid "Chinese"
+msgstr "chinês"
+
+#: addon\synthDrivers\_ibmeci.py:58
+msgid "Japanese"
+msgstr "japonês"
+
+#: addon\synthDrivers\_ibmeci.py:59
+msgid "Korean"
+msgstr "coreano"
+
+#: addon\synthDrivers\_ibmeci.py:60
+msgid "German"
+msgstr "alemão"
 
 #: addon\synthDrivers\_ibmeci.py:61
-msgid "Castilian Spanish"
-msgstr "Castilian Spanish"
-
-#: addon\synthDrivers\_ibmeci.py:62
-msgid "Latin American Spanish"
-msgstr "Latin American Spanish"
-
-#: addon\synthDrivers\_ibmeci.py:63
-msgid "Brazilian Portuguese"
-msgstr "Brazilian Portuguese"
-
-#: addon\synthDrivers\_ibmeci.py:64
-msgid "French"
-msgstr "French"
-
-#: addon\synthDrivers\_ibmeci.py:65
-msgid "French Canadian"
-msgstr "French Canadian"
-
-#: addon\synthDrivers\_ibmeci.py:66
-msgid "Finnish"
-msgstr "Finnish"
-
-#: addon\synthDrivers\_ibmeci.py:67
-msgid "Chinese"
-msgstr "Chinese"
-
-#: addon\synthDrivers\_ibmeci.py:68
-msgid "Japanese"
-msgstr "Japanese"
-
-#: addon\synthDrivers\_ibmeci.py:69
-msgid "Korean"
-msgstr "Korean"
-
-#: addon\synthDrivers\_ibmeci.py:70
-msgid "German"
-msgstr "German"
-
-#: addon\synthDrivers\_ibmeci.py:71
 msgid "Italian"
 msgstr "italiano"
 
-#: addon\synthDrivers\_ibmeci.py:72
+#: addon\synthDrivers\_ibmeci.py:62
 msgid "American English"
-msgstr "American English"
+msgstr "inglês americano"
 
-#: addon\synthDrivers\_ibmeci.py:73
+#: addon\synthDrivers\_ibmeci.py:63
 msgid "British English"
-msgstr "British English"
+msgstr "inglês britânico"
 
-#: addon\synthDrivers\ibmeci.py:102
+#: addon\synthDrivers\ibmeci.py:91
 msgid "Rate boos&t"
-msgstr "A&umento velocità"
+msgstr "Aumento da &taxa"
 
-#: addon\synthDrivers\ibmeci.py:104
+#: addon\synthDrivers\ibmeci.py:92
 msgid "Head Size"
-msgstr "&Dimensione della voce"
+msgstr "Tamanho da cabeça"
 
-#: addon\synthDrivers\ibmeci.py:105
+#: addon\synthDrivers\ibmeci.py:92
 msgid "Roughness"
-msgstr "V&oce rauca"
+msgstr "Rugosidade"
 
-#: addon\synthDrivers\ibmeci.py:106
+#: addon\synthDrivers\ibmeci.py:92
 msgid "Breathiness"
-msgstr "Voce aspira&ta"
+msgstr "Respiração"
 
-#: addon\synthDrivers\ibmeci.py:107
+#: addon\synthDrivers\ibmeci.py:92
 msgid "Enable backquote voice &tags"
-msgstr "Abilita backquote vocale e tag"
+msgstr "Ativar voz e tags backquote"
 
 #. Translators: This is the label for the IBMTTS settings category in NVDA Settings screen.
 #: addon\globalPlugins\ibmtts.py:17
@@ -98,32 +98,36 @@ msgstr "IBMTTS"
 #. Translators: This is the label for the IBMTTS folder address.
 #: addon\globalPlugins\ibmtts.py:22
 msgid "IBMTTS folder address"
-msgstr "Indirizzo della cartella IBMTTS"
+msgstr "Endereço da pasta IBMTTS"
 
 #. Translators: This is the label for the IBMTTS library name.
 #: addon\globalPlugins\ibmtts.py:24
 msgid "IBMTTS library name (dll)"
-msgstr "Nome libreria IBMTTS (dll)"
+msgstr "Nome da biblioteca IBMTTS (dll)"
 
 #. Translators: This is the button to explore and find for an IBMTTS library and files.
 #: addon\globalPlugins\ibmtts.py:26
 msgid "&Browse for  IBMTTS library..."
-msgstr "C&erca la libreria IBMTTS ..."
+msgstr "& Procurar biblioteca IBMTTS ..."
 
 #. Translators: This is the button to copy external IBMTTS files into synth driver Add-on.
 #: addon\globalPlugins\ibmtts.py:29
 msgid ""
-"&Copy IBMTTS files in an  add-on (may not work for some IBMTTS distributions)"
-msgstr "&Copia i file IBMTTS nel componente aggiuntivo"
+"&Copy IBMTTS files into driver add-on (may not work for some IBMTTS "
+"distributions)"
+msgstr ""
+"& Copiar arquivos IBMTTS para o complemento do driver (pode não funcionar "
+"para algumas distribuições IBMTTS)"
 
 #: addon\globalPlugins\ibmtts.py:41
 msgid "Select the IBMTTS library (dll)"
-msgstr "Seleziona la libreria IBMTTS (dll)"
+msgstr "Selecione a biblioteca IBMTTS (dll)"
 
 #. Translators: the label for the dynamic link library extension (dll) file type
 #: addon\globalPlugins\ibmtts.py:43
+#, python-brace-format
 msgid "dynamic link library (*.{ext})"
-msgstr "libreria a collegamento dinamico (*.{ext})"
+msgstr "biblioteca de links dinámicos (*.{ext})"
 
 #. Translators: The message displayed when the IBMTTS files folder and library name have  been set.
 #: addon\globalPlugins\ibmtts.py:52
@@ -132,15 +136,14 @@ msgid ""
 "portable version of NVDA, please use the \"Copy IBMTTS files into driver add-"
 "on\" button"
 msgstr ""
-"Il percorso dei file IBMTTS è stato impostato. Se si desidera utilizzarlo "
-"con una versione portable di NVDA, utilizzare il pulsante \"Copia i file "
-"IBMTTS nel componente aggiuntivo del driver\""
+"A localização dos arquivos IBMTTS foi configurada. Se você quiser usá-lo com "
+"uma versão portátil do NVDA, use o botão \"Copiar arquivos IBMTTS\""
 
 #. Translators: The title displayed when the IBMTTS files folder and library name have been set.
 #. Translators: The title  displayed when copying IBMTTS files to Add-on was successful.
-#: addon\globalPlugins\ibmtts.py:54 addon\globalPlugins\ibmtts.py:102
+#: addon\globalPlugins\ibmtts.py:54 addon\globalPlugins\ibmtts.py:101
 msgid "Success"
-msgstr "Operazione riuscita"
+msgstr "Sucesso"
 
 #. Translators: The message displayed in the dialog that inform you the specified library is invalid.
 #: addon\globalPlugins\ibmtts.py:58
@@ -148,99 +151,92 @@ msgid ""
 "The specified dll file seems to be an incorrect IBMTTS library. Would you "
 "like to select another library?"
 msgstr ""
-"Il file dll specificato sembra essere una libreria IBMTTS errata. Vuoi "
-"selezionare un'altra libreria?"
+"O arquivo dll especificado parece ser uma biblioteca IBMTTS incorreta. "
+"Deseja selecionar outra biblioteca?"
 
 #: addon\globalPlugins\ibmtts.py:59
 msgid "Error loading library"
-msgstr "Errore durante il caricamento della libreria"
+msgstr "Erro ao carregar a biblioteca"
 
 #. Translators: The message displayed when the current source path is relative.
 #: addon\globalPlugins\ibmtts.py:66
 msgid "Relative paths are not allowed."
-msgstr "I percorsi relativi non sono ammessi."
+msgstr "Caminhos relativos não são permitidos."
 
-#: addon\globalPlugins\ibmtts.py:66 addon\globalPlugins\ibmtts.py:105
+#: addon\globalPlugins\ibmtts.py:66 addon\globalPlugins\ibmtts.py:104
 msgid "Error"
-msgstr "Errore"
+msgstr "Erro"
 
 #. Translators: A message to ask the user to copy IBMTTS files to Add-on folder.
 #: addon\globalPlugins\ibmtts.py:69
 msgid ""
-"Are you sure to copy IBMTTS files to local NVDA installation and register a "
-"new add-on called \"eciLibraries\" to store the libraries? It may not work "
-"in some IBMTTS distributions.\n"
-"\t\tNote: after it, if you want to uninstall this add-on, you'll need to "
-"uninstall two add-ons in order to  delete IBMTTS files completelly from "
-"NVDA. This one and \"eciLibraries\""
+"Are you sure to copy IBMTTS files to local NVDA driver Add-on? It may not "
+"work in some IBMTTS distributions."
 msgstr ""
-"Vuoi copiare i file IBMTTS nella cartella utente di NVDA e creare un nuovo "
-"componente aggiuntivo chiamato \"eciLibraries\" per archiviare le librerie? "
-"Potrebbe non funzionare con alcune versioni di IBMTTS.\n"
-"\t\tSE si desidera disinstallare questo componente aggiuntivo, è necessario "
-"disinstallare IBMTTS ed \"eciLibraries\"."
+"Você tem certeza de copiar os arquivos IBMTTS para o complemento do driver "
+"NVDA local? Pode não funcionar em algumas distribuições IBMTTS."
 
 #. Translators: The title of the Asking dialog displayed when trying to copy IBMTTS files.
-#: addon\globalPlugins\ibmtts.py:72
+#: addon\globalPlugins\ibmtts.py:71
 msgid "Copy IBMTTS files"
-msgstr "Copia i file IBMTTS"
+msgstr "Copiar arquivos IBMTTS"
 
 #. Translators: The title of the dialog presented while IBMTTS files  are being copied.
-#: addon\globalPlugins\ibmtts.py:76
+#: addon\globalPlugins\ibmtts.py:75
 msgid "Copying files"
-msgstr "Copia dei file"
+msgstr "Copiando arquivos"
 
 #. Translators: The message displayed while IBMTTS files are being copied.
-#: addon\globalPlugins\ibmtts.py:78
+#: addon\globalPlugins\ibmtts.py:77
 msgid "Please wait while IBMTTS files  are copied into add-on."
-msgstr ""
-"prego Attendere il completamento della copia dei file IBMTTS nel componente "
-"aggiuntivo."
+msgstr "Aguarde enquanto os arquivos IBMTTS são copiados para o complemento."
 
 #. Translators: a message dialog asking to retry or cancel when copying IBMTTS files.
-#: addon\globalPlugins\ibmtts.py:86
+#: addon\globalPlugins\ibmtts.py:85
 msgid ""
 "Unable to copy a file. Perhaps it is currently being used by another process "
 "or you have run out of disc space on the drive you are copying to."
 msgstr ""
-"Impossibile copiare file. Spazio insuficente, oppure il file è utilizato da "
-"un altro processo."
+"Não foi possível copiar um arquivo. Talvez ele esteja sendo usado por outro "
+"processo ou esteja sem espaço em disco na unidade para a qual está copiando."
 
 #. Translators: the title of a retry cancel dialog when copying IBMTTS files.
-#: addon\globalPlugins\ibmtts.py:88
+#: addon\globalPlugins\ibmtts.py:87
 msgid "Error Copying"
-msgstr "Errore durante la copia"
+msgstr "Erro ao copiar"
 
 #. Translators: The message displayed when copying IBMTTS files to Add-on was successful.
-#: addon\globalPlugins\ibmtts.py:100
+#: addon\globalPlugins\ibmtts.py:99
 msgid ""
 "Successfully copied IBMTTS files. The local copy will be used after restart "
 "NVDA."
-msgstr "File IBMTTS copiati correttamente. Riavviare NVDA."
+msgstr ""
+"Arquivos IBMTTS copiados com sucesso. A cópia local será usada após a "
+"reinicialização do NVDA."
 
 #. Translators: The message displayed when errors were found while trying to copy IBMTTS files to Add-on.
-#: addon\globalPlugins\ibmtts.py:105
+#: addon\globalPlugins\ibmtts.py:104
 msgid "Error copying IBMTTS files"
-msgstr "Errore durante la copia dei file IBMTTS"
+msgstr "Erro ao copiar arquivos IBMTTS"
 
 #. Translators: the message  shown if the driver can't find libraries during installation.
-#: addon\installTasks.py:13
+#: addon\installTasks.py:9
 msgid ""
 "The synthesizer won't be available until you set   IBMTTS files. NVDA won't "
-"show this synthesizer in teh synthesizers lists because you need to set the "
+"show this synthesizer in teh synthesizers list because you need to set the "
 "IBMTTS files location first.\n"
 "\tTo do it open the NVDA settings dialog, select IBMTTS category and use the "
 "\"Browse for  IBMTTS library\" button to select the IBMTTS files folder.\n"
 msgstr ""
-"Il sintetizzatore non sarà disponibile finché non si impostano i file "
-"IBMTTS. È necessario impostare la posizione dei file IBMTTS per "
-"visualizzarlo nell'elenco dei sintetizzatori.\n"
-"Aprire la finestra di dialogo delle impostazioni di NVDA; seleziona la "
-"categoria IBMTTS e premi il pulsante \"Cerca libreria IBMTTS\" per "
-"selezionare la cartella dei file.\n"
+"O sintetizador não estará disponível até você definir os arquivos IBMTTS. O "
+"NVDA não mostrará este sintetizador na lista de sintetizadores porque você "
+"precisa definir primeiro o local dos arquivos IBMTTS.\n"
+"Para isso, abra a caixa de diálogo de configurações do NVDA, selecione a "
+"categoria IBMTTS e use o botão \"Procurar biblioteca IBMTTS\" para "
+"selecionar a pasta de arquivos IBMTTS.\n"
 
 #. Translators: message box when user is installing the addon in NVDA.
-#: addon\installTasks.py:17
+#: addon\installTasks.py:13
 msgid ""
 "if you are using another copy of IBMTTS or similar with a different name, "
 "you should not load this driver in the same NVDA session. If you do it, NVDA "
@@ -248,14 +244,16 @@ msgid ""
 "To resolve it switch to another synthesizer (E.G espeak) then restart NVDA. "
 "Afther that, you can use this new driver."
 msgstr ""
-"se si utilizza un altro sintetizzatore IBMTTS al caricare questo driver NVDA "
-"smetterà di funzionare. È consigliabile usare un altro sintetizzatore (E.G "
-"espeak). Al successivo riavvio sarà possibile caricare il driver."
+"se você estiver usando outra cópia do IBMTTS ou semelhante com um nome "
+"diferente, não deverá carregar esse driver na mesma sessão do NVDA. Se você "
+"fizer isso, o NVDA falhará.\n"
+"Para resolvê-lo, mude para outro sintetizador (por exemplo, espeak) e "
+"reinicie o NVDA. Depois disso, você pode usar esse novo driver."
 
 #. Translators: title of message box when user is installing NVDA
-#: addon\installTasks.py:23
+#: addon\installTasks.py:19
 msgid "IBMTTS driver for NVDA"
-msgstr "Driver IBMTTS per NVDA"
+msgstr "Driver IBMTTS para NVDA"
 
 #. Add-on summary, usually the user visible name of the addon.
 #. Translators: Summary for this add-on to be shown on installation and add-on information.
@@ -267,11 +265,4 @@ msgstr "Driver IBMTTS"
 #. Translators: Long description to be shown for this add-on on add-on information from add-ons manager
 #: buildVars.py:20
 msgid "This is the IBMTTS synthesizer driver for NVDA."
-msgstr "Driver del sintetizzatore IBMTTS per NVDA."
-
-#~ msgid ""
-#~ "Are you sure to copy IBMTTS files to local NVDA driver Add-on? It may not "
-#~ "work in some IBMTTS distributions."
-#~ msgstr ""
-#~ "Copierete i file IBMTTS nel componente aggiuntivo del driver NVDA locale? "
-#~ "Potrebbe non funzionare in alcune distribuzioni IBMTTS."
+msgstr "Este é o driver do sintetizador IBMTTS para NVDA."
