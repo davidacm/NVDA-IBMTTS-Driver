@@ -172,7 +172,7 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 				outlist.append((_ibmeci.setProsodyParam, (self.PROSODY_ATTRS[type(item)], val)))
 			else:
 				log.error("Unknown speech: %s"%item)
-		if last is not None and last[-1] not in punctuation: outlist.append((_ibmeci.speak, (b'`p1. ',)))
+		if last is not None and last.rstrip()[-1] not in punctuation: outlist.append((_ibmeci.speak, (b'`p1. ',)))
 		outlist.append((_ibmeci.setEndStringMark, ()))
 		outlist.append((_ibmeci.synth, ()))
 		_ibmeci.eciQueue.put(outlist)
@@ -195,7 +195,7 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 			text = text.encode('mbcs', 'replace')
 			text = resub(anticrash_res, text)
 			text = b"`pp0 `vv%d %s" % (_ibmeci.getVParam(ECIVoiceParam.eciVolume), text.replace(b'`', b' ')) #no embedded commands
-		text = pause_re.sub(br'\1 `p1\2\3', text)
+		text = pause_re.sub(br'\1 `p0\2\3', text)
 		text = time_re.sub(br'\1:\2 \3', text)
 		return text
 
