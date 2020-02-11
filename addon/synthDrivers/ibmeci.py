@@ -32,11 +32,15 @@ pause_re = re.compile(br'([a-zA-Z])([%s])( |$)' %punctuation)
 time_re = re.compile(br"(\d):(\d+):(\d+)")
 
 anticrash_res = {
-	re.compile(br'\b(|\d+|\W+)(|un|anti|re)c(ae|\xe6)sur', re.I): br'\1\2seizur',
-	re.compile(br"\b(|\d+|\W+)h'(r|v)[e]", re.I): br"\1h ' \2 e",
-	# re.compile(r"\b(|\d+|\W+)wed[h]esday", re.I): r"\1wed hesday",
-	re.compile(br'hesday'): b' hesday',
-	re.compile(br"\b(|\d+|\W+)tz[s]che", re.I): br"\1tz sche"
+ re.compile(r'\b(|\d+|\W+)?(|un|anti|re)c(ae|\xe6)sur', re.I): r'\1\2seizur',
+ re.compile(r"\b(|\d+|\W+)h'(r|v)[e]", re.I): r"\1h ' \2 e",
+ re.compile(r"\b(\w+[bdflmnrvzqh])hes([bcdfgjklmnprtw]\w+)\b", re.I): r"\1 hes\2",
+ re.compile(r"(\d):(\d\d[snrt][tdh])", re.I): r"\1 \2",
+ re.compile(r"h'([bdfjkpstvx']+)'([rtv][aeiou]?)", re.I): r"h \1 \2",
+ re.compile(r"(re|un|non|anti)cosp", re.I): r"\1kosp",
+ re.compile(r"(anti|non|re|un)caesure", re.I): r"\1ceasure",
+ re.compile(r"(EUR[A-Z]+)(\d+)", re.I): r"\1 \2",
+ re.compile(r"\b(|\d+|\W+)?t+z[s]che", re.I): r"\1tz sche"
 }
 
 english_fixes = {
