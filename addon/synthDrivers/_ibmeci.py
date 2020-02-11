@@ -113,14 +113,14 @@ class EciThread(threading.Thread):
 		dll.eciRegisterCallback(handle, callback, None)
 		dll.eciSetOutputBuffer(handle, samples, pointer(buffer))
 		dll.eciSetParam(handle, ECIParam.eciInputType, 1)
-		dll.eciSetParam(handle, ECIParam.eciDictionary, 1) #dictionary off
+		dll.eciSetParam(handle, ECIParam.eciDictionary, 1) #dictionary on
 		self.dictionaryHandle = dll.eciNewDict(handle)
 		dll.eciSetDict(handle, self.dictionaryHandle)
 		#0 = main dictionary
-		if path.exists(path.join(ttsPath, "main.dic")):
-			dll.eciLoadDict(handle, self.dictionaryHandle, 0, path.join(ttsPath, "main.dic"))
-		if path.exists(path.join(ttsPath, "root.dic")):
-			dll.eciLoadDict(handle, self.dictionaryHandle, 1, path.join(ttsPath, "root.dic"))
+		if path.exists(path.join(path.abspath(ttsPath), "main.dic")):
+			dll.eciLoadDict(handle, self.dictionaryHandle, 0, path.join(path.abspath(ttsPath), "main.dic").encode('mbcs'))
+		if path.exists(path.join(path.abspath(ttsPath), "root.dic")):
+			dll.eciLoadDict(handle, self.dictionaryHandle, 1, path.join(path.abspath(ttsPath), "root.dic").encode('mbcs'))
 		params[ECIParam.eciLanguageDialect] = dll.eciGetParam(handle, ECIParam.eciLanguageDialect)
 		started.set()
 		while True:
