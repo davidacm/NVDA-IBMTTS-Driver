@@ -187,7 +187,7 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 			text = text.replace('quil', 'qil') #Sometimes this string make everything buggy with IBMTTS in French
 		if self._backquoteVoiceTags:
 			#this converts to ansi for anticrash. If this breaks with foreign langs, we can remove it.
-			text = text.replace('`', ' ').encode('mbcs', 'replace') #no embedded commands
+			text = text.encode('mbcs', 'replace')
 			text = b"`pp0 `vv%d %s" % (_ibmeci.getVParam(ECIVoiceParam.eciVolume), text)
 			text = resub(anticrash_res, text)
 		else:
