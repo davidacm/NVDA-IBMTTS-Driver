@@ -225,7 +225,8 @@ def setLast(lp):
 	onIndexReached(lp)
 
 def bgPlay(stri):
-	if len(stri) == 0: return
+	global player
+	if not player or len(stri) == 0: return
 	# Sometimes player.feed() tries to open the device when it's already open,
 	# causing a WindowsError. This code catches and works around this.
 	# [DGL, 2012-12-18 with help from Tyler]
@@ -236,6 +237,10 @@ def bgPlay(stri):
 			if tries > 0:
 				log.warning("Eloq speech retries: %d" % (tries))
 			return
+		except FileNotFoundError:
+			# reset the player if the used soundcard is not present. E.G. the total number of sound devices has changed.
+			player.close()
+			player = nvwave.WavePlayer(1, 11025, 16, outputDevice=config.conf["speech"]["outputDevice"])
 		except:
 			player.idle()
 			time.sleep(0.02)
