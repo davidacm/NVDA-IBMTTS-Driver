@@ -16,6 +16,7 @@ addonHandler.initTranslation()
 try: # for python 2.7
 	unicode
 	from synthDriverHandler import BooleanSynthSetting as BooleanDriverSetting,NumericSynthSetting as NumericDriverSetting
+	
 	class synthIndexReached:
 		@classmethod
 		def notify (cls, synth=None, index=None): pass
@@ -172,9 +173,14 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 				outlist.append((_ibmeci.setProsodyParam, (self.PROSODY_ATTRS[type(item)], val)))
 			else:
 				log.error("Unknown speech: %s"%item)
-		if last is not None and last.rstrip()[-1] not in punctuation: outlist.append((_ibmeci.speak, (b'`p1. ',)))
+		if last is not None and last[-1] not in punctuation:
+			# check if a pitch command is at the end of the list, because p1 need to be send before this.
+			# index -2 is because -1 always seem to be an index command.
+			if outlist[-2][0] == _ibmeci.setProsodyParam: outlist.insert(-2, (_ibmeci.speak, (b'`p1. ',)))
+			else: outlist.append((_ibmeci.speak, (b'`p1. ',)))
 		outlist.append((_ibmeci.setEndStringMark, ()))
 		outlist.append((_ibmeci.synth, ()))
+		#print(outlist)
 		_ibmeci.eciQueue.put(outlist)
 		_ibmeci.process()
 
