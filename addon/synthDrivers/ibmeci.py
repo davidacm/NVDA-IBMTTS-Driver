@@ -104,7 +104,8 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 		NumericDriverSetting("hsz", _("Head Size"), False),
 		NumericDriverSetting("rgh", _("Roughness"), False),
 		NumericDriverSetting("bth", _("Breathiness"), False),
-		BooleanDriverSetting("backquoteVoiceTags", _("Enable backquote voice &tags"), False))
+		BooleanDriverSetting("backquoteVoiceTags", _("Enable backquote voice &tags"), False),
+		BooleanDriverSetting("ABRDICT","Enable &abbreviation dictionary", False))
 	supportedCommands = {
 		speech.IndexCommand,
 		speech.CharacterModeCommand,
@@ -203,8 +204,11 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 			text = b"`pp0 `vv%d %s" % (_ibmeci.getVParam(ECIVoiceParam.eciVolume), text.replace(b'`', b' ')) #no embedded commands
 		text = pause_re.sub(br'\1 `p1\2\3', text)
 		text = time_re.sub(br'\1:\2 \3', text)
+		if self._ABRDICT:
+			text=b"`da1 "+text
+		else:
+			text=b"`da0 "+text
 		return text
-
 	def pause(self,switch):
 		_ibmeci.pause(switch)
 
@@ -212,6 +216,7 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 		_ibmeci.terminate()
 
 	_backquoteVoiceTags=False
+	_ABRDICT=False
 	def _get_backquoteVoiceTags(self):
 		return self._backquoteVoiceTags
 
@@ -219,7 +224,12 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 		if enable == self._backquoteVoiceTags:
 			return
 		self._backquoteVoiceTags = enable
-
+	def _get_ABRDICT(self):
+		return self._ABRDICT
+	def _set_ABRDICT(self, enable):
+		if enable == self._ABRDICT:
+			return
+		self._ABRDICT = enable
 	_rateBoost = False
 	RATE_BOOST_MULTIPLIER = 1.6
 	def _get_rateBoost(self):
