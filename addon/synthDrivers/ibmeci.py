@@ -105,8 +105,9 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 		NumericDriverSetting("rgh", _("Roughness"), False),
 		NumericDriverSetting("bth", _("Breathiness"), False),
 		BooleanDriverSetting("backquoteVoiceTags", _("Enable backquote voice &tags"), False),
-		BooleanDriverSetting("ABRDICT","Enable &abbreviation dictionary", False),
-		BooleanDriverSetting("phrasePrediction","Enable Phrase Prediction", False))
+		BooleanDriverSetting("ABRDICT", _("Enable &abbreviation dictionary"), False),
+		BooleanDriverSetting("phrasePrediction", _("Enable Phrase Prediction"), False),
+		BooleanDriverSetting("shortpause", _("&Shorten Pauses"), False))
 	supportedCommands = {
 		speech.IndexCommand,
 		speech.CharacterModeCommand,
@@ -190,32 +191,29 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 
 	def processText(self,text):
 		text = text.rstrip()
+		#this converts to ansi for anticrash. If this breaks with foreign langs, we can remove it.
+		text = text.encode(self.currentEncoding, 'replace') # special unicode symbols may encode to backquote. For this reason, backquote processing is after this.
 		if _ibmeci.params[9] in (65536, 65537): text = resub(english_fixes, text)
 		if _ibmeci.params[9] in (131072,  131073): text = resub(spanish_fixes, text)
 		if _ibmeci.params[9] in (196609, 196608):
 			text = resub(french_fixes, text)
 			text = text.replace('quil', 'qil') #Sometimes this string make everything buggy with IBMTTS in French
-		if self._backquoteVoiceTags:
-			#this converts to ansi for anticrash. If this breaks with foreign langs, we can remove it.
-			text = text.encode(self.currentEncoding, 'replace') #pass through reverse prime and standard grave
-			text = b"`vv%d %s" % (_ibmeci.getVParam(ECIVoiceParam.eciVolume), text)
-			text = resub(anticrash_res, text)
-		else:
-			#this converts to ansi for anticrash. If this breaks with foreign langs, we can remove it.
-			text = text.encode(self.currentEncoding, 'replace')
-			text = resub(anticrash_res, text)
-			text = b"`vv%d %s" % (_ibmeci.getVParam(ECIVoiceParam.eciVolume), text.replace(b'`', b' ')) #no embedded commands
-		text=b"`vs%d %s" %(_ibmeci.getVParam(ECIVoiceParam.eciSpeed), text) #force send rate with every call, this might fix the rate problem.
-		#text = pause_re.sub(br'\1 `p0\2\3', text)
-		text = time_re.sub(br'\1:\2 \3', text)
+		if not self._backquoteVoiceTags:
+			text=text.replace('`', ' ') # no embedded commands
+		text = resub(anticrash_res, text)
+		if self._shortpause:
+			text = pause_re.sub(br'\1 `p0\2\3', text) # this enforces short, JAWS-like pauses.
+		text = time_re.sub(br'\1:\2 \3', text) # apparently if this isn't done strings like 2:30:15 will only announce 2:30
+		embeds=b''
 		if self._ABRDICT:
-			text=b"`da1 "+text
+			embeds+=b"`da1 "
 		else:
-			text=b"`da0 "+text
+			embeds+=b"`da0 "
 		if self._phrasePrediction:
-			text=b"`pp1 "+text
+			embeds+=b"`pp1 "
 		else:
-			text=b"`pp0 "+text
+			embeds+=b"`pp0 "
+		text = b"`vv%d `vs%d %s %s" % (_ibmeci.getVParam(ECIVoiceParam.eciVolume), _ibmeci.getVParam(ECIVoiceParam.eciSpeed), embeds.rstrip(), text) # bring all the printf stuff into one call, in one string. This avoids all the concatonation and printf additions of the previous organization.
 		return text
 	def pause(self,switch):
 		_ibmeci.pause(switch)
@@ -226,6 +224,7 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 	_backquoteVoiceTags=False
 	_ABRDICT=False
 	_phrasePrediction=False
+	_shortpause=False
 	def _get_backquoteVoiceTags(self):
 		return self._backquoteVoiceTags
 
@@ -245,7 +244,13 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 		if enable == self._phrasePrediction:
 			return
 		self._phrasePrediction = enable
-	_rateBoost = False
+	def _get_shortpause(self):
+		return self._shortpause
+	def _set_shortpause(self, enable):
+		if enable == self._shortpause:
+			return
+		self._shortpause = enable
+_rateBoost = False
 	RATE_BOOST_MULTIPLIER = 1.6
 	def _get_rateBoost(self):
 		return self._rateBoost
