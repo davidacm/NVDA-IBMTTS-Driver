@@ -199,7 +199,7 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 		#this converts to ansi for anticrash. If this breaks with foreign langs, we can remove it.
 		text = text.encode(self.currentEncoding, 'replace') # special unicode symbols may encode to backquote. For this reason, backquote processing is after this.
 		if not self._backquoteVoiceTags:
-			text=text.replace('`', ' ') # no embedded commands
+			text=text.replace(b'`', b' ') # no embedded commands
 		text = resub(anticrash_res, text)
 		if self._shortpause:
 			text = pause_re.sub(br'\1 `p0\2\3', text) # this enforces short, JAWS-like pauses.
