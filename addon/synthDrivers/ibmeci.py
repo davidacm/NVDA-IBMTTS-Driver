@@ -106,7 +106,7 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 		NumericDriverSetting("bth", _("Breathiness"), False),
 		BooleanDriverSetting("backquoteVoiceTags", _("Enable backquote voice &tags"), False),
 		BooleanDriverSetting("ABRDICT","Enable &abbreviation dictionary", False),
-		BooleanDriverSetting("phrasePrediction","Enable phrase prediction", False))
+		BooleanDriverSetting("phrasePrediction","Enable Phrase Prediction", False))
 	supportedCommands = {
 		speech.IndexCommand,
 		speech.CharacterModeCommand,
