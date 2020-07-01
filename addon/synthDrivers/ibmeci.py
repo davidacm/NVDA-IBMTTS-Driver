@@ -250,7 +250,7 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 		if enable == self._shortpause:
 			return
 		self._shortpause = enable
-_rateBoost = False
+	_rateBoost = False
 	RATE_BOOST_MULTIPLIER = 1.6
 	def _get_rateBoost(self):
 		return self._rateBoost
