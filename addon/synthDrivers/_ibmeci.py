@@ -116,10 +116,12 @@ class EciThread(threading.Thread):
 		self.dictionaryHandle = dll.eciNewDict(handle)
 		dll.eciSetDict(handle, self.dictionaryHandle)
 		#0 = main dictionary
-		if path.exists(path.join(path.abspath(ttsPath), "main.dic")):
-			dll.eciLoadDict(handle, self.dictionaryHandle, 0, path.join(path.abspath(ttsPath), "main.dic").encode('mbcs'))
-		if path.exists(path.join(path.abspath(ttsPath), "root.dic")):
-			dll.eciLoadDict(handle, self.dictionaryHandle, 1, path.join(path.abspath(ttsPath), "root.dic").encode('mbcs'))
+		if path.exists(path.join(path.abspath(ttsPath), "enumain.dic")):
+			dll.eciLoadDict(handle, self.dictionaryHandle, 0, path.join(path.abspath(ttsPath), "enumain.dic").encode('mbcs'))
+		if path.exists(path.join(path.abspath(ttsPath), "enuroot.dic")):
+			dll.eciLoadDict(handle, self.dictionaryHandle, 1, path.join(path.abspath(ttsPath), "enuroot.dic").encode('mbcs'))
+		if path.exists(path.join(path.abspath(ttsPath), "enuabbr.dic")):
+			dll.eciLoadDict(handle, self.dictionaryHandle, 2, path.join(path.abspath(ttsPath), "enuabbr.dic").encode('mbcs'))
 		params[ECIParam.eciLanguageDialect] = dll.eciGetParam(handle, ECIParam.eciLanguageDialect)
 		started.set()
 		while True:
