@@ -105,7 +105,8 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 		NumericDriverSetting("rgh", _("Roughness"), False),
 		NumericDriverSetting("bth", _("Breathiness"), False),
 		BooleanDriverSetting("backquoteVoiceTags", _("Enable backquote voice &tags"), False),
-		BooleanDriverSetting("ABRDICT","Enable &abbreviation dictionary", False))
+		BooleanDriverSetting("ABRDICT","Enable &abbreviation dictionary", False),
+		BooleanDriverSetting("phrasePrediction","Enable Phrase Prediction", False))
 	supportedCommands = {
 		speech.IndexCommand,
 		speech.CharacterModeCommand,
@@ -197,13 +198,13 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 		if self._backquoteVoiceTags:
 			#this converts to ansi for anticrash. If this breaks with foreign langs, we can remove it.
 			text = text.encode(self.currentEncoding, 'replace') #pass through reverse prime and standard grave
-			text = b"`pp0 `vv%d %s" % (_ibmeci.getVParam(ECIVoiceParam.eciVolume), text)
+			text = b"`vv%d %s" % (_ibmeci.getVParam(ECIVoiceParam.eciVolume), text)
 			text = resub(anticrash_res, text)
 		else:
 			#this converts to ansi for anticrash. If this breaks with foreign langs, we can remove it.
 			text = text.encode(self.currentEncoding, 'replace')
 			text = resub(anticrash_res, text)
-			text = b"`pp0 `vv%d %s" % (_ibmeci.getVParam(ECIVoiceParam.eciVolume), text.replace(b'`', b' ')) #no embedded commands
+			text = b"`vv%d %s" % (_ibmeci.getVParam(ECIVoiceParam.eciVolume), text.replace(b'`', b' ')) #no embedded commands
 		text=b"`vs%d %s" %(_ibmeci.getVParam(ECIVoiceParam.eciSpeed), text) #force send rate with every call, this might fix the rate problem.
 		#text = pause_re.sub(br'\1 `p0\2\3', text)
 		text = time_re.sub(br'\1:\2 \3', text)
@@ -211,6 +212,10 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 			text=b"`da1 "+text
 		else:
 			text=b"`da0 "+text
+		if self._phrasePrediction:
+			text=b"`pp1 "+text
+		else:
+			text=b"`pp0 "+text
 		return text
 	def pause(self,switch):
 		_ibmeci.pause(switch)
@@ -220,6 +225,7 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 
 	_backquoteVoiceTags=False
 	_ABRDICT=False
+	_phrasePrediction=False
 	def _get_backquoteVoiceTags(self):
 		return self._backquoteVoiceTags
 
@@ -233,6 +239,12 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 		if enable == self._ABRDICT:
 			return
 		self._ABRDICT = enable
+	def _get_phrasePrediction(self):
+		return self._phrasePrediction
+	def _set_phrasePrediction(self, enable):
+		if enable == self._phrasePrediction:
+			return
+		self._phrasePrediction = enable
 	_rateBoost = False
 	RATE_BOOST_MULTIPLIER = 1.6
 	def _get_rateBoost(self):
