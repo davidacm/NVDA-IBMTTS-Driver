@@ -118,15 +118,15 @@ class EciThread(threading.Thread):
 		#0 = main dictionary
 		if path.exists(path.join(path.abspath(ttsPath), "enumain.dic")):
 			dll.eciLoadDict(handle, self.dictionaryHandle, 0, path.join(path.abspath(ttsPath), "enumain.dic").encode('mbcs'))
+		elif path.exists(path.join(path.abspath(ttsPath), "main.dic")):
+			dll.eciLoadDict(handle, self.dictionaryHandle, 0, path.join(path.abspath(ttsPath), "main.dic").encode('mbcs'))
 		if path.exists(path.join(path.abspath(ttsPath), "enuroot.dic")):
 			dll.eciLoadDict(handle, self.dictionaryHandle, 1, path.join(path.abspath(ttsPath), "enuroot.dic").encode('mbcs'))
+		elif path.exists(path.join(path.abspath(ttsPath), "root.dic")):
+			dll.eciLoadDict(handle, self.dictionaryHandle, 1, path.join(path.abspath(ttsPath), "root.dic").encode('mbcs'))
 		if path.exists(path.join(path.abspath(ttsPath), "enuabbr.dic")):
 			dll.eciLoadDict(handle, self.dictionaryHandle, 2, path.join(path.abspath(ttsPath), "enuabbr.dic").encode('mbcs'))
-		if not path.exists(path.join(path.abspath(ttsPath), "enumain.dic")):
-			dll.eciLoadDict(handle, self.dictionaryHandle, 0, path.join(path.abspath(ttsPath), "main.dic").encode('mbcs'))
-		if not path.exists(path.join(path.abspath(ttsPath), "enuroot.dic")):
-			dll.eciLoadDict(handle, self.dictionaryHandle, 1, path.join(path.abspath(ttsPath), "root.dic").encode('mbcs'))
-		if not path.exists(path.join(path.abspath(ttsPath), "enuabbr.dic")):
+		elif path.exists(path.join(path.abspath(ttsPath), "abbr.dic")):
 			dll.eciLoadDict(handle, self.dictionaryHandle, 2, path.join(path.abspath(ttsPath), "abbr.dic").encode('mbcs'))
 		params[ECIParam.eciLanguageDialect] = dll.eciGetParam(handle, ECIParam.eciLanguageDialect)
 		started.set()
