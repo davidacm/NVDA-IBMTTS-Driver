@@ -191,13 +191,13 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 
 	def processText(self,text):
 		text = text.rstrip()
-		#this converts to ansi for anticrash. If this breaks with foreign langs, we can remove it.
-		text = text.encode(self.currentEncoding, 'replace') # special unicode symbols may encode to backquote. For this reason, backquote processing is after this.
 		if _ibmeci.params[9] in (65536, 65537): text = resub(english_fixes, text)
 		if _ibmeci.params[9] in (131072,  131073): text = resub(spanish_fixes, text)
 		if _ibmeci.params[9] in (196609, 196608):
 			text = resub(french_fixes, text)
 			text = text.replace('quil', 'qil') #Sometimes this string make everything buggy with IBMTTS in French
+		#this converts to ansi for anticrash. If this breaks with foreign langs, we can remove it.
+		text = text.encode(self.currentEncoding, 'replace') # special unicode symbols may encode to backquote. For this reason, backquote processing is after this.
 		if not self._backquoteVoiceTags:
 			text=text.replace('`', ' ') # no embedded commands
 		text = resub(anticrash_res, text)
