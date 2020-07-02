@@ -1,4 +1,4 @@
-http://www.wizzardsoftware.com/docs/tts.pdf
+http://web.archive.org/web/20191125091344/http://www.wizzardsoftware.com/docs/tts.pdf
 
 IBM Text-to-Speech
 API Reference
