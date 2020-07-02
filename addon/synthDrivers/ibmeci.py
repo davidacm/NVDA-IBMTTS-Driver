@@ -33,7 +33,7 @@ pause_re = re.compile(br'([a-zA-Z0-9])([%s])( |$)' %punctuation)
 time_re = re.compile(br"(\d):(\d+):(\d+)")
 
 anticrash_res = {
-	re.compile(br'\b(|\d+|\W+)?(\w+)c(ae|\xe6)sur(e)?', re.I): br'\1\2seizur',
+	re.compile(br'\b(.*?)c(ae|\xe6)sur(e)?', re.I): br'\1seizur',
 	re.compile(br"\b(|\d+|\W+)h'(r|v)[e]", re.I): br"\1h ' \2 e",
 	re.compile(br"\b(\w+[bdflmnrvzqh])(h[he]s)([bcdfgjklmnoprstw]\w+)\b", re.I): r"\1 \2\3",
 	re.compile(br"(\d):(\d\d[snrt][tdh])", re.I): br"\1 \2",
