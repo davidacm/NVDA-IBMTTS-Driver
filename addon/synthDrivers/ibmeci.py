@@ -200,7 +200,7 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 		if _ibmeci.params[9] in (196609, 196608):
 			text = resub(french_fixes, text)
 			text = text.replace('quil', 'qil') #Sometimes this string make everything buggy with IBMTTS in French
-		if  _ibmeci.params[9] in ('deu',262144):
+		if  _ibmeci.params[9] in ('deu', 262144):
 			text = resub(german_fixes, text)
 		#this converts to ansi for anticrash. If this breaks with foreign langs, we can remove it.
 		text = text.encode(self.currentEncoding, 'replace') # special unicode symbols may encode to backquote. For this reason, backquote processing is after this.
