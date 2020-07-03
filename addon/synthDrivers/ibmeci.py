@@ -56,6 +56,10 @@ spanish_fixes = {
 	re.compile(r'([a-zA-Z0-9_]+)@(\w+)'): r'\1 arroba \2',
 	re.compile(u'([€$]\d{1,3})((\s\d{3})+\.\d{2})'): r'\1 \2',
 }
+german_fixes = {
+	re.compile(r'dane-ben', re.I): r'dane- ben',
+	re.compile(r'dage-gen', re.I): r'dage- gen',
+}
 
 variants = {
 	1:"Reed",
@@ -196,6 +200,8 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 		if _ibmeci.params[9] in (196609, 196608):
 			text = resub(french_fixes, text)
 			text = text.replace('quil', 'qil') #Sometimes this string make everything buggy with IBMTTS in French
+		if  _ibmeci.params[9] in ('deu',262144):
+			text = resub(german_fixes, text)
 		#this converts to ansi for anticrash. If this breaks with foreign langs, we can remove it.
 		text = text.encode(self.currentEncoding, 'replace') # special unicode symbols may encode to backquote. For this reason, backquote processing is after this.
 		if not self._backquoteVoiceTags:
