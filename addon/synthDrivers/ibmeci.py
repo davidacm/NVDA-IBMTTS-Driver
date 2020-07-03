@@ -57,6 +57,7 @@ spanish_fixes = {
 	re.compile(u'([€$]\d{1,3})((\s\d{3})+\.\d{2})'): r'\1 \2',
 }
 german_fixes = {
+# Crash words.
 	re.compile(r'dane-ben', re.I): r'dane- ben',
 	re.compile(r'dage-gen', re.I): r'dage- gen',
 }
