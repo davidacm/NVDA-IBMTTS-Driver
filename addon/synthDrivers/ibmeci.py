@@ -27,7 +27,7 @@ except:
 	def unicode(s): return s
 
 minRate=40
-maxRate=156
+maxRate=150
 punctuation = b"-,.:;)(?!"
 pause_re = re.compile(br'([a-zA-Z0-9])([%s])( |$)' %punctuation)
 time_re = re.compile(br"(\d):(\d+):(\d+)")
@@ -37,7 +37,7 @@ anticrash_res = {
 	re.compile(br"\b(|\d+|\W+)h'(r|v)[e]", re.I): br"\1h ' \2 e",
 	re.compile(br"\b(\w+[bdflmnrvzqh])(h[he]s)([bcdfgjklmnoprstw]\w+)\b", re.I): br"\1 \2\3",
 	re.compile(br"(\d):(\d\d[snrt][tdh])", re.I): br"\1 \2",
-	re.compile(br"([bcdfghjklmnpstvwxz])'([bcdfghjklmnpstvwxz']+)'([rtv][aeiou]?)", re.I): br"\1 \2 \3",
+	re.compile(br"\b([bcdfghjklmnpstvwxz]+)'([bcdfghjklmnpstvwxz']+)'([rtv][aeiou]?)", re.I): br"\1 \2 \3",
 	re.compile(br"(re|un|non|anti)cosp", re.I): br"\1kosp",
 	#re.compile(br"(anti|non|re|un|ultra|mis|cyber|over|under)caesure", re.I): r"\1ceasure",
 	re.compile(br"(EUR[A-Z]+)(\d+)", re.I): br"\1 \2",
@@ -186,8 +186,10 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 		if last is not None and last[-1] not in punctuation:
 			# check if a pitch command is at the end of the list, because p1 need to be send before this.
 			# index -2 is because -1 always seem to be an index command.
-			if outlist[-2][0] == _ibmeci.setProsodyParam: outlist.insert(-2, (_ibmeci.speak, (b'`p1. ',)))
-			else: outlist.append((_ibmeci.speak, (b'`p1. ',)))
+			pstr=b'. '
+			if self._shortpause: pstr=b'`p1. '
+			if outlist[-2][0] == _ibmeci.setProsodyParam: outlist.insert(-2, (_ibmeci.speak, (pstr,)))
+			else: outlist.append((_ibmeci.speak, (pstr,)))
 		outlist.append((_ibmeci.setEndStringMark, ()))
 		outlist.append((_ibmeci.synth, ()))
 		#print(outlist)
