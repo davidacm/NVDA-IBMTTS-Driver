@@ -41,7 +41,7 @@ anticrash_res = {
 	re.compile(br"(re|un|non|anti)cosp", re.I): br"\1kosp",
 	#re.compile(br"(anti|non|re|un|ultra|mis|cyber|over|under)caesure", re.I): r"\1ceasure",
 	re.compile(br"(EUR[A-Z]+)(\d+)", re.I): br"\1 \2",
-	re.compile(br"\b(\d+|\W+|[A-Z]+)?t+z[s]che", re.I): r"\1tz sche"
+	re.compile(br"\b(\d+|\W+|[bcdfghjklmnpqrstvwxz]+)?t+z[s]che", re.I): br"\1tz sche"
 	}
 
 english_fixes = {
