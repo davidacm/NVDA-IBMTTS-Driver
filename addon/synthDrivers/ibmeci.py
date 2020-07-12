@@ -42,7 +42,7 @@ anticrash_res = {
 	#re.compile(br"(anti|non|re|un|ultra|mis|cyber|over|under)caesure", re.I): r"\1ceasure",
 	re.compile(br"(EUR[A-Z]+)(\d+)", re.I): br"\1 \2",
 	re.compile(br"\b(\d+|\W+|[bcdfghjklmnpqrstvwxz]+)?t+z[s]che", re.I): br"\1tz sche",
-	re.compile(br"(juaras|juaros|juarus|juares)a", re.I): br"\1 a"
+	re.compile(br"\b(juar[aeou]s)([aeiou]{6,})", re.I): br"\1 \2"
 	}
 
 english_fixes = {
