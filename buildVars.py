@@ -19,11 +19,11 @@ addon_info = {
 	# Translators: Long description to be shown for this add-on on add-on information from add-ons manager
 	"addon_description" : _("""This is the IBMTTS synthesizer driver for NVDA."""),
 	# version
-	"addon_version" : "20.07.2-x0_personal",
+	"addon_version" : "20.08-x0_personal",
 	# Author(s)
-	"addon_author" : u"David CM <dhf360@gmail.com> and others",
+	"addon_author" : u"David CM <dhf360@gmail.com>, x0 and others",
 	# URL for the add-on documentation support
-	"addon_url" : "https://github.com/david-acm/NVDA-IBMTTS-Driver",
+	"addon_url" : "https://github.com/ultrasound1372/NVDA-IBMTTS-Driver",
 	# Documentation file name
 	"addon_docFileName" : "readme.html",
 	# Minimum NVDA version supported (e.g. "2018.3.0")
