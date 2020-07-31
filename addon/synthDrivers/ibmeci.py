@@ -38,6 +38,7 @@ anticrash_res = {
 	re.compile(br"\b(\w+[bdfhjlmnqrvz])(h[he]s)([abcdfghjklmnoprstvw]\w+)\b", re.I): br"\1 \2\3",
 	re.compile(br"(\d):(\d\d[snrt][tdh])", re.I): br"\1 \2",
 	re.compile(br"\b([bcdfghjklmnpstvwxz]+)'([bcdefghjklmnpstvwxz']+)'([rtv][aeiou]?)", re.I): br"\1 \2 \3",
+	re.compile(br"\b(you+)'(re)+'([rv]e)", re.I): br"\1 \2 \3",
 	re.compile(br"(re|un|non|anti)cosp", re.I): br"\1kosp",
 	#re.compile(br"(anti|non|re|un|ultra|mis|cyber|over|under)caesure", re.I): r"\1ceasure",
 	re.compile(br"(EUR[A-Z]+)(\d+)", re.I): br"\1 \2",
