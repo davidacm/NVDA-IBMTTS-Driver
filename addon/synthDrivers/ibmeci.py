@@ -63,6 +63,7 @@ german_fixes = {
 	re.compile(r'dage-gen', re.I): r'dage- gen',
 }
 
+# fixme: These are only the variant names for enu. Does ECI have a way to obtain names for other languages?
 variants = {
 	1:"Reed",
 	2:"Shelley",

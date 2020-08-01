@@ -113,22 +113,20 @@ class EciThread(threading.Thread):
 		dll.eciRegisterCallback(handle, callback, None)
 		dll.eciSetOutputBuffer(handle, samples, pointer(buffer))
 		dll.eciSetParam(handle, ECIParam.eciInputType, 1)
+		params[ECIParam.eciLanguageDialect] = dll.eciGetParam(handle, ECIParam.eciLanguageDialect)
 		self.dictionaryHandle = dll.eciNewDict(handle)
 		dll.eciSetDict(handle, self.dictionaryHandle)
-		#0 = main dictionary
-		if path.exists(path.join(path.abspath(ttsPath), "enumain.dic")):
-			dll.eciLoadDict(handle, self.dictionaryHandle, 0, path.join(path.abspath(ttsPath), "enumain.dic").encode('mbcs'))
-		elif path.exists(path.join(path.abspath(ttsPath), "main.dic")):
-			dll.eciLoadDict(handle, self.dictionaryHandle, 0, path.join(path.abspath(ttsPath), "main.dic").encode('mbcs'))
-		if path.exists(path.join(path.abspath(ttsPath), "enuroot.dic")):
-			dll.eciLoadDict(handle, self.dictionaryHandle, 1, path.join(path.abspath(ttsPath), "enuroot.dic").encode('mbcs'))
-		elif path.exists(path.join(path.abspath(ttsPath), "root.dic")):
-			dll.eciLoadDict(handle, self.dictionaryHandle, 1, path.join(path.abspath(ttsPath), "root.dic").encode('mbcs'))
-		if path.exists(path.join(path.abspath(ttsPath), "enuabbr.dic")):
-			dll.eciLoadDict(handle, self.dictionaryHandle, 2, path.join(path.abspath(ttsPath), "enuabbr.dic").encode('mbcs'))
-		elif path.exists(path.join(path.abspath(ttsPath), "abbr.dic")):
-			dll.eciLoadDict(handle, self.dictionaryHandle, 2, path.join(path.abspath(ttsPath), "abbr.dic").encode('mbcs'))
-		params[ECIParam.eciLanguageDialect] = dll.eciGetParam(handle, ECIParam.eciLanguageDialect)
+		# loading of root.dic/main.dic/abbr.dic officially removed as of 20.08-x0_personal, to make room for other languages' dictionaries.
+		# fixme: Doesn't even check for mainext.
+		# fixme: Only attempts to load a language correspondant dictionary on synth initialization. Clarification on API is needed to see if we can maintain multiple dictionary handles, plus iteration and loading of multiple dicts for multiple languages.
+		# obtain the identifier string used to prefix dictionary files to separate them for different languages
+		langid=getLangByEciId(params[ECIParam.eciLanguageDialect])
+		if path.exists(path.join(path.abspath(ttsPath), langid+"main.dic")):
+			dll.eciLoadDict(handle, self.dictionaryHandle, 0, path.join(path.abspath(ttsPath), langid+"main.dic").encode('mbcs'))
+		if path.exists(path.join(path.abspath(ttsPath), langid+"root.dic")):
+			dll.eciLoadDict(handle, self.dictionaryHandle, 1, path.join(path.abspath(ttsPath), langid+"root.dic").encode('mbcs'))
+		if path.exists(path.join(path.abspath(ttsPath), langid+"abbr.dic")):
+			dll.eciLoadDict(handle, self.dictionaryHandle, 2, path.join(path.abspath(ttsPath), langid+"abbr.dic").encode('mbcs'))
 		started.set()
 		while True:
 			user32.GetMessageA(byref(msg), 0, 0, 0)
@@ -404,6 +402,16 @@ def getVoiceByLanguage(lang):
 		elif v[3] == lang:
 			return v
 	return langs['enu']
+
+def getLangByEciId(eciId):
+	""" Return the corresponding lang code in the format ECI expects given its internal identifying numbers for each.
+	@param eciId The numeric ECI identifier of a given language, such as 65536 for enu
+	@return the three letter language code if valid, else 'enu'
+	"""
+	for k,v in langs.items():
+		if v[0]==eciId:
+			return k
+	return 'enu'
 
 def endStringEvent():
 	global idleTimer, speaking, endMarkersCount
