@@ -29,7 +29,7 @@ except:
 minRate=40
 maxRate=150
 punctuation = b"-,.:;)(?!\x96\x97"
-pause_re = re.compile(br'([a-zA-Z0-9 ])([%s])(\s|$)' %punctuation)
+pause_re = re.compile(br'([a-zA-Z0-9]|\s)([%s])(\2*?)(\s|$)' %punctuation)
 time_re = re.compile(br"(\d):(\d+):(\d+)")
 
 anticrash_res = {
@@ -210,7 +210,7 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 			text=text.replace(b'`', b' ') # no embedded commands
 		text = resub(anticrash_res, text)
 		if self._shortpause:
-			text = pause_re.sub(br'\1 `p1\2\3', text) # this enforces short, JAWS-like pauses.
+			text = pause_re.sub(br'\1`p1\2\3\4', text) # this enforces short, JAWS-like pauses.
 		text = time_re.sub(br'\1:\2 \3', text) # apparently if this isn't done strings like 2:30:15 will only announce 2:30
 		embeds=b''
 		if self._ABRDICT:
