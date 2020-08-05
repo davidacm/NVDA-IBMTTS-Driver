@@ -160,8 +160,6 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 		for item in speechSequence:
 			if isinstance(item, string_types):
 				s = self.processText(unicode(item))
-				log.debug(f"input text: {item}")
-				log.debug(f"output text: {s}")
 				outlist.append((_ibmeci.speak, (s,)))
 				last = s
 			elif isinstance(item,speech.IndexCommand):
