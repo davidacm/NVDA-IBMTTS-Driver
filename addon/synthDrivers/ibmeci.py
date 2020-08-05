@@ -160,6 +160,8 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 		for item in speechSequence:
 			if isinstance(item, string_types):
 				s = self.processText(unicode(item))
+				log.debug(f"input text: {item}")
+				log.debug(f"output text: {s}")
 				outlist.append((_ibmeci.speak, (s,)))
 				last = s
 			elif isinstance(item,speech.IndexCommand):
@@ -212,7 +214,7 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 			text=text.replace(b'`', b' ') # no embedded commands
 		text = resub(anticrash_res, text)
 		if self._shortpause:
-			text = pause_re.sub(br'\1`p1\2\3\4', text) # this enforces short, JAWS-like pauses.
+			text = pause_re.sub(br'\1 `p1\2\3\4', text) # this enforces short, JAWS-like pauses.
 		text = time_re.sub(br'\1:\2 \3', text) # apparently if this isn't done strings like 2:30:15 will only announce 2:30
 		embeds=b''
 		if self._ABRDICT:

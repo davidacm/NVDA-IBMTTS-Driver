@@ -14,10 +14,11 @@ if not os.path.exists(os.path.join(os.path.dirname(__file__), 'synthDrivers', co
 	To do it open the NVDA settings dialog, select IBMTTS category and use the "Browse for  IBMTTS library" button to select the IBMTTS files folder.\n""")
 
 # Translators: message box when user is installing the addon in NVDA. 
-msg += _("""if you are using another copy of IBMTTS or similar with a different name, you should not load this driver in the same NVDA session. If you do it, NVDA will fail.
-To resolve it switch to another synthesizer (E.G espeak) then restart NVDA. Afther that, you can use this new driver.""")
+#msg += _("""if you are using another copy of IBMTTS or similar with a different name, you should not load this driver in the same NVDA session. If you do it, NVDA will fail.
+#To resolve it switch to another synthesizer (E.G espeak) then restart NVDA. Afther that, you can use this new driver.""")
 
 def onInstall():
-	gui.messageBox(msg,
-		# Translators: title of message box when user is installing NVDA
-		_("IBMTTS driver for NVDA"), wx.OK)
+	if msg!="":
+		gui.messageBox(msg,
+			# Translators: title of message box when user is installing NVDA
+			_("IBMTTS driver for NVDA"), wx.OK)
