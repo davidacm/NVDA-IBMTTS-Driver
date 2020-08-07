@@ -46,7 +46,7 @@ anticrash_res = {
 	re.compile(br"\b(juar[aeou]s)([aeiou]{6,})", re.I): br"\1 \2",
 #	Does not occur in normal use, however if a dictionary entry contains the Mc prefix, and NVDA splits it up, the synth will crash.
 #	Also fixes ViaVoice, as the parser is more strict there and doesn't like spaces in Mc names.
-	re.compile(br"\b(Mc)\s([A-Z])"): br"\1\2"
+	re.compile(br"\b(Mc) {0,}([A-Z])"): br"\1\2"
 	}
 
 english_fixes = {
