@@ -387,7 +387,7 @@ def process():
 		user32.PostThreadMessageA(eciThreadId, WM_PROCESS, 0, 0)
 
 def eciVersion():
-	ptr=b"              "
+	ptr=b"       "
 	dll.eciVersion(ptr)
 	return ptr
 
