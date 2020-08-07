@@ -44,7 +44,7 @@ anticrash_res = {
 	re.compile(br"(EUR[A-Z]+)(\d+)", re.I): br"\1 \2",
 	re.compile(br"\b(\d+|\W+|[bcdfghjklmnpqrstvwxz]+)?t+z[s]che", re.I): br"\1tz sche",
 	re.compile(br"\b(juar[aeou]s)([aeiou]{6,})", re.I): br"\1 \2",
-#	Does not occur in normal use, however if a dictionary entry contains the Mc prefix, and NVDA splits it up, the parser will crash.
+#	Does not occur in normal use, however if a dictionary entry contains the Mc prefix, and NVDA splits it up, the synth will crash.
 #	Also fixes ViaVoice, as the parser is more strict there and doesn't like spaces in Mc names.
 	re.compile(br"\b(Mc)\s([A-Z])"): br"\1\2"
 	}
