@@ -29,7 +29,7 @@ except:
 minRate=40
 maxRate=150
 punctuation = b"-,.:;)(?!\x96\x97"
-pause_re = re.compile(br'([a-zA-Z0-9]|\s)([%s])(\2*?)(\s|$)' %punctuation)
+pause_re = re.compile(br'([a-zA-Z0-9]|\s)([%s])(\2*?)(\s|[\\/]|$)' %punctuation)
 time_re = re.compile(br"(\d):(\d+):(\d+)")
 
 anticrash_res = {
