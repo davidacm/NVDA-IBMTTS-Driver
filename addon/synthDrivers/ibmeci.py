@@ -181,7 +181,34 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 			elif isinstance(item,speech.CharacterModeCommand):
 				outlist.append((_ibmeci.speak, (b"`ts1" if item.state else b"`ts0",)))
 			elif isinstance(item,speech.BreakCommand):
-				outlist.append((_ibmeci.speak, (b' `p%d ' %item.time*3,)))
+				# taken from eloquence_threshold (https://github.com/pumper42nickel/eloquence_threshold)
+				# Eloquence doesn't respect delay time in milliseconds.
+				# Therefore we need to adjust waiting time depending on current speech rate
+				# The following table of adjustments has been measured empirically
+				# Then we do linear approximation
+				coefficients = {
+						10:1,
+						43:2,
+						60:3,
+						75:4,
+						85:5,
+				}
+				ck = sorted(coefficients.keys())
+				if self.rate <= ck[0]:
+					factor = coefficients[ck[0]]
+				elif self.rate >= ck[-1]:
+					factor = coefficients[ck[-1]]
+				elif self.rate in ck:
+					factor = coefficients[self.rate]
+				else:
+					li = [index for index, r in enumerate(ck) if r<self.rate][-1]
+					ri = li + 1
+					ra = ck[li]
+					rb = ck[ri]
+					factor = 1.0 * coefficients[ra] + (coefficients[rb] - coefficients[ra]) * (self.rate - ra) / (rb-ra)
+				pFactor = factor*item.time
+				pFactor = int(pFactor)
+				outlist.append((_ibmeci.speak, (b' `p%d '%(pFactor),)))
 			elif type(item) in self.PROSODY_ATTRS:
 				val = max(0, min(item.newValue, 100))
 				if type(item) == speech.RateCommand: val = self.percentToRate(val)
