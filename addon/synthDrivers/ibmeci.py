@@ -42,15 +42,16 @@ anticrash_res = {
 	re.compile(br"(re|un|non|anti)cosp", re.I): br"\1kosp",
 	re.compile(br"(EUR[A-Z]+)(\d+)", re.I): br"\1 \2",
 	re.compile(br"\b(\d+|\W+|[bcdfghjklmnpqrstvwxz]+)?t+z[s]che", re.I): br"\1tz sche",
-	re.compile(br"\b(juar[aeou]s)([aeiou]{6,})", re.I): br"\1 \2",
-#	Does not occur in normal use, however if a dictionary entry contains the Mc prefix, and NVDA splits it up, the synth will crash.
-#	Also fixes ViaVoice, as the parser is more strict there and doesn't like spaces in Mc names.
-	re.compile(br"\b(Mc) {0,}([A-Z])"): br"\1\2"
+	re.compile(br"\b(juar[aeou]s)([aeiou]{6,})", re.I): br"\1 \2"
 	}
 
 english_fixes = {
 	re.compile(r'(\w+)\.([a-zA-Z]+)'): r'\1 dot \2',
 	re.compile(r'([a-zA-Z0-9_]+)@(\w+)'): r'\1 at \2',
+	#	Does not occur in normal use, however if a dictionary entry contains the Mc prefix, and NVDA splits it up, the synth will crash.
+	#	Also fixes ViaVoice, as the parser is more strict there and doesn't like spaces in Mc names.
+	#	modified to handle NVDA splitting the mac prefix, which ECI will not handle separately. This should be considered an English fix.
+	re.compile(r"\b(Ma?c) {1,}([A-Z][a-z]+)"): r"\1\2"
 }
 
 french_fixes = { re.compile(r'([a-zA-Z0-9_]+)@(\w+)'): r'\1 arobase \2' }
