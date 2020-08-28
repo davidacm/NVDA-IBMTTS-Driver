@@ -97,7 +97,7 @@ dllName=""
 #We can only have one of each in NVDA. Make this global
 dll = None
 handle = None
-
+dictHandles={}
 params = {}
 vparams = {}
 
@@ -114,19 +114,11 @@ class EciThread(threading.Thread):
 		dll.eciSetOutputBuffer(handle, samples, pointer(buffer))
 		dll.eciSetParam(handle, ECIParam.eciInputType, 1)
 		params[ECIParam.eciLanguageDialect] = dll.eciGetParam(handle, ECIParam.eciLanguageDialect)
-		self.dictionaryHandle = dll.eciNewDict(handle)
-		dll.eciSetDict(handle, self.dictionaryHandle)
-		# loading of root.dic/main.dic/abbr.dic officially removed as of 20.08-x0_personal, to make room for other languages' dictionaries.
-		# fixme: Doesn't even check for mainext.
-		# fixme: Only attempts to load a language correspondant dictionary on synth initialization. Clarification on API is needed to see if we can maintain multiple dictionary handles, plus iteration and loading of multiple dicts for multiple languages.
-		# obtain the identifier string used to prefix dictionary files to separate them for different languages
-		langid=getLangByEciId(params[ECIParam.eciLanguageDialect])
-		if path.exists(path.join(path.abspath(ttsPath), langid+"main.dic")):
-			dll.eciLoadDict(handle, self.dictionaryHandle, 0, path.join(path.abspath(ttsPath), langid+"main.dic").encode('mbcs'))
-		if path.exists(path.join(path.abspath(ttsPath), langid+"root.dic")):
-			dll.eciLoadDict(handle, self.dictionaryHandle, 1, path.join(path.abspath(ttsPath), langid+"root.dic").encode('mbcs'))
-		if path.exists(path.join(path.abspath(ttsPath), langid+"abbr.dic")):
-			dll.eciLoadDict(handle, self.dictionaryHandle, 2, path.join(path.abspath(ttsPath), langid+"abbr.dic").encode('mbcs'))
+		# loading of fallback root.dic/main.dic/abbr.dic officially removed as of 20.08-x0_personal, to make room for other languages' dictionaries.
+		v=loadDictForLanguage()
+		if v is not None:
+			dictHandles[v[0]]=v[1]
+			dll.eciSetDict(handle,v[1])
 		started.set()
 		while True:
 			user32.GetMessageA(byref(msg), 0, 0, 0)
@@ -150,6 +142,12 @@ class EciThread(threading.Thread):
 				dll.eciSetParam(handle, msg.lParam, msg.wParam)
 				params[msg.lParam] = msg.wParam
 				param_event.set()
+				if msg.lParam==ECIParam.eciLanguageDialect:
+					if msg.wParam not in dictHandles:
+						v=loadDictForLanguage()
+						if v is not None:
+							dictHandles[v[0]]=v[1]
+							dll.eciSetDict(handle,v[1])
 			elif msg.message == WM_VPARAM:
 				(param, val) = msg.wParam, msg.lParam
 				# don't set unless we have to
@@ -412,6 +410,28 @@ def getLangByEciId(eciId):
 		if v[0]==eciId:
 			return k
 	return 'enu'
+
+def loadDictForLanguage():
+	""" If dictionary files exist for the language at the time of calling, creates a new dict handle and loads these, then returns a tuple.
+	Note: Does not call setDict!
+	@return a 2 tuple of ECILanguageDialect, ECIDictHand if a dictionary has been loaded, else None
+	"""
+	# obtain the identifier string used to prefix dictionary files to separate them for different languages
+	langid=getLangByEciId(params[ECIParam.eciLanguageDialect])
+	# check to see if any dictionaries we want exist
+	# fixme: doesn't even check for mainext. Character sets make that somewhat strange.
+	if path.exists(path.join(path.abspath(ttsPath), langid+"main.dic")) or \
+	path.exists(path.join(path.abspath(ttsPath), langid+"root.dic")) or \
+	path.exists(path.join(path.abspath(ttsPath), langid+"abbr.dic")):
+		dictionaryHandle=dll.eciNewDict(handle)
+		if path.exists(path.join(path.abspath(ttsPath), langid+"main.dic")):
+			dll.eciLoadDict(handle, dictionaryHandle, 0, path.join(path.abspath(ttsPath), langid+"main.dic").encode('mbcs'))
+		if path.exists(path.join(path.abspath(ttsPath), langid+"root.dic")):
+			dll.eciLoadDict(handle, dictionaryHandle, 1, path.join(path.abspath(ttsPath), langid+"root.dic").encode('mbcs'))
+		if path.exists(path.join(path.abspath(ttsPath), langid+"abbr.dic")):
+			dll.eciLoadDict(handle, dictionaryHandle, 2, path.join(path.abspath(ttsPath), langid+"abbr.dic").encode('mbcs'))
+		return (params[ECIParam.eciLanguageDialect], dictionaryHandle)
+	else: return None
 
 def endStringEvent():
 	global idleTimer, speaking, endMarkersCount
