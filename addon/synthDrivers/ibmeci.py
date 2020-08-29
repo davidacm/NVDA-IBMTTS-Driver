@@ -50,8 +50,8 @@ english_fixes = {
 	re.compile(r'([a-zA-Z0-9_]+)@(\w+)'): r'\1 at \2',
 	#	Does not occur in normal use, however if a dictionary entry contains the Mc prefix, and NVDA splits it up, the synth will crash.
 	#	Also fixes ViaVoice, as the parser is more strict there and doesn't like spaces in Mc names.
-	#	modified to handle NVDA splitting the mac prefix, which ECI will not handle separately. This should be considered an English fix.
-	re.compile(r"\b(Ma?c) {1,}([A-Z][a-z]+)"): r"\1\2"
+	#	this should be considered an english fix
+	re.compile(r"\b(Mc) ([A-Z][a-z]+)"): r"\1\2"
 }
 
 french_fixes = { re.compile(r'([a-zA-Z0-9_]+)@(\w+)'): r'\1 arobase \2' }
