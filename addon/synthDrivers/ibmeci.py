@@ -51,7 +51,7 @@ english_fixes = {
 	#	Does not occur in normal use, however if a dictionary entry contains the Mc prefix, and NVDA splits it up, the synth will crash.
 	#	Also fixes ViaVoice, as the parser is more strict there and doesn't like spaces in Mc names.
 	#	this should be considered an english fix
-	re.compile(r"\b(Mc) ([A-Z][a-z]+)"): r"\1\2"
+	re.compile(r"\b(Mc)\s+([A-Z][a-z]+)"): r"\1\2"
 }
 
 french_fixes = { re.compile(r'([a-zA-Z0-9_]+)@(\w+)'): r'\1 arobase \2' }
