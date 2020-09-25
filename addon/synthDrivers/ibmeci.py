@@ -32,26 +32,24 @@ punctuation = b"-,.:;)(?!\x96\x97"
 pause_re = re.compile(br'([a-zA-Z0-9]|\s)([%s])(\2*?)(\s|[\\/]|$)' %punctuation)
 time_re = re.compile(br"(\d):(\d+):(\d+)")
 
-anticrash_res = {
-	re.compile(br'\b(.*?)c(ae|\xe6)sur(e)?', re.I): br'\1seizur',
-	re.compile(br"\b(|\d+|\W+)h'(r|v)[e]", re.I): br"\1h \2e",
-	re.compile(br"\b(\w+[bdfhjlmnqrvz])(h[he]s)([abcdefghjklmnopqrstvwy]\w+)\b", re.I): br"\1 \2\3",
-	re.compile(br"(\d):(\d\d[snrt][tdh])", re.I): br"\1 \2",
-	re.compile(br"\b([bcdfghjklmnpqrstvwxz]+)'([bcdefghjklmnprstvwxz']+)'([drtv][aeiou]?)", re.I): br"\1 \2 \3",
-	re.compile(br"\b(you+)'(re)+'([drv]e?)", re.I): br"\1 \2 \3",
-	re.compile(br"(re|un|non|anti)cosp", re.I): br"\1kosp",
-	re.compile(br"(EUR[A-Z]+)(\d+)", re.I): br"\1 \2",
-	re.compile(br"\b(\d+|\W+|[bcdfghjklmnpqrstvwxz]+)?t+z[s]che", re.I): br"\1tz sche",
-	re.compile(br"\b(juar[aeou]s)([aeiou]{6,})", re.I): br"\1 \2"
-	}
-
 english_fixes = {
 	re.compile(r'(\w+)\.([a-zA-Z]+)'): r'\1 dot \2',
 	re.compile(r'([a-zA-Z0-9_]+)@(\w+)'): r'\1 at \2',
 	#	Does not occur in normal use, however if a dictionary entry contains the Mc prefix, and NVDA splits it up, the synth will crash.
 	#	Also fixes ViaVoice, as the parser is more strict there and doesn't like spaces in Mc names.
-	#	this should be considered an english fix
-	re.compile(r"\b(Mc)\s+([A-Z][a-z]+)"): r"\1\2"
+		re.compile(r"\b(Mc)\s+([A-Z][a-z]+)"): r"\1\2",
+# Crash words, formerly part of anticrash_res.
+	re.compile(r'\b(.*?)c(ae|\xe6)sur(e)?', re.I): r'\1seizur',
+	re.compile(r"\b(|\d+|\W+)h'(r|v)[e]", re.I): r"\1h \2e",
+	re.compile(r"\b(\w+[bdfhjlmnqrvz])(h[he]s)([abcdefghjklmnopqrstvwy]\w+)\b", re.I): r"\1 \2\3",
+	re.compile(r"\b(\w+[bdfhjlmnqrvz])(h[he]s)(iron+[degins]?)", re.I): r"\1 \2\3",
+	re.compile(r"(\d):(\d\d[snrt][tdh])", re.I): r"\1 \2",
+	re.compile(r"\b([bcdfghjklmnpqrstvwxz]+)'([bcdefghjklmnprstvwxz']+)'([drtv][aeiou]?)", re.I): r"\1 \2 \3",
+	re.compile(r"\b(you+)'(re)+'([drv]e?)", re.I): r"\1 \2 \3",
+	re.compile(r"(re|un|non|anti)cosp", re.I): r"\1kosp",
+	re.compile(r"(EUR[A-Z]+)(\d+)", re.I): r"\1 \2",
+	re.compile(r"\b(\d+|\W+|[bcdfghjklmnpqrstvwxz]+)?t+z[s]che", re.I): r"\1tz sche",
+	re.compile(r"\b(juar[aeou]s)([aeiou]{6,})", re.I): r"\1 \2"
 }
 
 french_fixes = { re.compile(r'([a-zA-Z0-9_]+)@(\w+)'): r'\1 arobase \2' }
@@ -229,7 +227,7 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 
 	def processText(self,text):
 		text = text.rstrip()
-		if _ibmeci.params[9] in (65536, 65537): text = resub(english_fixes, text)
+		if _ibmeci.params[9] in (65536, 65537, 393216, 655360): text = resub(english_fixes, text) #Applies to Chinese and Korean as they can read English text and thus inherit the English bugs.
 		if _ibmeci.params[9] in (131072,  131073): text = resub(spanish_fixes, text)
 		if _ibmeci.params[9] in (196609, 196608):
 			text = resub(french_fixes, text)
@@ -240,7 +238,6 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 		text = text.encode(self.currentEncoding, 'replace') # special unicode symbols may encode to backquote. For this reason, backquote processing is after this.
 		if not self._backquoteVoiceTags:
 			text=text.replace(b'`', b' ') # no embedded commands
-		text = resub(anticrash_res, text)
 		if self._shortpause:
 			text = pause_re.sub(br'\1 `p1\2\3\4', text) # this enforces short, JAWS-like pauses.
 		text = time_re.sub(br'\1:\2 \3', text) # apparently if this isn't done strings like 2:30:15 will only announce 2:30
