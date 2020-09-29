@@ -33,16 +33,14 @@ pause_re = re.compile(br'([a-zA-Z0-9]|\s)([%s])(\2*?)(\s|[\\/]|$)' %punctuation)
 time_re = re.compile(br"(\d):(\d+):(\d+)")
 
 english_fixes = {
-	re.compile(r'(\w+)\.([a-zA-Z]+)'): r'\1 dot \2',
-	re.compile(r'([a-zA-Z0-9_]+)@(\w+)'): r'\1 at \2',
 	#	Does not occur in normal use, however if a dictionary entry contains the Mc prefix, and NVDA splits it up, the synth will crash.
 	#	Also fixes ViaVoice, as the parser is more strict there and doesn't like spaces in Mc names.
-		re.compile(r"\b(Mc)\s+([A-Z][a-z]+)"): r"\1\2",
-# Fixes a weird issue with the date parser. Without this fix, strings like "03 Marble" will be pronounced as "march threerd ble".
-		re.compile(r"\b(\d+) (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Sept|Oct|Nov|Dec)([a-z]+)"): r"\1  \2\3",
-# Don't break UK formatted dates.
-		re.compile(r"\b(\d+)  (January|February|March|April|May|June|July|August|September|October|November|December)"): r"\1 \2",
-# Crash words, formerly part of anticrash_res.
+	re.compile(r"\b(Mc)\s+([A-Z][a-z]+)"): r"\1\2",
+	# Fixes a weird issue with the date parser. Without this fix, strings like "03 Marble" will be pronounced as "march threerd ble".
+	re.compile(r"\b(\d+) (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Sept|Oct|Nov|Dec)([a-z]+)"): r"\1  \2\3",
+	# Don't break UK formatted dates.
+	re.compile(r"\b(\d+)  (January|February|March|April|May|June|July|August|September|October|November|December)"): r"\1 \2",
+	# Crash words, formerly part of anticrash_res.
 	re.compile(r'\b(.*?)c(ae|\xe6)sur(e)?', re.I): r'\1seizur',
 	re.compile(r"\b(|\d+|\W+)h'(r|v)[e]", re.I): r"\1h \2e",
 	re.compile(r"\b(\w+[bdfhjlmnqrvz])(h[he]s)([abcdefghjklmnopqrstvwy]\w+)\b", re.I): r"\1 \2\3",
@@ -56,11 +54,7 @@ english_fixes = {
 	re.compile(r"\b(juar[aeou]s)([aeiou]{6,})", re.I): r"\1 \2"
 }
 
-french_fixes = { re.compile(r'([a-zA-Z0-9_]+)@(\w+)'): r'\1 arobase \2' }
-
 spanish_fixes = {
-	#for emails
-	re.compile(r'([a-zA-Z0-9_]+)@(\w+)'): r'\1 arroba \2',
 	re.compile(u'([€$]\d{1,3})((\s\d{3})+\.\d{2})'): r'\1 \2',
 }
 german_fixes = {
@@ -234,7 +228,6 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 		if _ibmeci.params[9] in (65536, 65537, 393216, 655360): text = resub(english_fixes, text) #Applies to Chinese and Korean as they can read English text and thus inherit the English bugs.
 		if _ibmeci.params[9] in (131072,  131073): text = resub(spanish_fixes, text)
 		if _ibmeci.params[9] in (196609, 196608):
-			text = resub(french_fixes, text)
 			text = text.replace('quil', 'qil') #Sometimes this string make everything buggy with IBMTTS in French
 		if  _ibmeci.params[9] in ('deu', 262144):
 			text = resub(german_fixes, text)
