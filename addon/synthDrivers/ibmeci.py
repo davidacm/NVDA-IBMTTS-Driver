@@ -92,14 +92,14 @@ langsAnnotations={
 	"it":b"`l5",
 	"it_IT":b"`l5",
 	"zh":b"`l6",
-	"zh_gb":b"`l6.0",
+	"zh_cn":b"`l6.0",
 	"pt":b"`l7",
 	"pt_BR":b"`l7.0",
 	"pt_PT":b"`l7.1",
 	"ja":b"`l8",
-	"ja_ja":b"`l8.0",
+	"ja_jp":b"`l8.0",
 	"ko":b"`l10",
-	"ko_ko":b"`l10.0",
+	"ko_kr":b"`l10.0",
 	"fi":b"`l9",
 	"fi_FI":b"`l9.0"
 }
