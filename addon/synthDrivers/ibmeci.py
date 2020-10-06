@@ -50,7 +50,7 @@ english_fixes = {
 	re.compile(r"\b(you+)'(re)+'([drv]e?)", re.I): r"\1 \2 \3",
 	re.compile(r"(re|un|non|anti)cosp", re.I): r"\1kosp",
 	re.compile(r"(EUR[A-Z]+)(\d+)", re.I): r"\1 \2",
-	re.compile(r"\b(\d+|\W+)?([bcdfghjklmnpqrstvwxz]+)?t+z[s]che", re.I): r"\1 \2 tz sche",
+	re.compile(r"\b(\d+|\W+)?(\w+\_+)?(\_+)?([bcdfghjklmnpqrstvwxz]+)?t+z[s]che", re.I): r"\1 \2 \3 \4 tz sche",
 	re.compile(r"\b(juar[aeou]s)([aeiou]{6,})", re.I): r"\1 \2"
 }
 
