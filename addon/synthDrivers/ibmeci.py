@@ -50,7 +50,7 @@ english_fixes = {
 	re.compile(r"\b(you+)'(re)+'([drv]e?)", re.I): r"\1 \2 \3",
 	re.compile(r"(re|un|non|anti)cosp", re.I): r"\1kosp",
 	re.compile(r"(EUR[A-Z]+)(\d+)", re.I): r"\1 \2",
-	re.compile(r"\b(\d+|\W+|[bcdfghjklmnpqrstvwxz]+)?t+z[s]che", re.I): r"\1tz sche",
+	re.compile(r"\b(\d+|\W+)?([bcdfghjklmnpqrstvwxz]+)?t+z[s]che", re.I): r"\1 \2 tz sche",
 	re.compile(r"\b(juar[aeou]s)([aeiou]{6,})", re.I): r"\1 \2"
 }
 
@@ -92,14 +92,14 @@ langsAnnotations={
 	"it":b"`l5",
 	"it_IT":b"`l5",
 	"zh":b"`l6",
-	"zh_gb":b"`l6.0",
+	"zh_cn":b"`l6.0",
 	"pt":b"`l7",
 	"pt_BR":b"`l7.0",
 	"pt_PT":b"`l7.1",
 	"ja":b"`l8",
-	"ja_ja":b"`l8.0",
+	"ja_jp":b"`l8.0",
 	"ko":b"`l10",
-	"ko_ko":b"`l10.0",
+	"ko_kr":b"`l10.0",
 	"fi":b"`l9",
 	"fi_FI":b"`l9.0"
 }
