@@ -46,7 +46,7 @@ english_fixes = {
 	re.compile(r"\b(\w+[bdfhjlmnqrvz])(h[he]s)([abcdefghjklmnopqrstvwy]\w+)\b", re.I): r"\1 \2\3",
 	re.compile(r"\b(\w+[bdfhjlmnqrvz])(h[he]s)(iron+[degins]?)", re.I): r"\1 \2\3",
 	re.compile(r"(\d):(\d\d[snrt][tdh])", re.I): r"\1 \2",
-	re.compile(r"\b([bcdfghjklmnpqrstvwxz]+)'([bcdefghjklmnprstvwxz']+)'([drtv][aeiou]?)", re.I): r"\1 \2 \3",
+	re.compile(r"\b([bcdfghjklmnpqrstvwxz]+)'([bcdefghjklmnpqrstvwxz']+)'([drtv][aeiou]?)", re.I): r"\1 \2 \3",
 	re.compile(r"\b(you+)'(re)+'([drv]e?)", re.I): r"\1 \2 \3",
 	re.compile(r"(re|un|non|anti)cosp", re.I): r"\1kosp",
 	re.compile(r"(EUR[A-Z]+)(\d+)", re.I): r"\1 \2",
