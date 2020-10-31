@@ -39,7 +39,7 @@ english_fixes = {
 	# Fixes a weird issue with the date parser. Without this fix, strings like "03 Marble" will be pronounced as "march threerd ble".
 	re.compile(r"\b(\d+) (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Sept|Oct|Nov|Dec)([a-z]+)"): r"\1  \2\3",
 	# Don't break UK formatted dates.
-	re.compile(r"\b(\d+)  (January|February|March|April|May|June|July|August|September|October|November|December)"): r"\1 \2",
+	re.compile(r"\b(\d+)  (January|February|March|April|May|June|July|August|September|October|November|December)\b"): r"\1 \2",
 	# Crash words, formerly part of anticrash_res.
 	re.compile(r'\b(.*?)c(ae|\xe6)sur(e)?', re.I): r'\1seizur',
 	re.compile(r"\b(|\d+|\W+)h'(r|v)[e]", re.I): r"\1h \2e",
