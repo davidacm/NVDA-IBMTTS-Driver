@@ -39,18 +39,20 @@ english_fixes = {
 	# Fixes a weird issue with the date parser. Without this fix, strings like "03 Marble" will be pronounced as "march threerd ble".
 	re.compile(r"\b(\d+) (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Sept|Oct|Nov|Dec)([a-z]+)"): r"\1  \2\3",
 	# Don't break UK formatted dates.
-	re.compile(r"\b(\d+)  (January|February|March|April|May|June|July|August|September|October|November|December)"): r"\1 \2",
+	re.compile(r"\b(\d+)  (January|February|March|April|May|June|July|August|September|October|November|December)\b"): r"\1 \2",
 	# Crash words, formerly part of anticrash_res.
 	re.compile(r'\b(.*?)c(ae|\xe6)sur(e)?', re.I): r'\1seizur',
 	re.compile(r"\b(|\d+|\W+)h'(r|v)[e]", re.I): r"\1h \2e",
 	re.compile(r"\b(\w+[bdfhjlmnqrvz])(h[he]s)([abcdefghjklmnopqrstvwy]\w+)\b", re.I): r"\1 \2\3",
 	re.compile(r"\b(\w+[bdfhjlmnqrvz])(h[he]s)(iron+[degins]?)", re.I): r"\1 \2\3",
+	re.compile(r"\b(\w+'*[bcdfghjklmnpqrstvwxz])'*(h+[he]s)([abcdefghjklmnopqrstvwy]\w+)\b", re.I): r"\1 \2\3",
+	re.compile(r"\b(\w+'*[bcdfghjklmnpqrstvwxz])'*(h+[he]s)(iron+[degins]?)", re.I): r"\1 \2\3",
 	re.compile(r"(\d):(\d\d[snrt][tdh])", re.I): r"\1 \2",
-	re.compile(r"\b([bcdfghjklmnpqrstvwxz]+)'([bcdefghjklmnprstvwxz']+)'([drtv][aeiou]?)", re.I): r"\1 \2 \3",
+	re.compile(r"\b([bcdfghjklmnpqrstvwxz]+)'([bcdefghjklmnpqrstvwxz']+)'([drtv][aeiou]?)", re.I): r"\1 \2 \3",
 	re.compile(r"\b(you+)'(re)+'([drv]e?)", re.I): r"\1 \2 \3",
 	re.compile(r"(re|un|non|anti)cosp", re.I): r"\1kosp",
 	re.compile(r"(EUR[A-Z]+)(\d+)", re.I): r"\1 \2",
-	re.compile(r"\b(\d+|\W+)?([bcdfghjklmnpqrstvwxz]+)?t+z[s]che", re.I): r"\1 \2 tz sche",
+	re.compile(r"\b(\d+|\W+)?(\w+\_+)?(\_+)?([bcdfghjklmnpqrstvwxz]+)?(\d+)?t+z[s]che", re.I): r"\1 \2 \3 \4 \5 tz sche",
 	re.compile(r"\b(juar[aeou]s)([aeiou]{6,})", re.I): r"\1 \2"
 }
 
@@ -92,14 +94,14 @@ langsAnnotations={
 	"it":b"`l5",
 	"it_IT":b"`l5",
 	"zh":b"`l6",
-	"zh_cn":b"`l6.0",
+	"zh_CN":b"`l6.0",
 	"pt":b"`l7",
 	"pt_BR":b"`l7.0",
 	"pt_PT":b"`l7.1",
 	"ja":b"`l8",
-	"ja_jp":b"`l8.0",
+	"ja_JP":b"`l8.0",
 	"ko":b"`l10",
-	"ko_kr":b"`l10.0",
+	"ko_KR":b"`l10.0",
 	"fi":b"`l9",
 	"fi_FI":b"`l9.0"
 }
