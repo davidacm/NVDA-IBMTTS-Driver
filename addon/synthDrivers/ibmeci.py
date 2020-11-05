@@ -43,8 +43,10 @@ english_fixes = {
 	# Crash words, formerly part of anticrash_res.
 	re.compile(r'\b(.*?)c(ae|\xe6)sur(e)?', re.I): r'\1seizur',
 	re.compile(r"\b(|\d+|\W+)h'(r|v)[e]", re.I): r"\1h \2e",
-	re.compile(r"\b(\w+'*[bcdfghjklmnpqrstvwxz])'*(h+[he]s)([abcdefghjklmnopqrstvwy]\w+)\b", re.I): r"\1 \2\3",
-	re.compile(r"\b(\w+'*[bcdfghjklmnpqrstvwxz])'*(h+[he]s)(iron+[degins]?)", re.I): r"\1 \2\3",
+	re.compile(r"\b(\w+[bdfhjlmnqrvz])(h[he]s)([abcdefghjklmnopqrstvwy]\w+)\b", re.I): r"\1 \2\3",
+	re.compile(r"\b(\w+[bdfhjlmnqrvz])(h[he]s)(iron+[degins]?)", re.I): r"\1 \2\3",
+	re.compile(r"\b(\w+'{1,}[bcdfghjklmnpqrstvwxz])'*(h+[he]s)([abcdefghijklmnopqrstvwy]\w+)\b", re.I): r"\1 \2\3",
+	re.compile(r"\b(\w+[bcdfghjklmnpqrstvwxz])('{1,}h+[he]s)([abcdefghijklmnopqrstvwy]\w+)\b", re.I): r"\1 \2\3",
 	re.compile(r"(\d):(\d\d[snrt][tdh])", re.I): r"\1 \2",
 	re.compile(r"\b([bcdfghjklmnpqrstvwxz]+)'([bcdefghjklmnpqrstvwxz']+)'([drtv][aeiou]?)", re.I): r"\1 \2 \3",
 	re.compile(r"\b(you+)'(re)+'([drv]e?)", re.I): r"\1 \2 \3",
