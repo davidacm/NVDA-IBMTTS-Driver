@@ -116,7 +116,8 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 		BooleanDriverSetting("backquoteVoiceTags", _("Enable backquote voice &tags"), False),
 		BooleanDriverSetting("ABRDICT", _("Enable &abbreviation dictionary"), False),
 		BooleanDriverSetting("phrasePrediction", _("Enable Phrase Prediction"), False),
-		BooleanDriverSetting("shortpause", _("&Shorten Pauses"), False))
+		BooleanDriverSetting("shortpause", _("&Shorten Pauses"), False),
+		BooleanDriverSetting("sendParams", _("Always send current speech settings"), False))
 	supportedCommands = {
 		speech.IndexCommand,
 		speech.CharacterModeCommand,
@@ -249,7 +250,9 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 			embeds+=b"`pp1 "
 		else:
 			embeds+=b"`pp0 "
-		text = b"`vv%d `vs%d %s %s" % (_ibmeci.getVParam(ECIVoiceParam.eciVolume), _ibmeci.getVParam(ECIVoiceParam.eciSpeed), embeds.rstrip(), text) # bring all the printf stuff into one call, in one string. This avoids all the concatonation and printf additions of the previous organization.
+		if self._sendParams:
+			embeds+=b"`vv%d `vs%d " % (_ibmeci.getVParam(ECIVoiceParam.eciVolume), _ibmeci.getVParam(ECIVoiceParam.eciSpeed))
+		text = b"%s %s" % (embeds.rstrip(), text) # bring all the printf stuff into one call, in one string. This avoids all the concatonation and printf additions of the previous organization.
 		return text
 	def pause(self,switch):
 		_ibmeci.pause(switch)
@@ -261,6 +264,7 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 	_ABRDICT=False
 	_phrasePrediction=False
 	_shortpause=False
+	_sendParams=True
 	def _get_backquoteVoiceTags(self):
 		return self._backquoteVoiceTags
 
@@ -286,6 +290,12 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 		if enable == self._shortpause:
 			return
 		self._shortpause = enable
+	def _get_sendParams(self):
+		return self._sendParams
+	def _set_sendParams(self, enable):
+		if enable == self._sendParams:
+			return
+		self._sendParams = enable
 	_rateBoost = False
 	RATE_BOOST_MULTIPLIER = 1.6
 	def _get_rateBoost(self):
