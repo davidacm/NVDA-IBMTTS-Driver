@@ -110,14 +110,14 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 	supportedSettings=(SynthDriver.VoiceSetting(), SynthDriver.VariantSetting(), SynthDriver.RateSetting(),
 		BooleanDriverSetting("rateBoost", _("Rate boos&t"), True),
 		SynthDriver.PitchSetting(), SynthDriver.InflectionSetting(), SynthDriver.VolumeSetting(),
-		NumericDriverSetting("hsz", _("Head Size"), False),
+		NumericDriverSetting("hsz", _("Head size"), False),
 		NumericDriverSetting("rgh", _("Roughness"), False),
 		NumericDriverSetting("bth", _("Breathiness"), False),
 		BooleanDriverSetting("backquoteVoiceTags", _("Enable backquote voice &tags"), False),
 		BooleanDriverSetting("ABRDICT", _("Enable &abbreviation dictionary"), False),
-		BooleanDriverSetting("phrasePrediction", _("Enable Phrase Prediction"), False),
-		BooleanDriverSetting("shortpause", _("&Shorten Pauses"), False),
-		BooleanDriverSetting("sendParams", _("Always send current speech settings"), False))
+		BooleanDriverSetting("phrasePrediction", _("Enable phrase prediction"), False),
+		BooleanDriverSetting("shortpause", _("&Shorten pauses"), False),
+		BooleanDriverSetting("sendParams", _("Always Send Current Speech Settings (enable to prevent some tags from sticking, disable for viavoice binary compatibility)"), False))
 	supportedCommands = {
 		speech.IndexCommand,
 		speech.CharacterModeCommand,
@@ -158,7 +158,7 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 		last = None
 		defaultLanguage=self.language
 		outlist = []
-		outlist.append((_ibmeci.speak, (b"`ts0",)))
+		charmode=False
 		for item in speechSequence:
 			if isinstance(item, string_types):
 				s = self.processText(unicode(item))
@@ -180,6 +180,8 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 					self.speakingLanguage = defaultLanguage
 			elif isinstance(item,speech.CharacterModeCommand):
 				outlist.append((_ibmeci.speak, (b"`ts1" if item.state else b"`ts0",)))
+				if item.state:
+					charmode=True
 			elif isinstance(item,speech.BreakCommand):
 				# taken from eloquence_threshold (https://github.com/pumper42nickel/eloquence_threshold)
 				# Eloquence doesn't respect delay time in milliseconds.
@@ -220,9 +222,10 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 			# index -2 is because -1 always seem to be an index command.
 			if outlist[-2][0] == _ibmeci.setProsodyParam: outlist.insert(-2, (_ibmeci.speak, (b'`p1. ',)))
 			else: outlist.append((_ibmeci.speak, (b'`p1. ',)))
+		if charmode:
+			outlist.append((_ibmeci.speak, (b"`ts0",)))
 		outlist.append((_ibmeci.setEndStringMark, ()))
 		outlist.append((_ibmeci.synth, ()))
-		#print(outlist)
 		_ibmeci.eciQueue.put(outlist)
 		_ibmeci.process()
 
