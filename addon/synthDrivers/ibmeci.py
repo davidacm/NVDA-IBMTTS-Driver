@@ -10,6 +10,7 @@ from synthDriverHandler import SynthDriver,VoiceInfo
 from logHandler import log
 from synthDrivers import _ibmeci
 from synthDrivers._ibmeci import ECIVoiceParam
+from synthDrivers._ibmeci import isIBM
 import addonHandler
 addonHandler.initTranslation()
 
@@ -27,21 +28,36 @@ except:
 	def unicode(s): return s
 
 minRate=40
-maxRate=150
+maxRate=156
 punctuation = b"-,.:;)(?!\x96\x97"
 pause_re = re.compile(br'([a-zA-Z0-9]|\s)([%s])(\2*?)(\s|[\\/]|$)' %punctuation)
-time_re = re.compile(br"(\d):(\d+):(\d+)")
+#time_re = re.compile(br"(\d):(\d+):(\d+)")
 
 english_fixes = {
 	#	Does not occur in normal use, however if a dictionary entry contains the Mc prefix, and NVDA splits it up, the synth will crash.
 	#	Also fixes ViaVoice, as the parser is more strict there and doesn't like spaces in Mc names.
 	re.compile(r"\b(Mc)\s+([A-Z][a-z]+)"): r"\1\2",
-	# Fixes a weird issue with the date parser. Without this fix, strings like "03 Marble" will be pronounced as "march threerd ble".
-	re.compile(r"\b(\d+) (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Sept|Oct|Nov|Dec)([a-z]+)"): r"\1  \2\3",
+# Fixes a weird issue with the date parser. Without this fix, strings like "03 Marble" will be pronounced as "march threerd ble".
+#	re.compile(r"\b(\d+) (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Sept|Oct|Nov|Dec)([a-z]+)"): r"\1  \2\3",
 	# Don't break UK formatted dates.
-	re.compile(r"\b(\d+)  (January|February|March|April|May|June|July|August|September|October|November|December)\b"): r"\1 \2",
+#	re.compile(r"\b(\d+)  (January|February|March|April|May|June|July|August|September|October|November|December)\b"): r"\1 \2",
+	#ViaVoice specific fixes
+	#Prevents the synth from spelling out everything if a punctuation mark follows a word.
+	re.compile(r"([a-z]+)([\~\#\$\%\^\*\(\{\|\[\<\%\•])", re.I): r"\1 \2",
+	#Don't break phrases like books).
+	re.compile(r"([a-z]+)\s+(\(s\))", re.I): r"\1\2",
+	#Adds support for spaced parentheses.
+	re.compile(r"(\(+)\s+([a-z]+)\s+(\)+)", re.I): r"\1\2\3",
+	#Removes spaces if a string is followed by a punctuation mark, since ViaVoice doesn't tolerate that.
+	re.compile(r"([a-z]+|\d+|\W+)\s+([:.!;,])", re.I): r"\1\2",
+	#ViaVoice specific crash words
+	re.compile(r"(http://|ftp://)([a-z]+)(\W){1,3}([a-z]+)(/*\W){1,3}([a-z]){1}", re.I): r"\1\2\3\4 \5\6",
+	re.compile(r"(\d+)([\+\-\*\^\/])(\d+)(\.)(\d+)(\.)(0{2,})", re.I): r"\1\2\3\4\5\6 \7",
+	re.compile(r"(\d+)([\+\-\*\^\/])(\d+)(\.)(\d+)(\.)(0\W)", re.I): r"\1\2\3\4 \5\6\7",
+	re.compile(r"(\d+)([\-\+\*\^\/]+)(\d+)([\-\+\*\^\/]*)([\.\,])(0{2,})", re.I): r"\1\2\3\4 \5\6",
+	re.compile(r"(\d+)(\.+)(\d+)(\.+)(0{2,})([\+\-\/\*\^])", re.I): r"\1\2\3\4 \5\6",
 	# Crash words, formerly part of anticrash_res.
-	re.compile(r'\b(.*?)c(ae|\xe6)sur(e)?', re.I): r'\1seizur',
+	re.compile(r'\b(.*?)c(ae|\xe6)s[uū]r(e)?', re.I): r'\1seizur',
 	re.compile(r"\b(|\d+|\W+)h'(r|v)[e]", re.I): r"\1h \2e",
 	re.compile(r"\b(\w+[bdfhjlmnqrvz])(h[he]s)([abcdefghjklmnopqrstvwy]\w+)\b", re.I): r"\1 \2\3",
 	re.compile(r"\b(\w+[bdfhjlmnqrvz])(h[he]s)(iron+[degins]?)", re.I): r"\1 \2\3",
@@ -58,6 +74,9 @@ english_fixes = {
 
 spanish_fixes = {
 	re.compile(u'([€$]\d{1,3})((\s\d{3})+\.\d{2})'): r'\1 \2',
+	#ViaVoice's time parser is slightly broken in Spanish, and will crash if the minute part goes from 20 to 59.
+	#For these times, convert the periods to colons.
+	re.compile(r'([0-2][0-4])\.([2-5][0-9])\.([0-5][0-9])'): r'\1:\2:\3',
 }
 german_fixes = {
 # Crash words.
@@ -100,10 +119,17 @@ langsAnnotations={
 	"pt_PT":b"`l7.1",
 	"ja":b"`l8",
 	"ja_JP":b"`l8.0",
+	"fi":b"`l9",
+	"fi_FI":b"`l9.0",
 	"ko":b"`l10",
 	"ko_KR":b"`l10.0",
-	"fi":b"`l9",
-	"fi_FI":b"`l9.0"
+	"yue":b"`l11.1",
+	"nb":b"`l13",
+	"nb_NO":b"`l13.0",
+	"sv":b"`l14",
+	"sv_SE":b"`l14.0",
+	"da":b"`l15",
+	"da_DK":b"`l15.0"
 }
 
 class SynthDriver(synthDriverHandler.SynthDriver):
@@ -243,7 +269,7 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 			text=text.replace(b'`', b' ') # no embedded commands
 		if self._shortpause:
 			text = pause_re.sub(br'\1 `p1\2\3\4', text) # this enforces short, JAWS-like pauses.
-		text = time_re.sub(br'\1:\2 \3', text) # apparently if this isn't done strings like 2:30:15 will only announce 2:30
+#		text = time_re.sub(br'\1:\2 \3', text) # apparently if this isn't done strings like 2:30:15 will only announce 2:30
 		embeds=b''
 		if self._ABRDICT:
 			embeds+=b"`da1 "
@@ -388,6 +414,7 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 		elif lang == 524288: self.currentEncoding = "cp932"
 		# korean
 		elif lang == 655360: self.currentEncoding = "cp949"
+		elif lang == 720897: self.currentEncoding = "big5"
 		else: self.currentEncoding = "mbcs"
 
 	def _get_lastIndex(self):

@@ -44,6 +44,7 @@ class ECIMessage:
 
 class ECICallbackReturn:
 	eciDataNotProcessed, eciDataProcessed, eciDataAbort= range(3)
+isIBM=False
 
 # constants
 samples=3300
@@ -70,7 +71,11 @@ langs={
 	'deu': (262144, _('German'), 'de_DE', 'de'),
 	'ita': (327680, _('Italian'), 'it_IT', 'it'),
 	'enu': (65536, _('American English'), 'en_US', 'en'),
-	'eng': (65537, _('British English'), 'en_UK', '')
+	'eng': (65537, _('British English'), 'en_UK', ''),
+	'swe': (917504, _('Swedish'), 'sv_SE', 'sv'),
+	'nor': (851968, _('Norwegian'), 'nb_NO', 'nb'),
+	'dan': (983040, _('Danish'), 'da_DK', 'da'),
+	'ctt': (720897, _('Hong Kong Cantonese'), 'yue', '')
 }
 
 audioStream = BytesIO()
@@ -178,7 +183,7 @@ def eciCheck():
 	global ttsPath, dllName, dll
 	dllName = config.conf.profiles[0]['ibmeci']['dllName']
 	ttsPath =  config.conf.profiles[0]['ibmeci']['TTSPath']
-	if path.exists(path.abspath(path.join(path.abspath(path.dirname(__file__)), 'ibmtts'))): ttsPath='ibmtts'
+#	if path.exists(path.abspath(path.join(path.abspath(path.dirname(__file__)), 'ibmtts'))): ttsPath='ibmtts'
 	if  not path.isabs(ttsPath):
 		ttsPath = path.abspath(path.join(path.abspath(path.dirname(__file__)), ttsPath))
 		if path.exists(ttsPath): iniCheck()
