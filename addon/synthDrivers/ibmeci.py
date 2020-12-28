@@ -83,6 +83,9 @@ german_fixes = {
 	re.compile(r'dane-ben', re.I): r'dane- ben',
 	re.compile(r'dage-gen', re.I): r'dage- gen',
 }
+portuguese_ibm_fixes = {
+	re.compile(r'(\d{1,2}):(00):(\d{1,2})'): r'\1:\2 \3',
+}
 
 # fixme: These are only the variant names for enu. Does ECI have a way to obtain names for other languages?
 variants = {
@@ -263,6 +266,8 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 			text = text.replace('quil', 'qil') #Sometimes this string make everything buggy with IBMTTS in French
 		if  _ibmeci.params[9] in ('deu', 262144):
 			text = resub(german_fixes, text)
+		if  _ibmeci.params[9] in ('ptb', 458752) and _ibmeci.isIBM:
+			text = resub(portuguese_ibm_fixes, text)
 		#this converts to ansi for anticrash. If this breaks with foreign langs, we can remove it.
 		text = text.encode(self.currentEncoding, 'replace') # special unicode symbols may encode to backquote. For this reason, backquote processing is after this.
 		if not self._backquoteVoiceTags:
