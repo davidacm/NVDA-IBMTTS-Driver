@@ -74,6 +74,8 @@ english_fixes = {
 
 spanish_fixes = {
 	re.compile(u'([€$]\d{1,3})((\s\d{3})+\.\d{2})'): r'\1 \2',
+}
+spanish_ibm_fixes = {
 	#ViaVoice's time parser is slightly broken in Spanish, and will crash if the minute part goes from 20 to 59.
 	#For these times, convert the periods to colons.
 	re.compile(r'([0-2][0-4])\.([2-5][0-9])\.([0-5][0-9])'): r'\1:\2:\3',
@@ -261,7 +263,8 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 	def processText(self,text):
 		text = text.rstrip()
 		if _ibmeci.params[9] in (65536, 65537, 393216, 655360): text = resub(english_fixes, text) #Applies to Chinese and Korean as they can read English text and thus inherit the English bugs.
-		if _ibmeci.params[9] in (131072,  131073): text = resub(spanish_fixes, text)
+		if _ibmeci.params[9] in (131072,  131073) and not _ibmeci.isIBM: text = resub(spanish_fixes, text)
+		if _ibmeci.params[9] in ('esp', 131072) and _ibmeci.isIBM: text = resub(spanish_ibm_fixes, text)
 		if _ibmeci.params[9] in (196609, 196608):
 			text = text.replace('quil', 'qil') #Sometimes this string make everything buggy with IBMTTS in French
 		if  _ibmeci.params[9] in ('deu', 262144):
