@@ -35,34 +35,35 @@ time_re = re.compile(br"(\d):(\d+):(\d+)")
 english_fixes = {
 	#	Does not occur in normal use, however if a dictionary entry contains the Mc prefix, and NVDA splits it up, the synth will crash.
 	#	Also fixes ViaVoice, as the parser is more strict there and doesn't like spaces in Mc names.
-	re.compile(r"\b(Mc)\s+([A-Z][a-z]+)"): r"\1\2",
+	re.compile(br"\b(Mc)\s+([A-Z][a-z]+)"): br"\1\2",
 	# Fixes a weird issue with the date parser. Without this fix, strings like "03 Marble" will be pronounced as "march threerd ble".
-	re.compile(r"\b(\d+) (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Sept|Oct|Nov|Dec)([a-z]+)"): r"\1  \2\3",
+	re.compile(br"\b(\d+) (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Sept|Oct|Nov|Dec)([a-z]+)"): br"\1  \2\3",
 	# Don't break UK formatted dates.
-	re.compile(r"\b(\d+)  (January|February|March|April|May|June|July|August|September|October|November|December)\b"): r"\1 \2",
+	re.compile(br"\b(\d+)  (January|February|March|April|May|June|July|August|September|October|November|December)\b"): br"\1 \2",
 	# Crash words, formerly part of anticrash_res.
-	re.compile(r'\b(.*?)c(ae|\xe6)sur(e)?', re.I): r'\1seizur',
-	re.compile(r"\b(|\d+|\W+)h'(r|v)[e]", re.I): r"\1h \2e",
-	re.compile(r"\b(\w+[bdfhjlmnqrvz])(h[he]s)([abcdefghjklmnopqrstvwy]\w+)\b", re.I): r"\1 \2\3",
-	re.compile(r"\b(\w+[bdfhjlmnqrvz])(h[he]s)(iron+[degins]?)", re.I): r"\1 \2\3",
-	re.compile(r"\b(\w+'{1,}[bcdfghjklmnpqrstvwxz])'*(h+[he]s)([abcdefghijklmnopqrstvwy]\w+)\b", re.I): r"\1 \2\3",
-	re.compile(r"\b(\w+[bcdfghjklmnpqrstvwxz])('{1,}h+[he]s)([abcdefghijklmnopqrstvwy]\w+)\b", re.I): r"\1 \2\3",
-	re.compile(r"(\d):(\d\d[snrt][tdh])", re.I): r"\1 \2",
-	re.compile(r"\b([bcdfghjklmnpqrstvwxz]+)'([bcdefghjklmnpqrstvwxz']+)'([drtv][aeiou]?)", re.I): r"\1 \2 \3",
-	re.compile(r"\b(you+)'(re)+'([drv]e?)", re.I): r"\1 \2 \3",
-	re.compile(r"(re|un|non|anti)cosp", re.I): r"\1kosp",
-	re.compile(r"(EUR[A-Z]+)(\d+)", re.I): r"\1 \2",
-	re.compile(r"\b(\d+|\W+)?(\w+\_+)?(\_+)?([bcdfghjklmnpqrstvwxz]+)?(\d+)?t+z[s]che", re.I): r"\1 \2 \3 \4 \5 tz sche",
-	re.compile(r"\b(juar[aeou]s)([aeiou]{6,})", re.I): r"\1 \2"
+	re.compile(br'\b(.*?)c(ae|\xe6)sur(e)?', re.I): br'\1seizur',
+	re.compile(br"\b(|\d+|\W+)h'(r|v)[e]", re.I): br"\1h \2e",
+	re.compile(br"\b(\w+[bdfhjlmnqrvz])(h[he]s)([abcdefghjklmnopqrstvwy]\w+)\b", re.I): br"\1 \2\3",
+	re.compile(br"\b(\w+[bdfhjlmnqrvz])(h[he]s)(iron+[degins]?)", re.I): br"\1 \2\3",
+	re.compile(br"\b(\w+'{1,}[bcdfghjklmnpqrstvwxz])'*(h+[he]s)([abcdefghijklmnopqrstvwy]\w+)\b", re.I): br"\1 \2\3",
+	re.compile(br"\b(\w+[bcdfghjklmnpqrstvwxz])('{1,}h+[he]s)([abcdefghijklmnopqrstvwy]\w+)\b", re.I): br"\1 \2\3",
+	re.compile(br"(\d):(\d\d[snrt][tdh])", re.I): br"\1 \2",
+	re.compile(br"\b([bcdfghjklmnpqrstvwxz]+)'([bcdefghjklmnpqrstvwxz']+)'([drtv][aeiou]?)", re.I): br"\1 \2 \3",
+	re.compile(br"\b(you+)'(re)+'([drv]e?)", re.I): br"\1 \2 \3",
+	re.compile(br"(re|un|non|anti)cosp", re.I): br"\1kosp",
+	re.compile(br"(EUR[A-Z]+)(\d+)", re.I): br"\1 \2",
+	re.compile(br"\b(\d+|\W+)?(\w+\_+)?(\_+)?([bcdfghjklmnpqrstvwxz]+)?(\d+)?t+z[s]che", re.I): br"\1 \2 \3 \4 \5 tz sche",
+	re.compile(br"\b(juar[aeou]s)([aeiou]{6,})", re.I): br"\1 \2"
 }
 
 spanish_fixes = {
-	re.compile(u'([€$]\d{1,3})((\s\d{3})+\.\d{2})'): r'\1 \2',
+	# Euros
+	re.compile(b'([\x80$]\\d{1,3})((\\s\\d{3})+\\.\\d{2})'): r'\1 \2',
 }
 german_fixes = {
 # Crash words.
-	re.compile(r'dane-ben', re.I): r'dane- ben',
-	re.compile(r'dage-gen', re.I): r'dage- gen',
+	re.compile(br'dane-ben', re.I): br'dane- ben',
+	re.compile(br'dage-gen', re.I): br'dage- gen',
 }
 
 # fixme: These are only the variant names for enu. Does ECI have a way to obtain names for other languages?
@@ -230,6 +231,8 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 		_ibmeci.process()
 
 	def processText(self,text):
+		#this converts to ansi for anticrash. If this breaks with foreign langs, we can remove it.
+		text = text.encode(self.currentEncoding, 'replace') # special unicode symbols may encode to backquote. For this reason, backquote processing is after this.
 		text = text.rstrip()
 		if _ibmeci.params[9] in (65536, 65537, 393216, 655360): text = resub(english_fixes, text) #Applies to Chinese and Korean as they can read English text and thus inherit the English bugs.
 		if _ibmeci.params[9] in (131072,  131073): text = resub(spanish_fixes, text)
@@ -237,8 +240,6 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 			text = text.replace('quil', 'qil') #Sometimes this string make everything buggy with IBMTTS in French
 		if  _ibmeci.params[9] in ('deu', 262144):
 			text = resub(german_fixes, text)
-		#this converts to ansi for anticrash. If this breaks with foreign langs, we can remove it.
-		text = text.encode(self.currentEncoding, 'replace') # special unicode symbols may encode to backquote. For this reason, backquote processing is after this.
 		if not self._backquoteVoiceTags:
 			text=text.replace(b'`', b' ') # no embedded commands
 		if self._shortpause:
