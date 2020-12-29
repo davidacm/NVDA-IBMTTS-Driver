@@ -262,7 +262,7 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 
 	def processText(self,text):
 		text = text.rstrip()
-		if _ibmeci.params[9] in (65536, 65537, 393216, 655360): text = resub(english_fixes, text) #Applies to Chinese and Korean as they can read English text and thus inherit the English bugs.
+		if _ibmeci.params[9] in (65536, 65537, 393216, 655360, 720897): text = resub(english_fixes, text) #Applies to all languages with dual language support.
 		if _ibmeci.params[9] in (131072,  131073) and not _ibmeci.isIBM: text = resub(spanish_fixes, text)
 		if _ibmeci.params[9] in ('esp', 131072) and _ibmeci.isIBM: text = resub(spanish_ibm_fixes, text)
 		if _ibmeci.params[9] in (196609, 196608):
