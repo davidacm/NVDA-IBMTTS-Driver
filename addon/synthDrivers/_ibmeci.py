@@ -186,7 +186,7 @@ def eciCheck():
 #	if path.exists(path.abspath(path.join(path.abspath(path.dirname(__file__)), 'ibmtts'))): ttsPath='ibmtts'
 	if  not path.isabs(ttsPath):
 		ttsPath = path.abspath(path.join(path.abspath(path.dirname(__file__)), ttsPath))
-		if path.exists(ttsPath): iniCheck()
+		if path.exists(ttsPath) and not isIBM: iniCheck()
 	if not path.exists(ttsPath): return False
 	if dll: return True
 	try:

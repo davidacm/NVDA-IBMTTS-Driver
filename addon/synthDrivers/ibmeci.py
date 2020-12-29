@@ -38,24 +38,9 @@ english_fixes = {
 	#	Also fixes ViaVoice, as the parser is more strict there and doesn't like spaces in Mc names.
 	re.compile(r"\b(Mc)\s+([A-Z][a-z]+)"): r"\1\2",
 # Fixes a weird issue with the date parser. Without this fix, strings like "03 Marble" will be pronounced as "march threerd ble".
-#	re.compile(r"\b(\d+) (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Sept|Oct|Nov|Dec)([a-z]+)"): r"\1  \2\3",
+	re.compile(r"\b(\d+) (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Sept|Oct|Nov|Dec)([a-z]+)"): r"\1  \2\3",
 	# Don't break UK formatted dates.
-#	re.compile(r"\b(\d+)  (January|February|March|April|May|June|July|August|September|October|November|December)\b"): r"\1 \2",
-	#ViaVoice specific fixes
-	#Prevents the synth from spelling out everything if a punctuation mark follows a word.
-	re.compile(r"([a-z]+)([\~\#\$\%\^\*\(\{\|\[\<\%\•])", re.I): r"\1 \2",
-	#Don't break phrases like books).
-	re.compile(r"([a-z]+)\s+(\(s\))", re.I): r"\1\2",
-	#Adds support for spaced parentheses.
-	re.compile(r"(\(+)\s+([a-z]+)\s+(\)+)", re.I): r"\1\2\3",
-	#Removes spaces if a string is followed by a punctuation mark, since ViaVoice doesn't tolerate that.
-	re.compile(r"([a-z]+|\d+|\W+)\s+([:.!;,])", re.I): r"\1\2",
-	#ViaVoice specific crash words
-	re.compile(r"(http://|ftp://)([a-z]+)(\W){1,3}([a-z]+)(/*\W){1,3}([a-z]){1}", re.I): r"\1\2\3\4 \5\6",
-	re.compile(r"(\d+)([\+\-\*\^\/])(\d+)(\.)(\d+)(\.)(0{2,})", re.I): r"\1\2\3\4\5\6 \7",
-	re.compile(r"(\d+)([\+\-\*\^\/])(\d+)(\.)(\d+)(\.)(0\W)", re.I): r"\1\2\3\4 \5\6\7",
-	re.compile(r"(\d+)([\-\+\*\^\/]+)(\d+)([\-\+\*\^\/]*)([\.\,])(0{2,})", re.I): r"\1\2\3\4 \5\6",
-	re.compile(r"(\d+)(\.+)(\d+)(\.+)(0{2,})([\+\-\/\*\^])", re.I): r"\1\2\3\4 \5\6",
+	re.compile(r"\b(\d+)  (January|February|March|April|May|June|July|August|September|October|November|December)\b"): r"\1 \2",
 	# Crash words, formerly part of anticrash_res.
 	re.compile(r'\b(.*?)c(ae|\xe6)sur(e)?', re.I): r'\1seizur',
 	re.compile(r"\b(|\d+|\W+)h'(r|v)[e]", re.I): r"\1h \2e",
@@ -71,7 +56,21 @@ english_fixes = {
 	re.compile(r"\b(\d+|\W+)?(\w+\_+)?(\_+)?([bcdfghjklmnpqrstvwxz]+)?(\d+)?t+z[s]che", re.I): r"\1 \2 \3 \4 \5 tz sche",
 	re.compile(r"\b(juar[aeou]s)([aeiou]{6,})", re.I): r"\1 \2"
 }
-
+english_ibm_fixes = {
+	#Prevents the synth from spelling out everything if a punctuation mark follows a word.
+	re.compile(r"([a-z]+)([\~\#\$\%\^\*\(\{\|\[\<\%\•])", re.I): r"\1 \2",
+	#Don't break phrases like books).
+	re.compile(r"([a-z]+)\s+(\(s\))", re.I): r"\1\2",
+	#Adds support for spaced parentheses.
+	re.compile(r"(\(+)\s+([a-z]+)\s+(\)+)", re.I): r"\1\2\3",
+	#Removes spaces if a string is followed by a punctuation mark, since ViaVoice doesn't tolerate that.
+	re.compile(r"([a-z]+|\d+|\W+)\s+([:.!;,])", re.I): r"\1\2",
+	re.compile(r"(http://|ftp://)([a-z]+)(\W){1,3}([a-z]+)(/*\W){1,3}([a-z]){1}", re.I): r"\1\2\3\4 \5\6",
+	re.compile(r"(\d+)([\+\-\*\^\/])(\d+)(\.)(\d+)(\.)(0{2,})", re.I): r"\1\2\3\4\5\6 \7",
+	re.compile(r"(\d+)([\+\-\*\^\/])(\d+)(\.)(\d+)(\.)(0\W)", re.I): r"\1\2\3\4 \5\6\7",
+	re.compile(r"(\d+)([\-\+\*\^\/]+)(\d+)([\-\+\*\^\/]*)([\.\,])(0{2,})", re.I): r"\1\2\3\4 \5\6",
+	re.compile(r"(\d+)(\.+)(\d+)(\.+)(0{2,})([\+\-\/\*\^])", re.I): r"\1\2\3\4 \5\6",
+}
 spanish_fixes = {
 	re.compile(u'([€$]\d{1,3})((\s\d{3})+\.\d{2})'): r'\1 \2',
 }
@@ -263,6 +262,7 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 	def processText(self,text):
 		text = text.rstrip()
 		if _ibmeci.params[9] in (65536, 65537, 393216, 655360, 720897): text = resub(english_fixes, text) #Applies to all languages with dual language support.
+		if _ibmeci.params[9] in (65536, 65537, 393216, 655360, 720897) and _ibmeci.isIBM: text = resub(english_ibm_fixes, text)
 		if _ibmeci.params[9] in (131072,  131073) and not _ibmeci.isIBM: text = resub(spanish_fixes, text)
 		if _ibmeci.params[9] in ('esp', 131072) and _ibmeci.isIBM: text = resub(spanish_ibm_fixes, text)
 		if _ibmeci.params[9] in (196609, 196608):
