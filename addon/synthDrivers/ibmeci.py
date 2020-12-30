@@ -269,7 +269,7 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 		if _ibmeci.params[9] in (131072,  131073) and not _ibmeci.isIBM: text = resub(spanish_fixes, text)
 		if _ibmeci.params[9] in ('esp', 131072) and _ibmeci.isIBM: text = resub(spanish_ibm_fixes, text)
 		if _ibmeci.params[9] in (196609, 196608):
-			text = text.replace('quil', 'qil') #Sometimes this string make everything buggy with IBMTTS in French
+			text = text.replace(br'quil', br'qil') #Sometimes this string make everything buggy with IBMTTS in French
 		if  _ibmeci.params[9] in ('deu', 262144):
 			text = resub(german_fixes, text)
 		if  _ibmeci.params[9] in ('ptb', 458752) and _ibmeci.isIBM:
