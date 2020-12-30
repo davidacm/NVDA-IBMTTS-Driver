@@ -58,7 +58,7 @@ english_fixes = {
 }
 english_ibm_fixes = {
 	#Prevents the synth from spelling out everything if a punctuation mark follows a word.
-	re.compile(br"([a-z]+)([\x7e\x23\x24\x25\x5e\x2a\x28\x7b\x7c\x5c\x5b\x3c\x25\x2022])", re.I): br"\1 \2",
+	re.compile(br"([a-z]+)([\x7e\x23\x24\x25\x5e\x2a\x28\x7b\x7c\x5c\x5b\x3c\x25\x95])", re.I): br"\1 \2",
 	#Don't break phrases like books).
 	re.compile(br"([a-z]+)\s+(\(s\))", re.I): br"\1\2",
 	#Adds support for spaced parentheses.
