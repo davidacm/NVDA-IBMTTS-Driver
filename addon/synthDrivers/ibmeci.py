@@ -61,8 +61,6 @@ english_ibm_fixes = {
 	re.compile(br"([a-z]+)([\x7e\x23\x24\x25\x5e\x2a\x28\x7b\x7c\x5c\x5b\x3c\x25\x95])", re.I): br"\1 \2",
 	#Don't break phrases like books).
 	re.compile(br"([a-z]+)\s+(\(s\))", re.I): br"\1\2",
-	#Adds support for spaced parentheses.
-	re.compile(br"(\(+)\s+([a-z]+)\s+(\)+)", re.I): br"\1\2\3",
 	#Removes spaces if a string is followed by a punctuation mark, since ViaVoice doesn't tolerate that.
 	re.compile(br"([a-z]+|\d+|\W+)\s+([\x3a\x2e\x21\x3b\x2c])", re.I): br"\1\2",
 	re.compile(br"(http://|ftp://)([a-z]+)(\W){1,3}([a-z]+)(/*\W){1,3}([a-z]){1}", re.I): br"\1\2\3\4 \5\6",
