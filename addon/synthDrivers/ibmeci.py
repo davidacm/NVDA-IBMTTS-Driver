@@ -68,6 +68,7 @@ english_ibm_fixes = {
 	re.compile(br"(\d+)([\x2d\x2b\x2a\x5e\x2f])(\d+)(\.)(\d+)(\.)(0\W)", re.I): br"\1\2\3\4 \5\6\7",
 	re.compile(br"(\d+)([\x2d\x2b\x2a\x5e\x2f]+)(\d+)([\x2d\x2b\x2a\x5e\x2f]+)([\x2c\x2e+])(0{2,})", re.I): br"\1\2\3\4\5 \6",
 	re.compile(br"(\d+)(\.+)(\d+)(\.+)(0{2,})\s*\.*([\x2d\x2b\x2a\x5e\x2f])", re.I): br"\1\2\3\4 \5\6",
+	re.compile(br"(\d+)\s*([\x2d\x2b\x2a\x5e\x2f])\s*(\d+)(,)(0{2,})", re.I): br"\1\2\3\4 \5",
 }
 spanish_fixes = {
 	# Euros
