@@ -109,7 +109,7 @@ vparams = {}
 
 class EciThread(threading.Thread):
 	def run(self):
-		global vparams, params, speaking, endMarkersCount
+		global vparams, params, speaking, endMarkersCount, isIBM
 		global eciThreadId, dll, handle
 		eciThreadId = windll.kernel32.GetCurrentThreadId()
 		msg = wintypes.MSG()
