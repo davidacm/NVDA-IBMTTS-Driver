@@ -124,6 +124,11 @@ class EciThread(threading.Thread):
 		if v is not None:
 			dictHandles[v[0]]=v[1]
 			dll.eciSetDict(handle,v[1])
+		version=eciVersion()
+		if version>'6.4':
+			isIBM=True
+		else:
+			isIBM=False
 		started.set()
 		while True:
 			user32.GetMessageA(byref(msg), 0, 0, 0)
@@ -392,7 +397,7 @@ def process():
 def eciVersion():
 	ptr=b"       "
 	dll.eciVersion(ptr)
-	return ptr
+	return ptr.decode('ascii')
 
 def getVoiceByLanguage(lang):
 	""" Return the voice corresponding to the given language
