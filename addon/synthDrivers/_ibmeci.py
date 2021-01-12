@@ -44,6 +44,7 @@ class ECIMessage:
 
 class ECICallbackReturn:
 	eciDataNotProcessed, eciDataProcessed, eciDataAbort= range(3)
+isIBM=False
 
 # constants
 samples=3300
@@ -70,7 +71,11 @@ langs={
 	'deu': (262144, _('German'), 'de_DE', 'de'),
 	'ita': (327680, _('Italian'), 'it_IT', 'it'),
 	'enu': (65536, _('American English'), 'en_US', 'en'),
-	'eng': (65537, _('British English'), 'en_UK', '')
+	'eng': (65537, _('British English'), 'en_UK', ''),
+	'swe': (917504, _('Swedish'), 'sv_SE', 'sv'),
+	'nor': (851968, _('Norwegian'), 'nb_NO', 'nb'),
+	'dan': (983040, _('Danish'), 'da_DK', 'da'),
+	'ctt': (720897, _('Hong Kong Cantonese'), 'yue', '')
 }
 
 audioStream = BytesIO()
@@ -104,7 +109,7 @@ vparams = {}
 
 class EciThread(threading.Thread):
 	def run(self):
-		global vparams, params, speaking, endMarkersCount
+		global vparams, params, speaking, endMarkersCount, isIBM
 		global eciThreadId, dll, handle
 		eciThreadId = windll.kernel32.GetCurrentThreadId()
 		msg = wintypes.MSG()
@@ -119,6 +124,11 @@ class EciThread(threading.Thread):
 		if v is not None:
 			dictHandles[v[0]]=v[1]
 			dll.eciSetDict(handle,v[1])
+		version=eciVersion()
+		if version>'6.4':
+			isIBM=True
+		else:
+			isIBM=False
 		started.set()
 		while True:
 			user32.GetMessageA(byref(msg), 0, 0, 0)
@@ -178,10 +188,10 @@ def eciCheck():
 	global ttsPath, dllName, dll
 	dllName = config.conf.profiles[0]['ibmeci']['dllName']
 	ttsPath =  config.conf.profiles[0]['ibmeci']['TTSPath']
-	if path.exists(path.abspath(path.join(path.abspath(path.dirname(__file__)), 'ibmtts'))): ttsPath='ibmtts'
+#	if path.exists(path.abspath(path.join(path.abspath(path.dirname(__file__)), 'ibmtts'))): ttsPath='ibmtts'
 	if  not path.isabs(ttsPath):
 		ttsPath = path.abspath(path.join(path.abspath(path.dirname(__file__)), ttsPath))
-		if path.exists(ttsPath): iniCheck()
+		if path.exists(ttsPath) and not isIBM: iniCheck()
 	if not path.exists(ttsPath): return False
 	if dll: return True
 	try:
@@ -387,7 +397,7 @@ def process():
 def eciVersion():
 	ptr=b"       "
 	dll.eciVersion(ptr)
-	return ptr
+	return ptr.decode('ascii')
 
 def getVoiceByLanguage(lang):
 	""" Return the voice corresponding to the given language

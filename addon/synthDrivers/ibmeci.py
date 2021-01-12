@@ -10,6 +10,7 @@ from synthDriverHandler import SynthDriver,VoiceInfo
 from logHandler import log
 from synthDrivers import _ibmeci
 from synthDrivers._ibmeci import ECIVoiceParam
+from synthDrivers._ibmeci import isIBM
 import addonHandler
 addonHandler.initTranslation()
 
@@ -27,7 +28,7 @@ except:
 	def unicode(s): return s
 
 minRate=40
-maxRate=150
+maxRate=156
 punctuation = b"-,.:;)(?!\x96\x97"
 pause_re = re.compile(br'([a-zA-Z0-9]|\s)([%s])(\2*?)(\s|[\\/]|$)' %punctuation)
 time_re = re.compile(br"(\d):(\d+):(\d+)")
@@ -55,15 +56,36 @@ english_fixes = {
 	re.compile(br"\b(\d+|\W+)?(\w+\_+)?(\_+)?([bcdfghjklmnpqrstvwxz]+)?(\d+)?t+z[s]che", re.I): br"\1 \2 \3 \4 \5 tz sche",
 	re.compile(br"\b(juar[aeou]s)([aeiou]{6,})", re.I): br"\1 \2"
 }
-
+english_ibm_fixes = {
+	#Prevents the synth from spelling out everything if a punctuation mark follows a word.
+	re.compile(br"([a-z]+)([\x7e\x23\x24\x25\x5e\x2a\x28\x7b\x7c\x5c\x5b\x3c\x25\x95])", re.I): br"\1 \2",
+	#Don't break phrases like books).
+	re.compile(br"([a-z]+)\s+(\(s\))", re.I): br"\1\2",
+	#Removes spaces if a string is followed by a punctuation mark, since ViaVoice doesn't tolerate that.
+	re.compile(br"([a-z]+|\d+|\W+)\s+([\x3a\x2e\x21\x3b\x2c])", re.I): br"\1\2",
+	re.compile(br"(http://|ftp://)([a-z]+)(\W){1,3}([a-z]+)(/*\W){1,3}([a-z]){1}", re.I): br"\1\2\3\4 \5\6",
+	re.compile(br"(\d+)([\x2d\x2b\x2a\x5e\x2f])(\d+)(\.)(\d+)(\.)(0{2,})", re.I): br"\1\2\3\4\5\6 \7",
+	re.compile(br"(\d+)([\x2d\x2b\x2a\x5e\x2f])(\d+)(\.)(\d+)(\.)(0\W)", re.I): br"\1\2\3\4 \5\6\7",
+	re.compile(br"(\d+)([\x2d\x2b\x2a\x5e\x2f]+)(\d+)([\x2d\x2b\x2a\x5e\x2f]+)([\x2c\x2e+])(0{2,})", re.I): br"\1\2\3\4\5 \6",
+	re.compile(br"(\d+)(\.+)(\d+)(\.+)(0{2,})\s*\.*([\x2d\x2b\x2a\x5e\x2f])", re.I): br"\1\2\3\4 \5\6",
+	re.compile(br"(\d+)\s*([\x2d\x2b\x2a\x5e\x2f])\s*(\d+)(,)(0{2,})", re.I): br"\1\2\3\4 \5",
+}
 spanish_fixes = {
 	# Euros
 	re.compile(b'([\x80$]\\d{1,3})((\\s\\d{3})+\\.\\d{2})'): r'\1 \2',
+}
+spanish_ibm_fixes = {
+	#ViaVoice's time parser is slightly broken in Spanish, and will crash if the minute part goes from 20 to 59.
+	#For these times, convert the periods to colons.
+	re.compile(br'([0-2][0-4])\.([2-5][0-9])\.([0-5][0-9])'): br'\1:\2:\3',
 }
 german_fixes = {
 # Crash words.
 	re.compile(br'dane-ben', re.I): br'dane- ben',
 	re.compile(br'dage-gen', re.I): br'dage- gen',
+}
+portuguese_ibm_fixes = {
+	re.compile(br'(\d{1,2}):(00):(\d{1,2})'): br'\1:\2 \3',
 }
 
 # fixme: These are only the variant names for enu. Does ECI have a way to obtain names for other languages?
@@ -101,10 +123,17 @@ langsAnnotations={
 	"pt_PT":b"`l7.1",
 	"ja":b"`l8",
 	"ja_JP":b"`l8.0",
+	"fi":b"`l9",
+	"fi_FI":b"`l9.0",
 	"ko":b"`l10",
 	"ko_KR":b"`l10.0",
-	"fi":b"`l9",
-	"fi_FI":b"`l9.0"
+	"yue":b"`l11.1",
+	"nb":b"`l13",
+	"nb_NO":b"`l13.0",
+	"sv":b"`l14",
+	"sv_SE":b"`l14.0",
+	"da":b"`l15",
+	"da_DK":b"`l15.0"
 }
 
 class SynthDriver(synthDriverHandler.SynthDriver):
@@ -234,17 +263,22 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 		#this converts to ansi for anticrash. If this breaks with foreign langs, we can remove it.
 		text = text.encode(self.currentEncoding, 'replace') # special unicode symbols may encode to backquote. For this reason, backquote processing is after this.
 		text = text.rstrip()
-		if _ibmeci.params[9] in (65536, 65537, 393216, 655360): text = resub(english_fixes, text) #Applies to Chinese and Korean as they can read English text and thus inherit the English bugs.
-		if _ibmeci.params[9] in (131072,  131073): text = resub(spanish_fixes, text)
+		if _ibmeci.params[9] in (65536, 65537, 393216, 655360, 720897): text = resub(english_fixes, text) #Applies to all languages with dual language support.
+		if _ibmeci.params[9] in (65536, 65537, 393216, 655360, 720897) and _ibmeci.isIBM: text = resub(english_ibm_fixes, text)
+		if _ibmeci.params[9] in (131072,  131073) and not _ibmeci.isIBM: text = resub(spanish_fixes, text)
+		if _ibmeci.params[9] in ('esp', 131072) and _ibmeci.isIBM: text = resub(spanish_ibm_fixes, text)
 		if _ibmeci.params[9] in (196609, 196608):
 			text = text.replace(br'quil', br'qil') #Sometimes this string make everything buggy with IBMTTS in French
 		if  _ibmeci.params[9] in ('deu', 262144):
 			text = resub(german_fixes, text)
+		if  _ibmeci.params[9] in ('ptb', 458752) and _ibmeci.isIBM:
+			text = resub(portuguese_ibm_fixes, text)
 		if not self._backquoteVoiceTags:
 			text=text.replace(b'`', b' ') # no embedded commands
 		if self._shortpause:
 			text = pause_re.sub(br'\1 `p1\2\3\4', text) # this enforces short, JAWS-like pauses.
-		text = time_re.sub(br'\1:\2 \3', text) # apparently if this isn't done strings like 2:30:15 will only announce 2:30
+		if not _ibmeci.isIBM:
+			text = time_re.sub(br'\1:\2 \3', text) # apparently if this isn't done strings like 2:30:15 will only announce 2:30
 		embeds=b''
 		if self._ABRDICT:
 			embeds+=b"`da1 "
@@ -389,6 +423,7 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 		elif lang == 524288: self.currentEncoding = "cp932"
 		# korean
 		elif lang == 655360: self.currentEncoding = "cp949"
+		elif lang == 720897: self.currentEncoding = "big5"
 		else: self.currentEncoding = "mbcs"
 
 	def _get_lastIndex(self):
