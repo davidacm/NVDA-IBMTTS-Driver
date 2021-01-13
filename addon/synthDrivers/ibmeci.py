@@ -256,7 +256,6 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 			outlist.append((_ibmeci.speak, (b"`ts0",)))
 		outlist.append((_ibmeci.setEndStringMark, ()))
 		outlist.append((_ibmeci.synth, ()))
-#		print(outlist)
 		_ibmeci.eciQueue.put(outlist)
 		_ibmeci.process()
 
