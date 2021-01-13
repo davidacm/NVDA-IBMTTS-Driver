@@ -58,17 +58,17 @@ english_fixes = {
 }
 english_ibm_fixes = {
 	#Prevents the synth from spelling out everything if a punctuation mark follows a word.
-	re.compile(br"([a-z]+)([\x7e\x23\x24\x25\x5e\x2a\x28\x7b\x7c\x5c\x5b\x3c\x25\x95])", re.I): br"\1 \2",
+	re.compile(br"([a-z]+)([~#$%^*({|\\[<%\x95])", re.I): br"\1 \2",
 	#Don't break phrases like books).
 	re.compile(br"([a-z]+)\s+(\(s\))", re.I): br"\1\2",
 	#Removes spaces if a string is followed by a punctuation mark, since ViaVoice doesn't tolerate that.
-	re.compile(br"([a-z]+|\d+|\W+)\s+([\x3a\x2e\x21\x3b\x2c])", re.I): br"\1\2",
+	re.compile(br"([a-z]+|\d+|\W+)\s+([:.!;,])", re.I): br"\1\2",
 	re.compile(br"(http://|ftp://)([a-z]+)(\W){1,3}([a-z]+)(/*\W){1,3}([a-z]){1}", re.I): br"\1\2\3\4 \5\6",
-	re.compile(br"(\d+)([\x2d\x2b\x2a\x5e\x2f])(\d+)(\.)(\d+)(\.)(0{2,})", re.I): br"\1\2\3\4\5\6 \7",
-	re.compile(br"(\d+)([\x2d\x2b\x2a\x5e\x2f])(\d+)(\.)(\d+)(\.)(0\W)", re.I): br"\1\2\3\4 \5\6\7",
-	re.compile(br"(\d+)([\x2d\x2b\x2a\x5e\x2f]+)(\d+)([\x2d\x2b\x2a\x5e\x2f]+)([\x2c\x2e+])(0{2,})", re.I): br"\1\2\3\4\5 \6",
-	re.compile(br"(\d+)(\.+)(\d+)(\.+)(0{2,})\s*\.*([\x2d\x2b\x2a\x5e\x2f])", re.I): br"\1\2\3\4 \5\6",
-	re.compile(br"(\d+)\s*([\x2d\x2b\x2a\x5e\x2f])\s*(\d+)(,)(0{2,})", re.I): br"\1\2\3\4 \5",
+	re.compile(br"(\d+)([-+*^/])(\d+)(\.)(\d+)(\.)(0{2,})", re.I): br"\1\2\3\4\5\6 \7",
+	re.compile(br"(\d+)([-+*^/])(\d+)(\.)(\d+)(\.)(0\W)", re.I): br"\1\2\3\4 \5\6\7",
+	re.compile(br"(\d+)([-+*^/]+)(\d+)([-+*^/]+)([,.+])(0{2,})", re.I): br"\1\2\3\4\5 \6",
+	re.compile(br"(\d+)(\.+)(\d+)(\.+)(0{2,})\s*\.*([-+*^/])", re.I): br"\1\2\3\4 \5\6",
+	re.compile(br"(\d+)\s*([-+*^/])\s*(\d+)(,)(0{2,})", re.I): br"\1\2\3\4 \5",
 }
 spanish_fixes = {
 	# Euros
@@ -256,6 +256,7 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 			outlist.append((_ibmeci.speak, (b"`ts0",)))
 		outlist.append((_ibmeci.setEndStringMark, ()))
 		outlist.append((_ibmeci.synth, ()))
+#		print(outlist)
 		_ibmeci.eciQueue.put(outlist)
 		_ibmeci.process()
 
