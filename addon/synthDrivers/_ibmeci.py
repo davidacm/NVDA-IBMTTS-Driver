@@ -163,6 +163,7 @@ class EciThread(threading.Thread):
 				param_event.set()
 			elif msg.message == WM_KILL:
 				dll.eciDelete(handle)
+				dictHandles.clear()
 				stopped.set()
 				break
 			else:
