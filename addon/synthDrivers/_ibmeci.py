@@ -163,6 +163,7 @@ class EciThread(threading.Thread):
 				param_event.set()
 			elif msg.message == WM_KILL:
 				dll.eciDelete(handle)
+				dictHandles.clear()
 				stopped.set()
 				break
 			else:
@@ -363,7 +364,9 @@ def terminate():
 	callbackQueue= callbackThread= dll= eciQueue=eciThread= handle= idleTimer= onDoneSpeaking= onIndexReached= player = None
 
 def setVoice(vl):
-		user32.PostThreadMessageA(eciThreadId, WM_PARAM, vl, ECIParam.eciLanguageDialect)
+	user32.PostThreadMessageA(eciThreadId, WM_PARAM, vl, ECIParam.eciLanguageDialect)
+	param_event.wait()
+	param_event.clear()
 
 def getVParam(pr):
 	return vparams[pr]
