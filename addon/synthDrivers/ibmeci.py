@@ -86,7 +86,7 @@ langsAnnotations={
 	"en_GB":b"`l1.1",
 	"es":b"`l2",
 	"es_ES":b"`l2.0",
-	"es_ME":b"`l2.1",
+	"es_MX":b"`l2.1",
 	"fr":b"`l3",
 	"fr_FR":b"`l3.0",
 	"fr_CA":b"`l3.1",
