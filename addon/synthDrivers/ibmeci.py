@@ -98,7 +98,6 @@ langsAnnotations={
 	"zh_CN":b"`l6.0",
 	"pt":b"`l7",
 	"pt_BR":b"`l7.0",
-	"pt_PT":b"`l7.1",
 	"ja":b"`l8",
 	"ja_JP":b"`l8.0",
 	"ko":b"`l10",
