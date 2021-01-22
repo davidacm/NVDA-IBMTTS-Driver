@@ -59,7 +59,7 @@ WM_INDEX=1032
 
 langs={
 	'esp': (131072, _('Castilian Spanish'), 'es_ES', 'es'),
-	'esm': (131073, _('Latin American Spanish'), 'es_ME', 'es_CO'),
+	'esm': (131073, _('Latin American Spanish'), 'es_MX', 'es_CO'),
 	'ptb': (458752, _('Brazilian Portuguese'), 'pt_BR', 'pt'),
 	'fra': (196608, _('French'), 'fr_FR', 'fr'),
 	'frc': (196609, _('French Canadian'), 'fr_CA', ''),
