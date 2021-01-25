@@ -12,7 +12,8 @@ The latest release is available to [download from this page](https://github.com/
 * Enable or disable backquote voice tags. Disable it to protect yourself from malicious codes from jokers, enable it to do many fun things with the synthesizer. Requires some extra tweaking with NVDA though to get it to work properly.
 * Rate boost. If the synthesizer does not speak very fast to  you, then enable it and get the maximum voice speed!
 * auto language switching. Let the synthesizer read text to you in the correct language when marked up.
-* anticrash filter expressions. The driver filters known crashing expressions with a comprehensive set of filters.
+* comprehensive filtering. This driver includes a comprehensive set of filters to fix crashes and other odd behavior of the synthesizer.
+* dictionary support. This driver supports the integration of special words, roots, and abbreviation  user dictionaries for each language. Ready-made dictionary sets may be obtained from [the community dictionary repository](https://github.com/thunderdrop/IBMTTSDictionaries) or [mohamed00's alternative repository (with IBM synth dictionaries)](https://github.com/mohamed00/AltIBMTTSDictionaries)
 
 # Requirements.
 ## NVDA.
@@ -20,7 +21,8 @@ The latest release is available to [download from this page](https://github.com/
 
 ## IBMTTS synthesizer libraries.
   This is just the driver, you must   get the libraries from  somewhere else.  
-  This driver supports the slightly newer libraries that add East-Asian language support, and has specific fixes for the proper encoding of text. The older libraries without this should work, though.
+  This driver supports the slightly newer libraries that add East-Asian language support, and has specific fixes for the proper encoding of text. The older libraries without this should work, though.  
+  As of version 21.01, this driver also supports proper integration with the even newer binaries from IBM, rather than just the SpeechWorks binaries. A set of independent fixes for that driver is included, and the additional languages and other differences are accounted for. Only formant voices are supported at present. Thanks to @mohamed00 for this work.
 
 # Installation.
   Just install it as an NVDA add-on. Then open NVDA dialog settings, and set the IBMTTS folder files in the IBMTTS category.
