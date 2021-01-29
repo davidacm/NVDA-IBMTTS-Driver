@@ -6,12 +6,7 @@
 from ctypes import *
 from io import BytesIO
 from os import path
-try:
-	# Python 2.7 imports
-	import Queue as queue 
-except ImportError:
-	# Python 3 import
-	import queue
+import queue
 
 import threading, time
 import config, languageHandler, nvwave, addonHandler

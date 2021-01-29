@@ -14,18 +14,8 @@ from synthDrivers._ibmeci import isIBM
 import addonHandler
 addonHandler.initTranslation()
 
-try: # for python 2.7
-	unicode
-	from synthDriverHandler import BooleanSynthSetting as BooleanDriverSetting,NumericSynthSetting as NumericDriverSetting
-	
-	class synthIndexReached:
-		@classmethod
-		def notify (cls, synth=None, index=None): pass
-	synthDoneSpeaking = synthIndexReached
-except:
-	from driverHandler import BooleanDriverSetting,NumericDriverSetting
-	from synthDriverHandler import synthIndexReached, synthDoneSpeaking
-	def unicode(s): return s
+from driverHandler import BooleanDriverSetting,NumericDriverSetting
+from synthDriverHandler import synthIndexReached, synthDoneSpeaking
 
 minRate=40
 maxRate=156
@@ -190,7 +180,7 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 		charmode=False
 		for item in speechSequence:
 			if isinstance(item, string_types):
-				s = self.processText(unicode(item))
+				s = self.processText(item)
 				outlist.append((_ibmeci.speak, (s,)))
 				last = s
 			elif isinstance(item,speech.IndexCommand):
