@@ -4,7 +4,7 @@
 #synthDrivers/ibmeci.py
 
 import six, synthDriverHandler, languageHandler, config, os, re
-qtry:
+try:
 	from speech.commands import IndexCommand, CharacterModeCommand, LangChangeCommand, BreakCommand, PitchCommand, RateCommand, VolumeCommand
 except ImportError:
 	from speech import IndexCommand, CharacterModeCommand, LangChangeCommand, BreakCommand, PitchCommand, RateCommand, VolumeCommand
@@ -26,7 +26,7 @@ try: # for python 2.7
 		def notify (cls, synth=None, index=None): pass
 	synthDoneSpeaking = synthIndexReached
 except:
-	from driverHandler import BooleanDriverSetting,NumericDriverSetting
+	from autoSettingsUtils.driverSetting import BooleanDriverSetting,NumericDriverSetting
 	from synthDriverHandler import synthIndexReached, synthDoneSpeaking
 	def unicode(s): return s
 
