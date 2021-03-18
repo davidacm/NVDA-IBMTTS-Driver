@@ -75,7 +75,7 @@ msgid "Rate boos&t"
 msgstr "A&umento velocità"
 
 #: addon\synthDrivers\ibmeci.py:104
-msgid "Head Size"
+msgid "Head size"
 msgstr "&Dimensione della voce"
 
 #: addon\synthDrivers\ibmeci.py:105

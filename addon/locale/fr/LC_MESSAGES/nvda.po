@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: IBMTTS for NVDA\n"
 "Report-Msgid-Bugs-To: 'nvda-translations@freelists.org'\n"
 "POT-Creation-Date: 2019-04-22 12:29+0200\n"
-"PO-Revision-Date: 2019-04-27 09:30+0200\n"
+"PO-Revision-Date: 2019-04-22 12:48+0200\n"
 "Last-Translator: Rémy Ruiz <remyruiz@gmail.com>\n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -75,16 +75,16 @@ msgid "Rate boos&t"
 msgstr "Voix t&urbo"
 
 #: addon\synthDrivers\ibmeci.py:92
-msgid "Head Size"
+msgid "Head size"
 msgstr "Taille de la tête"
 
 #: addon\synthDrivers\ibmeci.py:92
 msgid "Roughness"
-msgstr "Raucité"
+msgstr "Enrouement"
 
 #: addon\synthDrivers\ibmeci.py:92
 msgid "Breathiness"
-msgstr "Souffle"
+msgstr "Respiration"
 
 #: addon\synthDrivers\ibmeci.py:92
 msgid "Enable backquote voice &tags"
@@ -227,7 +227,7 @@ msgstr "Erreur lors de la copie des fichiers IBMTTS"
 #: addon\installTasks.py:9
 msgid ""
 "The synthesizer won't be available until you set   IBMTTS files. NVDA won't "
-"show this synthesizer in teh synthesizers lists because you need to set the "
+"show this synthesizer in teh synthesizers list because you need to set the "
 "IBMTTS files location first.\n"
 "\tTo do it open the NVDA settings dialog, select IBMTTS category and use the "
 "\"Browse for  IBMTTS library\" button to select the IBMTTS files folder.\n"
