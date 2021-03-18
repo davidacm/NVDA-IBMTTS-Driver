@@ -14,7 +14,7 @@ from synthDrivers._ibmeci import isIBM
 import addonHandler
 addonHandler.initTranslation()
 
-from driverHandler import BooleanDriverSetting,NumericDriverSetting
+from autoSettingsUtils.driverSetting import BooleanDriverSetting,NumericDriverSetting
 from synthDriverHandler import synthIndexReached, synthDoneSpeaking
 
 minRate=40
