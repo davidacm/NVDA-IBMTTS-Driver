@@ -8,7 +8,7 @@ Die neueste Version kann unter [diesem Link heruntergeladen werden](https://davi
 
 # Funktionen:
 * Anpassung von Stimme, Variante, Geschwindigkeit, Tonhöhe, Betonung und Lautstärke.
-* Extra head size, Roughness, Breathiness parameters settings support. Create your own voice!
+* Zusätzliche Parameter für Kopfgröße, Rauigkeit und Atmung. Erstelle deine eigene Stimme!
 * Verwendung von Backquote-Sprachtags erlauben. Lasse sie zum Schutz vor Schadcode und Scherzkeksen ausgeschaltet oder schalte sie ein, um jede Menge Spaß mit der Sprachausgabe zu haben. Es müssen allerdings auch einige Anpassungen in NVDA vorgenommen werden, damit dies korrekt funktioniert.
 * Geschwindigkeit zusätzlich erhöhen. Falls dir die Sprachausgabe zu langsam ist, schalte diese Option ein und hole das Maximum an Geschwindigkeit heraus!
 * Automatischer Sprachenwechsel. Liest den Text automatisch in der richtigen Sprache vor.
@@ -28,7 +28,7 @@ Die neueste Version kann unter [diesem Link heruntergeladen werden](https://davi
   Du kannst die Erweiterung wie jede normale NVDA-Erweiterung installieren. Öffne danach die NVDA-Einstellungen und wähle die IBMTTS-Dateien in der Kategorie IBMTTS.
   Hier kannst du auch die IBMTTS-Dateien in eine Erweiterung kopieren, um sie lokal zu verwenden.
 
-# Für die Weiterverarbeitung paketieren.
+# Für die Weiterverbreitung paketieren.
   Öffne eine Kommandozeile im Hauptverzeichnis der Erweiterung und lasse den Befehl scons laufen. Die Erstellte Erweiterung wird, sofern keine Fehler aufgetreten sind, im Hauptverzeichnis abgelegt.
 
 ## Hinweise:

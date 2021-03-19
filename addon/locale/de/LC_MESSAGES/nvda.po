@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: 'IBMTTS' '21.03a1'\n"
 "Report-Msgid-Bugs-To: 'nvda-translations@freelists.org'\n"
 "POT-Creation-Date: 2021-03-18 07:53-0600\n"
-"PO-Revision-Date: 2021-03-19 13:10+0100\n"
+"PO-Revision-Date: 2021-03-19 13:19+0100\n"
 "Language-Team: Steffen Schultz <steffenschultz@mailbox.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -100,7 +100,7 @@ msgstr "Rauigkeit"
 
 #: addon\synthDrivers\ibmeci.py:146
 msgid "Breathiness"
-msgstr "Stimmhaftigkeit"
+msgstr "Atmung"
 
 #: addon\synthDrivers\ibmeci.py:147
 msgid "Enable backquote voice &tags"
