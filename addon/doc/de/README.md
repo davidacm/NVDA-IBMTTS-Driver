@@ -1,47 +1,47 @@
-# IBMTTS-Treiber, Erweiterung fürNVDA #
-  Diese Erweiterung ermöglicht das Einbinden der IBMTTS-Sprachausgabe in NVDA.  
-  Die eigentlichen IBMTTS-Bibliotheken dürfen nicht angeboten werden, daher handelt es sich hierbei nur um den Treiber.  
-  Wenn du bei der Verbesserung des Treibers mithelfen möchtest, zögere nicht uns einen Pull-Request zu senden!  
+# IBMTTS-Treiber, Erweiterung fÃ¼rNVDA #
+  Diese Erweiterung ermÃ¶glicht das Einbinden der IBMTTS-Sprachausgabe in NVDA.  
+  Die eigentlichen IBMTTS-Bibliotheken dÃ¼rfen nicht angeboten werden, daher handelt es sich hierbei nur um den Treiber.  
+  Wenn du bei der Verbesserung des Treibers mithelfen mÃ¶chtest, zÃ¶gere nicht uns einen Pull-Request zu senden!  
 
 # Herunterladen.
 Die neueste Version kann unter [diesem Link heruntergeladen werden](https://davidacm.github.io/getlatest/gh/davidacm/NVDA-IBMTTS-Driver)
 
 # Funktionen:
-* Anpassung von Stimme, Variante, Geschwindigkeit, Tonhöhe, Betonung und Lautstärke.
-* Zusätzliche Parameter für Kopfgröße, Rauigkeit und Atmung. Erstelle deine eigene Stimme!
-* Verwendung von Backquote-Sprachtags erlauben. Lasse sie zum Schutz vor Schadcode und Scherzkeksen ausgeschaltet oder schalte sie ein, um jede Menge Spaß mit der Sprachausgabe zu haben. Es müssen allerdings auch einige Anpassungen in NVDA vorgenommen werden, damit dies korrekt funktioniert.
-* Geschwindigkeit zusätzlich erhöhen. Falls dir die Sprachausgabe zu langsam ist, schalte diese Option ein und hole das Maximum an Geschwindigkeit heraus!
+* Anpassung von Stimme, Variante, Geschwindigkeit, TonhÃ¶he, Betonung und LautstÃ¤rke.
+* ZusÃ¤tzliche Parameter fÃ¼r KopfgrÃ¶ÃŸe, Rauigkeit und Atmung. Erstelle deine eigene Stimme!
+* Verwendung von Backquote-Sprachtags erlauben. Lasse sie zum Schutz vor Schadcode und Scherzkeksen ausgeschaltet oder schalte sie ein, um jede Menge SpaÃŸ mit der Sprachausgabe zu haben. Es mÃ¼ssen allerdings auch einige Anpassungen in NVDA vorgenommen werden, damit dies korrekt funktioniert.
+* Geschwindigkeit zusÃ¤tzlich erhÃ¶hen. Falls dir die Sprachausgabe zu langsam ist, schalte diese Option ein und hole das Maximum an Geschwindigkeit heraus!
 * Automatischer Sprachenwechsel. Liest den Text automatisch in der richtigen Sprache vor.
-* Umfangreicher Filter. Dieser Treiber enthält einen umfangreichen Satz aus Filtern, mit denen Abstürze oder seltsames Verhalten der Sprachausgabe vermieden werden.
-* Wörterbuch-Unterstützung. Dieser Treiber erlaubt  das Einbinden spezieller Wörter, Stammwörterbücher sowie Abkürzungswörterbücher für jede Sprache. Fertige Wörterbücher sind im [Community-Dictionary-Repository](https://github.com/thunderdrop/IBMTTSDictionaries) oder im [alternativen Repository von mohamed00 (inklusive IBM-Sprachausgabenwörterbücher)](https://github.com/mohamed00/AltIBMTTSDictionaries) verfügbar
+* Umfangreicher Filter. Dieser Treiber enthÃ¤lt einen umfangreichen Satz aus Filtern, mit denen AbstÃ¼rze oder seltsames Verhalten der Sprachausgabe vermieden werden.
+* WÃ¶rterbuch-UnterstÃ¼tzung. Dieser Treiber erlaubt  das Einbinden spezieller WÃ¶rter, StammwÃ¶rterbÃ¼cher sowie AbkÃ¼rzungswÃ¶rterbÃ¼cher fÃ¼r jede Sprache. Fertige WÃ¶rterbÃ¼cher sind im [Community-Dictionary-Repository](https://github.com/thunderdrop/IBMTTSDictionaries) oder im [alternativen Repository von mohamed00 (inklusive IBM-SprachausgabenwÃ¶rterbÃ¼cher)](https://github.com/mohamed00/AltIBMTTSDictionaries) verfÃ¼gbar
 
 # Voraussetzungen.
 ## NVDA.
-  NVDA 2018.4 oder neuer ist erforderlich. Dieser Treiber ist mit Python 3 kompatibel, und kann auch in zukünftigen NVDA-Versionen genutzt werden. Sobald NVDA mit Pyton 3 veröffentlicht wurde, wird diese Erweiterung nicht mehr mit Python 2.7 kompatibel sein. Bitte verwende daher immer die neueste NVDA-Version. Es ist kostenlos! 
+  NVDA 2018.4 oder neuer ist erforderlich. Dieser Treiber ist mit Python 3 kompatibel, und kann auch in zukÃ¼nftigen NVDA-Versionen genutzt werden. Sobald NVDA mit Pyton 3 verÃ¶ffentlicht wurde, wird diese Erweiterung nicht mehr mit Python 2.7 kompatibel sein. Bitte verwende daher immer die neueste NVDA-Version. Es ist kostenlos! 
 
 ## IBMTTS-Sprachausgabenbibliotheken.
   Dies ist nur der Treiber, du musst dir die Bibliotheken selbst besorgen.  
-  Dieser Treiber unterstützt die etwas neueren Bibliotheken, in denen ostasiatische Sprachen sowie spezifische Fehlerkorrekturen für bessere Textkodierung enthalten sind. Ältere Bibliotheken sollten jedoch auch funktionieren.  
-  Seit Version 21.01 unterstützt der Treiber auch die Integration der noch etwas neueren IBM-Binärdateien, und nicht nur die SpeechWorks-Binärdateien. Ein Satz unabhängiger korrekturen ist für diesen Treiber enthalten, und die zusätzlichen Sprachen und anderen Unterschiede werden berücksichtigt. Nur die Formant-Stimmen werden derzeit unterstützt. Danke an @mohamed00 für diese Arbeit.
+  Dieser Treiber unterstÃ¼tzt die etwas neueren Bibliotheken, in denen ostasiatische Sprachen sowie spezifische Fehlerkorrekturen fÃ¼r bessere Textkodierung enthalten sind. Ã„ltere Bibliotheken sollten jedoch auch funktionieren.  
+  Seit Version 21.01 unterstÃ¼tzt der Treiber auch die Integration der noch etwas neueren IBM-BinÃ¤rdateien, und nicht nur die SpeechWorks-BinÃ¤rdateien. Ein Satz unabhÃ¤ngiger korrekturen ist fÃ¼r diesen Treiber enthalten, und die zusÃ¤tzlichen Sprachen und anderen Unterschiede werden berÃ¼cksichtigt. Nur die Formant-Stimmen werden derzeit unterstÃ¼tzt. Danke an @mohamed00 fÃ¼r diese Arbeit.
 
 # Installation.
-  Du kannst die Erweiterung wie jede normale NVDA-Erweiterung installieren. Öffne danach die NVDA-Einstellungen und wähle die IBMTTS-Dateien in der Kategorie IBMTTS.
+  Du kannst die Erweiterung wie jede normale NVDA-Erweiterung installieren. Ã–ffne danach die NVDA-Einstellungen und wÃ¤hle die IBMTTS-Dateien in der Kategorie IBMTTS.
   Hier kannst du auch die IBMTTS-Dateien in eine Erweiterung kopieren, um sie lokal zu verwenden.
 
-# Für die Weiterverbreitung paketieren.
-  Öffne eine Kommandozeile im Hauptverzeichnis der Erweiterung und lasse den Befehl scons laufen. Die Erstellte Erweiterung wird, sofern keine Fehler aufgetreten sind, im Hauptverzeichnis abgelegt.
+# FÃ¼r die Weiterverbreitung paketieren.
+  Ã–ffne eine Kommandozeile im Hauptverzeichnis der Erweiterung und lasse den Befehl scons laufen. Die Erstellte Erweiterung wird, sofern keine Fehler aufgetreten sind, im Hauptverzeichnis abgelegt.
 
 ## Hinweise:
 
 * Wenn sich die Sprachausgabe in der Erweiterung oder der "eciLibraries"-Erweiterung befindet, aktualisiert der Treiber automatisch die Pfade in den Ini-Dateien, sodass du sie in einer portablen NVDA-Kopie verwenden kannst.
-* Beim Verwenden der Schaltfläche zum Kopieren der IBMTTS-Dateien wird eine neue Erweiterung erstellt. Wenn du IBMTTS wieder deinstallieren möchtest, müssen zwei Erweiterungen deinstalliert werden, nämlich "IBMTTS-Treiber" und "Eci libraries".
+* Beim Verwenden der SchaltflÃ¤che zum Kopieren der IBMTTS-Dateien wird eine neue Erweiterung erstellt. Wenn du IBMTTS wieder deinstallieren mÃ¶chtest, mÃ¼ssen zwei Erweiterungen deinstalliert werden, nÃ¤mlich "IBMTTS-Treiber" und "Eci libraries".
 * Die Scons und Gettext-Werkzeuge in diesem Projekt sind nur mit Python 3 kompatibel. Python 2.7 funktioniert nicht.
-* Du kannst die benötigten IBMTTS-Dateien auch direkt in der Erweiterung ablegen (nur für persönliche Nutzung). Kopiere sie einfach in das Verzeichnis "addon\synthDrivers\ibmtts". Der Standard-Bibliotheksname kann falls notwendig in der Datei "settingsDB.py" angepasst werden.
+* Du kannst die benÃ¶tigten IBMTTS-Dateien auch direkt in der Erweiterung ablegen (nur fÃ¼r persÃ¶nliche Nutzung). Kopiere sie einfach in das Verzeichnis "addon\synthDrivers\ibmtts". Der Standard-Bibliotheksname kann falls notwendig in der Datei "settingsDB.py" angepasst werden.
 
 # Referenzen.
-Dieser Treiber basiert auf dem IBM-TTS-SDK, dessen Dokumentation unter [diesem Link](http://www.wizzardsoftware.com/docs/tts.pdf) verfügbar ist.
+Dieser Treiber basiert auf dem IBM-TTS-SDK, dessen Dokumentation unter [diesem Link](http://www.wizzardsoftware.com/docs/tts.pdf) verfÃ¼gbar ist.
 
-Eine Kopie ist auch in [diesem Repository](https://github.com/david-acm/NVDA-IBMTTS-Driver) erhältlich.
+Eine Kopie ist auch in [diesem Repository](https://github.com/david-acm/NVDA-IBMTTS-Driver) erhÃ¤ltlich.
 
 Siehe die Dateien
 
