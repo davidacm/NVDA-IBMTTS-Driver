@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: 'IBMTTS' '21.03a1'\n"
 "Report-Msgid-Bugs-To: 'nvda-translations@freelists.org'\n"
 "POT-Creation-Date: 2021-03-18 07:53-0600\n"
-"PO-Revision-Date: 2021-03-19 13:19+0100\n"
+"PO-Revision-Date: 2021-03-28 19:05+0200\n"
 "Language-Team: Steffen Schultz <steffenschultz@mailbox.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -88,7 +88,7 @@ msgstr "Kantonesisch (Hong kong)"
 
 #: addon\synthDrivers\ibmeci.py:142
 msgid "Rate boos&t"
-msgstr "Geschwindigkeit er&höhen"
+msgstr "Geschwindigkeit zusätzlich er&höhen"
 
 #: addon\synthDrivers\ibmeci.py:144
 msgid "Head size"
@@ -104,11 +104,11 @@ msgstr "Atmung"
 
 #: addon\synthDrivers\ibmeci.py:147
 msgid "Enable backquote voice &tags"
-msgstr "Backquote-Sprach&tags einschalten"
+msgstr "Backquote-Sprach&tags erlauben"
 
 #: addon\synthDrivers\ibmeci.py:148
 msgid "Enable &abbreviation dictionary"
-msgstr "&Abkürzungswörterbuch einschalten"
+msgstr "&Abkürzungswörterbuch verwenden"
 
 #: addon\synthDrivers\ibmeci.py:149
 msgid "Enable phrase prediction"
@@ -172,9 +172,9 @@ msgid ""
 "portable version of NVDA, please use the \"Copy IBMTTS files into driver add-"
 "on\" button"
 msgstr ""
-"Der Speicherort für die IBMTTS-Dateien wurde festgelegt. Falls du sie in "
-"einer portablen NVDA-Kopie benutzen möchtest, verwende die Schaltfläche zum "
-"kopieren der IBMTTS-Dateien in eine Erweiterung"
+"Der Speicherort für die IBMTTS-Dateien wurde festgelegt. Falls Sie sie in "
+"einer portablen NVDA-Kopie benutzen möchten, verwenden Sie die Schaltfläche "
+"zum kopieren der IBMTTS-Dateien in eine Erweiterung"
 
 #. Translators: The title displayed when the IBMTTS files folder and library name have been set.
 #. Translators: The title  displayed when copying IBMTTS files to Add-on was successful.
@@ -189,7 +189,7 @@ msgid ""
 "like to select another library?"
 msgstr ""
 "Die angegebene Datei scheint keine gültige IBMTTS-Bibliothek zu sein. "
-"Möchtest du eine andere Datei wählen?"
+"Möchten Sie eine andere Datei wählen?"
 
 #: addon\globalPlugins\ibmtts.py:59
 msgid "Error loading library"
@@ -218,8 +218,8 @@ msgstr ""
 "zusätzliche Erweiterung namens \"eciLibraries\" zum Speichern der "
 "Bibliotheken registriert werden? Dies funktioniert möglicherweise nicht mit "
 "einigen IBMTTS-Distributionen.\n"
-"\t\tHinweis: Sofern du die Erweiterung vollständig aus NVDA entfernen "
-"möchtest, müssen hiernach zwei Erweiterungen deinstalliert werden. Neben "
+"\t\tHinweis: Sofern Sie die Erweiterung vollständig aus NVDA entfernen "
+"möchten, müssen hiernach zwei Erweiterungen deinstalliert werden. Neben "
 "dieser Erweiterung auch die Erweiterung \"eciLibraries\""
 
 #. Translators: The title of the Asking dialog displayed when trying to copy IBMTTS files.
@@ -280,9 +280,9 @@ msgstr ""
 "eingebunden wurden. NVDA zeigt diese Sprachausgabe nicht in der "
 "Sprachausgabenliste an, da zuerst der Speicherort für die IBMTTS-Dateien "
 "festgelegt werden muss.\n"
-"\tÖffne die NVDA-Einstellungen und wähle die Kategorie IBMTTS. Verwende die "
-"Schaltfläche \"Nach IBMTTS-Bibliothek suchen\", um den Speicherort der "
-"Dateien festzulegen.\n"
+"\tÖffnen Sie hierzu die NVDA-Einstellungen und wählen die Kategorie IBMTTS. "
+"Verwenden Sie die Schaltfläche \"Nach IBMTTS-Bibliothek suchen\", um den "
+"Speicherort der Dateien festzulegen.\n"
 
 #. Translators: title of message box when user is installing NVDA
 #: addon\installTasks.py:24
