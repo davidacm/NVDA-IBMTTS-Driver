@@ -3,19 +3,30 @@
 # Author: David CM <dhf360@gmail.com> and others.
 #synthDrivers/ibmeci.py
 
-import six, synthDriverHandler, speech, languageHandler, config, os, re
+import six, synthDriverHandler, languageHandler, config, os, re
+from synthDriverHandler import synthDoneSpeaking, SynthDriver, synthIndexReached, VoiceInfo
+
 from collections import OrderedDict
 from six import string_types
-from synthDriverHandler import SynthDriver,VoiceInfo
 from logHandler import log
+
 from synthDrivers import _ibmeci
-from synthDrivers._ibmeci import ECIVoiceParam
-from synthDrivers._ibmeci import isIBM
+from synthDrivers._ibmeci import ECIVoiceParam, isIBM
+
+
+# compatibility with nvda 2021.1 alpha versions.
+try:
+	from speech.commands import BreakCommand, CharacterModeCommand, IndexCommand, LangChangeCommand, PitchCommand, RateCommand, VolumeCommand
+except ImportError:
+	from speech import BreakCommand, CharacterModeCommand, IndexCommand, LangChangeCommand, PitchCommand, RateCommand, VolumeCommand
+
+try:
+	from autoSettingsUtils.driverSetting import BooleanDriverSetting,NumericDriverSetting
+except ImportError:
+	from driverHandler import BooleanDriverSetting,NumericDriverSetting
+
 import addonHandler
 addonHandler.initTranslation()
-
-from autoSettingsUtils.driverSetting import BooleanDriverSetting,NumericDriverSetting
-from synthDriverHandler import synthIndexReached, synthDoneSpeaking
 
 minRate=40
 maxRate=156
@@ -138,13 +149,13 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 		BooleanDriverSetting("shortpause", _("&Shorten pauses"), False),
 		BooleanDriverSetting("sendParams", _("Always Send Current Speech Settings (enable to prevent some tags from sticking, disable for viavoice binary compatibility)"), False))
 	supportedCommands = {
-		speech.commands.IndexCommand,
-		speech.commands.CharacterModeCommand,
-		speech.commands.LangChangeCommand,
-		speech.commands.BreakCommand,
-		speech.commands.PitchCommand,
-		speech.commands.RateCommand,
-		speech.commands.VolumeCommand
+		IndexCommand,
+		CharacterModeCommand,
+		LangChangeCommand,
+		BreakCommand,
+		PitchCommand,
+		RateCommand,
+		VolumeCommand
 	}
 	supportedNotifications = {synthIndexReached, synthDoneSpeaking}
 
@@ -168,9 +179,9 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 		self.currentEncoding = "mbcs"
 
 	PROSODY_ATTRS = {
-		speech.commands.PitchCommand: ECIVoiceParam.eciPitchBaseline,
-		speech.commands.VolumeCommand: ECIVoiceParam.eciVolume,
-		speech.commands.RateCommand: ECIVoiceParam.eciSpeed,
+		PitchCommand: ECIVoiceParam.eciPitchBaseline,
+		VolumeCommand: ECIVoiceParam.eciVolume,
+		RateCommand: ECIVoiceParam.eciSpeed,
 	}
 
 	def speak(self,speechSequence):
@@ -183,9 +194,9 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 				s = self.processText(item)
 				outlist.append((_ibmeci.speak, (s,)))
 				last = s
-			elif isinstance(item,speech.commands.IndexCommand):
+			elif isinstance(item,IndexCommand):
 				outlist.append((_ibmeci.index, (item.index,)))
-			elif isinstance(item,speech.commands.LangChangeCommand):
+			elif isinstance(item,LangChangeCommand):
 				l=None
 				if item.lang in langsAnnotations: l = langsAnnotations[item.lang]
 				elif item.lang and item.lang[0:2] in langsAnnotations: l = langsAnnotations[item.lang[0:2]]
@@ -197,11 +208,11 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 				else:
 					outlist.append((_ibmeci.speak, (langsAnnotations[defaultLanguage],)))
 					self.speakingLanguage = defaultLanguage
-			elif isinstance(item,speech.commands.CharacterModeCommand):
+			elif isinstance(item,CharacterModeCommand):
 				outlist.append((_ibmeci.speak, (b"`ts1" if item.state else b"`ts0",)))
 				if item.state:
 					charmode=True
-			elif isinstance(item,speech.commands.BreakCommand):
+			elif isinstance(item,BreakCommand):
 				# taken from eloquence_threshold (https://github.com/pumper42nickel/eloquence_threshold)
 				# Eloquence doesn't respect delay time in milliseconds.
 				# Therefore we need to adjust waiting time depending on current speech rate
@@ -232,7 +243,7 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 				outlist.append((_ibmeci.speak, (b' `p%d '%(pFactor),)))
 			elif type(item) in self.PROSODY_ATTRS:
 				val = max(0, min(item.newValue, 100))
-				if type(item) == speech.commands.RateCommand: val = self.percentToRate(val)
+				if type(item) == RateCommand: val = self.percentToRate(val)
 				outlist.append((_ibmeci.setProsodyParam, (self.PROSODY_ATTRS[type(item)], val)))
 			else:
 				log.error("Unknown speech: %s"%item)

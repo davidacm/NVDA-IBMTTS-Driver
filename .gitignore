@@ -7,4 +7,6 @@ addon/synthDrivers/ibmtts
 *.mo
 *.py[co]
 *.nvda-addon
+*.code-workspace
+setup.cfg
 .sconsign.dblite
