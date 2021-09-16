@@ -70,7 +70,8 @@ english_ibm_fixes = {
 	re.compile(br"(\d+)([-+*^/])(\d+)(\.)(\d+)(\.)(0\W)", re.I): br"\1\2\3\4 \5\6\7",
 	re.compile(br"(\d+)([-+*^/]+)(\d+)([-+*^/]+)([,.+])(0{2,})", re.I): br"\1\2\3\4\5 \6",
 	re.compile(br"(\d+)(\.+)(\d+)(\.+)(0{2,})\s*\.*([-+*^/])", re.I): br"\1\2\3\4 \5\6",
-	re.compile(br"(\d+)\s*([-+*^/])\s*(\d+)(,)(0{2,})", re.I): br"\1\2\3\4 \5",
+	re.compile(br"(\d+)\s*([-+*^/])\s*(\d+)(,)(00\b)", re.I): br"\1\2\3\4 \5",
+	re.compile(br"(\d+)\s*([-+*^/])\s*(\d+)(,)(0{4,})", re.I): br"\1\2\3\4 \5",
 }
 spanish_fixes = {
 	# Euros
@@ -79,7 +80,7 @@ spanish_fixes = {
 spanish_ibm_fixes = {
 	#ViaVoice's time parser is slightly broken in Spanish, and will crash if the minute part goes from 20 to 59.
 	#For these times, convert the periods to colons.
-	re.compile(br'([0-2][0-4])\.([2-5][0-9])\.([0-5][0-9])'): br'\1:\2:\3',
+	re.compile(br'([0-2]?[0-4])\.([2-5][0-9])\.([0-5][0-9])'): br'\1:\2:\3',
 }
 german_fixes = {
 # Crash words.
