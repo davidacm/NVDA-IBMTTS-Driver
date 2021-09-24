@@ -40,7 +40,7 @@ The latest release is available to [download in this link](https://davidacm.gith
 
 # References.
 This driver is based on the IBM tts sdk, the documentation is available on:
-[this link](http://www.wizzardsoftware.com/docs/tts.pdf)
+[this link](http://web.archive.org/web/20191125091344/http://www.wizzardsoftware.com/docs/tts.pdf)
 
 Or you can get a copy on [this repo](https://github.com/david-acm/NVDA-IBMTTS-Driver)
 
