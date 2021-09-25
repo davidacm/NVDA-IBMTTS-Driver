@@ -17,12 +17,12 @@ The latest release is available to [download in this link](https://davidacm.gith
 
 # Requirements.
 ## NVDA.
-  You need NVDA 2018.4 or later. This driver is compatible with python 3, So you can use it with future NVDA versions. Once NVDA with python 3 is released, this driver will no longer be compatible with python 2.7. Please use the latest NVDA versions. Its free!
+  You need NVDA 2019.3 or later.
 
 ## IBMTTS synthesizer libraries.
   This is just the driver, you must   get the libraries from  somewhere else.  
   This driver supports the slightly newer libraries that add East-Asian language support, and has specific fixes for the proper encoding of text. The older libraries without this should work, though.  
-  As of version 21.01, this driver also supports proper integration with the even newer binaries from IBM, rather than just the SpeechWorks binaries. A set of independent fixes for that driver is included, and the additional languages and other differences are accounted for. Only formant voices are supported at present. Thanks to @mohamed00 for this work.
+  As of version 21.03A1, this driver also works with the even newer libraries from IBM, rather than just the SpeechWorks ones. A set of independent fixes for those libraries is included, and the additional languages and other differences are accounted for. Only formant voices are supported at present. Thanks to @mohamed00 for this work. Note that when using the IBM libraries, you should disable the Always send current speech settings option.
 
 # Installation.
   Just install it as an NVDA add-on. Then open NVDA dialog settings, and set the IBMTTS folder files in the IBMTTS category.
