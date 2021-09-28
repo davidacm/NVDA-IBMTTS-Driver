@@ -22,7 +22,7 @@ La última versión está disponible para [descargar en este enlace](https://dav
 ## Las librerías del sintetizador IBMTTS.
   Esto es solo el controlador, debes buscar las librerías en otro lugar.  
   El controlador soporta las librerías ligeramente más recientes que añaden el soporte del idioma este-asiático, y tiene correcciones específicas para la codificación adecuada del texto. Sin embargo, las librerías más antiguas sin esto deberían funcionar.  
-  A partir de la versión 21.01, el controlador también soporta la integración adecuada con los binarios aún más nuevos de IBM, en lugar de solo los binarios de  SpeechWorks. Se incluye un conjunto de correcciones independientes para ese controlador, y se tienen en cuenta los idiomas adicionales y otras diferencias. Solo se apoyan las voces formantes en la actualidad. Gracias a @mohamed00 por este trabajo. Tenga en cuenta que cuando se utiliza las librerías de IBM, debes deshabilitar la opción Enviar siempre la configuración de voz actual.
+  A partir de la versión 21.03A1, el controlador también funciona con las librerías aún más nuevas de IBM, en lugar de solo los SpeechWorks. Se incluye un conjunto de correcciones independientes para esas librerías, y se tienen en cuenta los idiomas adicionales y otras diferencias. Solo se apoyan las voces formantes en la actualidad. Gracias a @mohamed00 por este trabajo. Tenga en cuenta que cuando se utiliza las librerías de IBM, debes deshabilitar la opción Enviar siempre la configuración de voz actual.
 
 # Instalación.
   Simplemente instálelo como cualquier otro complemento de NVDA. Después abre el diálogo de configuraciones de NVDA, y en la categoría IBMTTS establezca la ruta de los archivos de IBMTTS.
