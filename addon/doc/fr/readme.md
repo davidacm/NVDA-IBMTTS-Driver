@@ -17,12 +17,12 @@ La dernière version est disponible [en téléchargement sur ce lien](https://da
 
 # Exigences.
 ## NVDA.
-  Vous avez besoin de NVDA 2018.4 ou une version ultérieure. Ce pilote est compatible avec Python 3, vous pouvez donc l’utiliser avec les futures versions de NVDA. Une fois que NVDA avec Python 3 sera disponible, ce pilote ne sera plus compatible avec Python 2.7. Veuillez utiliser les dernières versions de NVDA. C'est gratuit !
+  Vous avez besoin de NVDA 2019.3 ou une version ultérieure.
 
 ## Bibliothèques du synthétiseur IBMTTS.
   Ce n'est que le pilote, vous devez vous procurer les bibliothèques ailleurs.  
   Ce pilote prend en charge  les bibliothèques légèrement plus récentes qui ajoutent un support de langue est-asiatique et disposent de corrections spécifiques pour le codage approprié du texte. Cependant, les bibliothèques les plus anciennes sans cela devraient fonctionner.  
-  À partir de la version 21.01, le pilote prend également en charge l'intégration appropriée avec les binaires encore plus récents d'IBM, au lieu de seulement des binaires de  SpeechWorks. Un ensemble de corrections indépendantes est inclus pour ce pilote, et des langues supplémentaires et d'autres différences sont prises en compte. Seules les voix formantes sont prises en charge actuellement. Merci à @mohamed00 pour ce travail.
+  À partir de la version 21.01, le pilote prend également en charge l'intégration appropriée avec les binaires encore plus récents d'IBM, au lieu de seulement des binaires de  SpeechWorks. Un ensemble de corrections indépendantes est inclus pour ce pilote, et des langues supplémentaires et d'autres différences sont prises en compte. Seules les voix formantes sont prises en charge actuellement. Merci à @mohamed00 pour ce travail. Notez que lorsque vous utilisez les bibliothèques IBM, vous devez désactiver l'option Toujours envoyer les paramètres de la voix actuelle.
 
 # Installation.
   Installez-le simplement comme n'importe quel extension NVDA. Ouvrez ensuite les paramètres du dialogue NVDA et dans la catégorie IBMTTS définissez le chemin des fichiers IBMTTS.
