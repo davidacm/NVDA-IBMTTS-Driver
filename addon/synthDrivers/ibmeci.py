@@ -303,7 +303,7 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 	_backquoteVoiceTags=False
 	_ABRDICT=False
 	_phrasePrediction=False
-	_shortpause=False
+	_shortpause=True
 	_sendParams=True
 	def _get_backquoteVoiceTags(self):
 		return self._backquoteVoiceTags
