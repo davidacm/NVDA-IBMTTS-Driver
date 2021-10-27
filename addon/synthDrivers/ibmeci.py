@@ -90,6 +90,10 @@ german_fixes = {
 portuguese_ibm_fixes = {
 	re.compile(br'(\d{1,2}):(00):(\d{1,2})'): br'\1:\2 \3',
 }
+french_ibm_fixes = {
+	re.compile(br'([$\x80])\s*(\d+)\s(000)'): br'\1\2\3',
+	re.compile(br'(\d+)\s(000)\s*([$\x80])'): br'\1\2\3',
+}
 
 # fixme: These are only the variant names for enu. Does ECI have a way to obtain names for other languages?
 variants = {
@@ -275,6 +279,8 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 			text = resub(german_fixes, text)
 		if  _ibmeci.params[9] in ('ptb', 458752) and _ibmeci.isIBM:
 			text = resub(portuguese_ibm_fixes, text)
+		if  _ibmeci.params[9] in ('fra', 196608) and _ibmeci.isIBM:
+			text = resub(french_ibm_fixes, text)
 		if not self._backquoteVoiceTags:
 			text=text.replace(b'`', b' ') # no embedded commands
 		if self._shortpause:
