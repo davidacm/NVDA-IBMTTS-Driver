@@ -91,8 +91,8 @@ portuguese_ibm_fixes = {
 	re.compile(br'(\d{1,2}):(00):(\d{1,2})'): br'\1:\2 \3',
 }
 french_ibm_fixes = {
-	re.compile(br'([$\x80])\s*(\d+)\s(000)'): br'\1\2\3',
-	re.compile(br'(\d+)\s(000)\s*([$\x80])'): br'\1\2\3',
+	re.compile(br'([$\x80\xa3])\s*(\d+)\s(000)'): br'\1\2\3',
+	re.compile(br'(\d+)\s(000)\s*([$\x80\xa3])'): br'\1\2\3',
 }
 
 # fixme: These are only the variant names for enu. Does ECI have a way to obtain names for other languages?
