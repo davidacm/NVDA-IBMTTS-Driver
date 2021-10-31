@@ -153,7 +153,7 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 		BooleanDriverSetting("ABRDICT", _("Enable &abbreviation dictionary"), False),
 		BooleanDriverSetting("phrasePrediction", _("Enable phrase prediction"), False),
 		BooleanDriverSetting("shortpause", _("&Shorten pauses"), False),
-		BooleanDriverSetting("sendParams", _("Always Send Current Speech Settings (enable to prevent some tags from sticking, disable for viavoice binary compatibility)"), False))
+		BooleanDriverSetting("sendParams", _("Always Send Current Speech Settings"), False))
 	supportedCommands = {
 		IndexCommand,
 		CharacterModeCommand,
