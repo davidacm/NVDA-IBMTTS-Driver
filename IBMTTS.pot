@@ -1,14 +1,14 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the 'IBMTTS' package.
+# This file is distributed under the same license as the IBMTTS package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: 'IBMTTS' '21.03a1'\n"
-"Report-Msgid-Bugs-To: 'nvda-translations@freelists.org'\n"
-"POT-Creation-Date: 2021-03-18 07:53-0600\n"
+"Project-Id-Version: IBMTTS 21.09\n"
+"Report-Msgid-Bugs-To: nvda-translations@freelists.org\n"
+"POT-Creation-Date: 2021-10-31 07:42-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -85,42 +85,40 @@ msgstr ""
 msgid "Hong Kong Cantonese"
 msgstr ""
 
-#: addon\synthDrivers\ibmeci.py:142
+#: addon\synthDrivers\ibmeci.py:147
 msgid "Rate boos&t"
 msgstr ""
 
-#: addon\synthDrivers\ibmeci.py:144
+#: addon\synthDrivers\ibmeci.py:149
 msgid "Head size"
 msgstr ""
 
-#: addon\synthDrivers\ibmeci.py:145
+#: addon\synthDrivers\ibmeci.py:150
 msgid "Roughness"
 msgstr ""
 
-#: addon\synthDrivers\ibmeci.py:146
+#: addon\synthDrivers\ibmeci.py:151
 msgid "Breathiness"
 msgstr ""
 
-#: addon\synthDrivers\ibmeci.py:147
+#: addon\synthDrivers\ibmeci.py:152
 msgid "Enable backquote voice &tags"
 msgstr ""
 
-#: addon\synthDrivers\ibmeci.py:148
+#: addon\synthDrivers\ibmeci.py:153
 msgid "Enable &abbreviation dictionary"
 msgstr ""
 
-#: addon\synthDrivers\ibmeci.py:149
+#: addon\synthDrivers\ibmeci.py:154
 msgid "Enable phrase prediction"
 msgstr ""
 
-#: addon\synthDrivers\ibmeci.py:150
+#: addon\synthDrivers\ibmeci.py:155
 msgid "&Shorten pauses"
 msgstr ""
 
-#: addon\synthDrivers\ibmeci.py:151
-msgid ""
-"Always Send Current Speech Settings (enable to prevent some tags from "
-"sticking, disable for viavoice binary compatibility)"
+#: addon\synthDrivers\ibmeci.py:156
+msgid "Always Send Current Speech Settings"
 msgstr ""
 
 #. Translators: This is the label for the IBMTTS settings category in NVDA Settings screen.
