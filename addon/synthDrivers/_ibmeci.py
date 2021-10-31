@@ -184,7 +184,6 @@ def eciCheck():
 	global ttsPath, dllName, dll
 	dllName = config.conf.profiles[0]['ibmeci']['dllName']
 	ttsPath =  config.conf.profiles[0]['ibmeci']['TTSPath']
-#	if path.exists(path.abspath(path.join(path.abspath(path.dirname(__file__)), 'ibmtts'))): ttsPath='ibmtts'
 	if  not path.isabs(ttsPath):
 		ttsPath = path.abspath(path.join(path.abspath(path.dirname(__file__)), ttsPath))
 		if path.exists(ttsPath) and not isIBM: iniCheck()
