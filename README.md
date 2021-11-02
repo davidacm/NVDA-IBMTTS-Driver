@@ -29,7 +29,7 @@ This driver includes several extra options to control various characteristics of
 ## IBMTTS synthesizer libraries.
   This is just the driver, you must   get the libraries from  somewhere else.  
   This driver supports the slightly newer libraries that add East-Asian language support, and has specific fixes for the proper encoding of text. The older libraries without this should work, though.  
-  As of version 21.03A1, this driver also works with the even newer libraries from IBM, rather than just the SpeechWorks ones. A set of independent fixes for those libraries is included, and the additional languages and other differences are accounted for. Only formant voices are supported at present. Thanks to @mohamed00 for this work. Note that when using the IBM libraries, you should disable the Always send current speech settings option.
+  As of version 21.03A1, this driver also works with the even newer libraries from IBM, rather than just the SpeechWorks ones. A set of independent fixes for those libraries is included, and the additional languages and other differences are accounted for. Only formant voices are supported at present. Thanks to @mohamed00 for this work.
 
 # Installation.
   Just install it as an NVDA add-on. Then open NVDA dialog settings, and set the IBMTTS folder files in the IBMTTS category.
