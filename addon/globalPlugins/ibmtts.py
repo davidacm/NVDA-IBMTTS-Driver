@@ -6,7 +6,7 @@
 import os, wx, winUser
 from os import path
 from ctypes import windll
-import config, gui, globalPluginHandler, addonHandler
+import config, globalVars, gui, globalPluginHandler, addonHandler
 from synthDrivers import _settingsDB
 from logHandler import log
 from gui import SettingsPanel
@@ -137,8 +137,10 @@ updateChannel = None''')
 class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 	def __init__(self):
 		super(GlobalPlugin, self).__init__()
-		gui.settingsDialogs.NVDASettingsDialog.categoryClasses.append(IBMTTSSettingsPanel)
+		if not globalVars.appArgs.secure:
+			gui.settingsDialogs.NVDASettingsDialog.categoryClasses.append(IBMTTSSettingsPanel)
 
 	def terminate(self):
 		super(GlobalPlugin, self).terminate()
-		gui.settingsDialogs.NVDASettingsDialog.categoryClasses.remove(IBMTTSSettingsPanel)
+		if not globalVars.appArgs.secure:
+			gui.settingsDialogs.NVDASettingsDialog.categoryClasses.remove(IBMTTSSettingsPanel)
