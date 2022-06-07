@@ -120,6 +120,8 @@ class EciThread(threading.Thread):
 			dll.eciSetParam(handle, ECIParam.eciSampleRate, 1)
 		elif sample_rate == 2:
 			dll.eciSetParam(handle, ECIParam.eciSampleRate, 2)
+		else:
+			dll.eciSetParam(handle, ECIParam.eciSampleRate, 1)
 		params[ECIParam.eciLanguageDialect] = dll.eciGetParam(handle, ECIParam.eciLanguageDialect)
 		# loading of fallback root.dic/main.dic/abbr.dic officially removed as of 20.08-x0_personal, to make room for other languages' dictionaries.
 		v=loadDictForLanguage()
@@ -261,6 +263,8 @@ def bgPlay(stri):
 				player = nvwave.WavePlayer(1, 11025, 16, outputDevice=config.conf["speech"]["outputDevice"])
 			elif sample_rate == 2:
 				player = nvwave.WavePlayer(1, 22050, 16, outputDevice=config.conf["speech"]["outputDevice"])
+			else:
+				player = nvwave.WavePlayer(1, 11025, 16, outputDevice=config.conf["speech"]["outputDevice"])
 		except:
 			player.idle()
 			time.sleep(0.02)
@@ -330,7 +334,9 @@ def initialize(indexCallback, doneCallback):
 	elif sample_rate == 1:
 		player = nvwave.WavePlayer(1, 11025, 16, outputDevice=config.conf["speech"]["outputDevice"])
 	elif sample_rate == 2:
-				player = nvwave.WavePlayer(1, 22050, 16, outputDevice=config.conf["speech"]["outputDevice"])
+		player = nvwave.WavePlayer(1, 22050, 16, outputDevice=config.conf["speech"]["outputDevice"])
+	else:
+		player = nvwave.WavePlayer(1, 11025, 16, outputDevice=config.conf["speech"]["outputDevice"])
 	if not eciCheck():
 		raise RuntimeError("No IBMTTS  synthesizer  available")
 	eciQueue = queue.Queue()
