@@ -56,7 +56,7 @@ english_fixes = {
 	re.compile(br"(re|un|non|anti)cosp", re.I): br"\1kosp",
 	re.compile(br"(EUR[A-Z]+)(\d+)", re.I): br"\1 \2",
 	re.compile(br"\b(\d+|\W+)?(\w+\_+)?(\_+)?([bcdfghjklmnpqrstvwxz]+)?(\d+)?t+z[s]che", re.I): br"\1 \2 \3 \4 \5 tz sche",
-	re.compile(br"\b(juar[aeou]s)([aeiou]{6,})", re.I): br"\1 \2"
+	re.compile(br"\b(juar[aeiou][abcdefghijklmnpqrstuvwxyz])([aeiou]{6,})", re.I): br"\1 \2"
 }
 english_ibm_fixes = {
 	#Prevents the synth from spelling out everything if a punctuation mark follows a word.
