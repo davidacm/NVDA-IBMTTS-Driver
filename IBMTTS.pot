@@ -1,14 +1,14 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the IBMTTS package.
+# This file is distributed under the same license as the 'IBMTTS' package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: IBMTTS 21.09\n"
-"Report-Msgid-Bugs-To: nvda-translations@freelists.org\n"
-"POT-Creation-Date: 2021-10-31 07:42-0400\n"
+"Project-Id-Version: 'IBMTTS' '22.02'\n"
+"Report-Msgid-Bugs-To: 'nvda-translations@freelists.org'\n"
+"POT-Creation-Date: 2022-06-09 13:20-0600\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,71 +17,71 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: addon\synthDrivers\_ibmeci.py:57
+#: addon\synthDrivers\_ibmeci.py:58
 msgid "Castilian Spanish"
 msgstr ""
 
-#: addon\synthDrivers\_ibmeci.py:58
+#: addon\synthDrivers\_ibmeci.py:59
 msgid "Latin American Spanish"
 msgstr ""
 
-#: addon\synthDrivers\_ibmeci.py:59
+#: addon\synthDrivers\_ibmeci.py:60
 msgid "Brazilian Portuguese"
 msgstr ""
 
-#: addon\synthDrivers\_ibmeci.py:60
+#: addon\synthDrivers\_ibmeci.py:61
 msgid "French"
 msgstr ""
 
-#: addon\synthDrivers\_ibmeci.py:61
+#: addon\synthDrivers\_ibmeci.py:62
 msgid "French Canadian"
 msgstr ""
 
-#: addon\synthDrivers\_ibmeci.py:62
+#: addon\synthDrivers\_ibmeci.py:63
 msgid "Finnish"
 msgstr ""
 
-#: addon\synthDrivers\_ibmeci.py:63
+#: addon\synthDrivers\_ibmeci.py:64
 msgid "Chinese"
 msgstr ""
 
-#: addon\synthDrivers\_ibmeci.py:64
+#: addon\synthDrivers\_ibmeci.py:65
 msgid "Japanese"
 msgstr ""
 
-#: addon\synthDrivers\_ibmeci.py:65
+#: addon\synthDrivers\_ibmeci.py:66
 msgid "Korean"
 msgstr ""
 
-#: addon\synthDrivers\_ibmeci.py:66
+#: addon\synthDrivers\_ibmeci.py:67
 msgid "German"
 msgstr ""
 
-#: addon\synthDrivers\_ibmeci.py:67
+#: addon\synthDrivers\_ibmeci.py:68
 msgid "Italian"
 msgstr ""
 
-#: addon\synthDrivers\_ibmeci.py:68
+#: addon\synthDrivers\_ibmeci.py:69
 msgid "American English"
 msgstr ""
 
-#: addon\synthDrivers\_ibmeci.py:69
+#: addon\synthDrivers\_ibmeci.py:70
 msgid "British English"
 msgstr ""
 
-#: addon\synthDrivers\_ibmeci.py:70
+#: addon\synthDrivers\_ibmeci.py:71
 msgid "Swedish"
 msgstr ""
 
-#: addon\synthDrivers\_ibmeci.py:71
+#: addon\synthDrivers\_ibmeci.py:72
 msgid "Norwegian"
 msgstr ""
 
-#: addon\synthDrivers\_ibmeci.py:72
+#: addon\synthDrivers\_ibmeci.py:73
 msgid "Danish"
 msgstr ""
 
-#: addon\synthDrivers\_ibmeci.py:73
+#: addon\synthDrivers\_ibmeci.py:74
 msgid "Hong Kong Cantonese"
 msgstr ""
 
