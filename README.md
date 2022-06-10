@@ -36,7 +36,8 @@ The latest release is available to [download in this link](https://davidacm.gith
 
 ## Contributing to translation.
 
-In order to make your work easier, I have left a translation template in the master branch.
+In order to make your work easier, I have left a 
+[translation template in the master branch.](https://raw.githubusercontent.com/davidacm/NVDA-IBMTTS-Driver/master/IBMTTS.pot)
 If you want to translate this add-on to another language and you don't want to open a github account or install python and other tools needed for the translation, do the following steps:
 
 1. Use

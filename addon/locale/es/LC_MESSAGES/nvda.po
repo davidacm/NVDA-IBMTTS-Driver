@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: IBMTTS for NVDA\n"
 "Report-Msgid-Bugs-To: 'nvda-translations@freelists.org'\n"
-"POT-Creation-Date: 2021-03-18 07:53-0600\n"
-"PO-Revision-Date: 2021-07-24 08:17+0200\n"
+"POT-Creation-Date: 2022-06-09 13:20-0600\n"
+"PO-Revision-Date: 2022-06-09 19:35-0600\n"
 "Last-Translator: Rémy Ruiz <remyruiz@gmail.com>\n"
 "Language-Team: José Manuel Delicado <jmdaweb@hotmail.com>\n"
 "Language: es\n"
@@ -16,117 +16,112 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.8.8\n"
+"X-Generator: Poedit 3.1\n"
 "X-Poedit-SourceCharset: iso-8859-1\n"
 
-#: addon\synthDrivers\_ibmeci.py:57
+#: addon\synthDrivers\_ibmeci.py:58
 msgid "Castilian Spanish"
 msgstr "Español de España"
 
-#: addon\synthDrivers\_ibmeci.py:58
+#: addon\synthDrivers\_ibmeci.py:59
 msgid "Latin American Spanish"
 msgstr "Español latinoamericano"
 
-#: addon\synthDrivers\_ibmeci.py:59
+#: addon\synthDrivers\_ibmeci.py:60
 msgid "Brazilian Portuguese"
 msgstr "Portugués de Brasil"
 
-#: addon\synthDrivers\_ibmeci.py:60
+#: addon\synthDrivers\_ibmeci.py:61
 msgid "French"
 msgstr "Francés"
 
-#: addon\synthDrivers\_ibmeci.py:61
+#: addon\synthDrivers\_ibmeci.py:62
 msgid "French Canadian"
 msgstr "Francés de Canadá"
 
-#: addon\synthDrivers\_ibmeci.py:62
+#: addon\synthDrivers\_ibmeci.py:63
 msgid "Finnish"
 msgstr "Finés"
 
-#: addon\synthDrivers\_ibmeci.py:63
+#: addon\synthDrivers\_ibmeci.py:64
 msgid "Chinese"
 msgstr "Chino"
 
-#: addon\synthDrivers\_ibmeci.py:64
+#: addon\synthDrivers\_ibmeci.py:65
 msgid "Japanese"
 msgstr "Japonés"
 
-#: addon\synthDrivers\_ibmeci.py:65
+#: addon\synthDrivers\_ibmeci.py:66
 msgid "Korean"
 msgstr "Coreano"
 
-#: addon\synthDrivers\_ibmeci.py:66
+#: addon\synthDrivers\_ibmeci.py:67
 msgid "German"
 msgstr "Alemán"
 
-#: addon\synthDrivers\_ibmeci.py:67
+#: addon\synthDrivers\_ibmeci.py:68
 msgid "Italian"
 msgstr "Italiano"
 
-#: addon\synthDrivers\_ibmeci.py:68
+#: addon\synthDrivers\_ibmeci.py:69
 msgid "American English"
 msgstr "Inglés americano"
 
-#: addon\synthDrivers\_ibmeci.py:69
+#: addon\synthDrivers\_ibmeci.py:70
 msgid "British English"
 msgstr "Inglés británico"
 
-#: addon\synthDrivers\_ibmeci.py:70
+#: addon\synthDrivers\_ibmeci.py:71
 msgid "Swedish"
 msgstr "Sueco"
 
-#: addon\synthDrivers\_ibmeci.py:71
+#: addon\synthDrivers\_ibmeci.py:72
 msgid "Norwegian"
 msgstr "Noruego"
 
-#: addon\synthDrivers\_ibmeci.py:72
+#: addon\synthDrivers\_ibmeci.py:73
 msgid "Danish"
 msgstr "Danés"
 
-#: addon\synthDrivers\_ibmeci.py:73
+#: addon\synthDrivers\_ibmeci.py:74
 msgid "Hong Kong Cantonese"
 msgstr "Cantonés de Hong Kong"
 
-#: addon\synthDrivers\ibmeci.py:142
+#: addon\synthDrivers\ibmeci.py:147
 msgid "Rate boos&t"
 msgstr "&Turbo de voz"
 
-#: addon\synthDrivers\ibmeci.py:144
+#: addon\synthDrivers\ibmeci.py:149
 msgid "Head size"
 msgstr "Tamaño de la cabeza"
 
-#: addon\synthDrivers\ibmeci.py:145
+#: addon\synthDrivers\ibmeci.py:150
 msgid "Roughness"
 msgstr "Carraspeo"
 
-#: addon\synthDrivers\ibmeci.py:146
+#: addon\synthDrivers\ibmeci.py:151
 msgid "Breathiness"
 msgstr "Respiración"
 
-#: addon\synthDrivers\ibmeci.py:147
+#: addon\synthDrivers\ibmeci.py:152
 msgid "Enable backquote voice &tags"
 msgstr "Activar &etiquetas de cambio de voz"
 
-#: addon\synthDrivers\ibmeci.py:148
+#: addon\synthDrivers\ibmeci.py:153
 msgid "Enable &abbreviation dictionary"
 msgstr "Habilitar diccionario de abreviaturas"
 
-#: addon\synthDrivers\ibmeci.py:149
+#: addon\synthDrivers\ibmeci.py:154
 msgid "Enable phrase prediction"
 msgstr "habilitar predicción de frases"
 
-#: addon\synthDrivers\ibmeci.py:150
+#: addon\synthDrivers\ibmeci.py:155
 msgid "&Shorten pauses"
 msgstr "Acortar las pausas"
 
-#: addon\synthDrivers\ibmeci.py:151
-msgid ""
-"Always Send Current Speech Settings (enable to prevent some tags from "
-"sticking, disable for viavoice binary compatibility)"
-msgstr ""
-"Enviar siempre la configuración de voz actual (habilitar para evitar que se "
-"peguen algunas etiquetas, deshabilitar si requiere compatibilidad con "
-"viavoice)"
+#: addon\synthDrivers\ibmeci.py:156
+msgid "Always Send Current Speech Settings"
+msgstr "Siempre enviar las configuraciones de voz actuales"
 
 #. Translators: This is the label for the IBMTTS settings category in NVDA Settings screen.
 #: addon\globalPlugins\ibmtts.py:17
@@ -301,6 +296,14 @@ msgstr "Controlador de IBMTTS"
 #: buildVars.py:20
 msgid "This is the IBMTTS synthesizer driver for NVDA."
 msgstr "Este es el controlador del sintetizador IBMTTS para NVDA."
+
+#~ msgid ""
+#~ "Always Send Current Speech Settings (enable to prevent some tags from "
+#~ "sticking, disable for viavoice binary compatibility)"
+#~ msgstr ""
+#~ "Enviar siempre la configuración de voz actual (habilitar para evitar que "
+#~ "se peguen algunas etiquetas, deshabilitar si requiere compatibilidad con "
+#~ "viavoice)"
 
 #~ msgid ""
 #~ "if you are using another copy of IBMTTS or similar with a different name, "
