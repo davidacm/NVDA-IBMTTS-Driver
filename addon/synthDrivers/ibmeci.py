@@ -256,8 +256,9 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 		if last is not None and last[-1] not in punctuation:
 			# check if a pitch command is at the end of the list, because p1 need to be send before this.
 			# index -2 is because -1 always seem to be an index command.
-			if outlist[-2][0] == _ibmeci.setProsodyParam: outlist.insert(-2, (_ibmeci.speak, (b'`p1 ',)))
-			else: outlist.append((_ibmeci.speak, (b'`p1 ',)))
+			if self._shortpause:
+				if outlist[-2][0] == _ibmeci.setProsodyParam: outlist.insert(-2, (_ibmeci.speak, (b'`p1 ',)))
+				else: outlist.append((_ibmeci.speak, (b'`p1 ',)))
 		if charmode:
 			outlist.append((_ibmeci.speak, (b"`ts0",)))
 		outlist.append((_ibmeci.setEndStringMark, ()))
