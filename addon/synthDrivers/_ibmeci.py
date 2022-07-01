@@ -3,7 +3,6 @@
 # Author: David CM <dhf360@gmail.com> and others.
 #synthDrivers/_ibmeci.py
 
-sample_rate=1
 from ctypes import *
 from io import BytesIO
 from os import path
@@ -15,6 +14,8 @@ from logHandler import log
 from . import _settingsDB
 
 addonHandler.initTranslation()
+
+player = None
 
 class  ECIParam:
 	eciSynthMode=0
@@ -114,14 +115,6 @@ class EciThread(threading.Thread):
 		dll.eciRegisterCallback(handle, callback, None)
 		dll.eciSetOutputBuffer(handle, samples, pointer(buffer))
 		dll.eciSetParam(handle, ECIParam.eciInputType, 1)
-		if sample_rate ==0:
-			dll.eciSetParam(handle, ECIParam.eciSampleRate, 0)
-		elif sample_rate == 1:
-			dll.eciSetParam(handle, ECIParam.eciSampleRate, 1)
-		elif sample_rate == 2:
-			dll.eciSetParam(handle, ECIParam.eciSampleRate, 2)
-		else:
-			dll.eciSetParam(handle, ECIParam.eciSampleRate, 1)
 		params[ECIParam.eciLanguageDialect] = dll.eciGetParam(handle, ECIParam.eciLanguageDialect)
 		# loading of fallback root.dic/main.dic/abbr.dic officially removed as of 20.08-x0_personal, to make room for other languages' dictionaries.
 		v=loadDictForLanguage()
@@ -257,14 +250,7 @@ def bgPlay(stri):
 		except FileNotFoundError:
 			# reset the player if the used soundcard is not present. E.G. the total number of sound devices has changed.
 			player.close()
-			if sample_rate == 0:
-				player = nvwave.WavePlayer(1, 8000, 16, outputDevice=config.conf["speech"]["outputDevice"])
-			elif sample_rate == 1:
-				player = nvwave.WavePlayer(1, 11025, 16, outputDevice=config.conf["speech"]["outputDevice"])
-			elif sample_rate == 2:
-				player = nvwave.WavePlayer(1, 22050, 16, outputDevice=config.conf["speech"]["outputDevice"])
-			else:
-				player = nvwave.WavePlayer(1, 11025, 16, outputDevice=config.conf["speech"]["outputDevice"])
+			player = create_player(sample_rate)
 		except:
 			player.idle()
 			time.sleep(0.02)
@@ -329,14 +315,7 @@ def initialize(indexCallback, doneCallback):
 	onIndexReached = indexCallback
 	onDoneSpeaking = doneCallback
 	idleTimer = threading.Timer(0.3, time.sleep) # fake timer because this can't be None.
-	if sample_rate == 0:
-		player = nvwave.WavePlayer(1, 8000, 16, outputDevice=config.conf["speech"]["outputDevice"])
-	elif sample_rate == 1:
-		player = nvwave.WavePlayer(1, 11025, 16, outputDevice=config.conf["speech"]["outputDevice"])
-	elif sample_rate == 2:
-		player = nvwave.WavePlayer(1, 22050, 16, outputDevice=config.conf["speech"]["outputDevice"])
-	else:
-		player = nvwave.WavePlayer(1, 11025, 16, outputDevice=config.conf["speech"]["outputDevice"])
+#	player = create_player(1)
 	if not eciCheck():
 		raise RuntimeError("No IBMTTS  synthesizer  available")
 	eciQueue = queue.Queue()
@@ -392,6 +371,11 @@ def terminate():
 
 def setVoice(vl):
 	user32.PostThreadMessageA(eciThreadId, WM_PARAM, vl, ECIParam.eciLanguageDialect)
+	param_event.wait()
+	param_event.clear()
+
+def setParam(param, val):
+	user32.PostThreadMessageA(eciThreadId, WM_PARAM, val, param)
 	param_event.wait()
 	param_event.clear()
 
@@ -476,3 +460,14 @@ def idlePlayer():
 	if not speaking:
 		player.idle()
 		onDoneSpeaking()
+
+def create_player(sample_rate):
+	if sample_rate == 0:
+		player = nvwave.WavePlayer(1, 8000, 16, outputDevice=config.conf["speech"]["outputDevice"])
+	elif sample_rate == 1:
+		player = nvwave.WavePlayer(1, 11025, 16, outputDevice=config.conf["speech"]["outputDevice"])
+	elif sample_rate == 2:
+		player = nvwave.WavePlayer(1, 22050, 16, outputDevice=config.conf["speech"]["outputDevice"])
+	else:
+		player = nvwave.WavePlayer(1, 11025, 16, outputDevice=config.conf["speech"]["outputDevice"])
+	return player

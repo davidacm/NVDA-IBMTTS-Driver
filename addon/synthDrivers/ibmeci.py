@@ -21,9 +21,10 @@ except ImportError:
 	from speech import BreakCommand, CharacterModeCommand, IndexCommand, LangChangeCommand, PitchCommand, RateCommand, VolumeCommand
 
 try:
-	from autoSettingsUtils.driverSetting import BooleanDriverSetting,NumericDriverSetting
+	from autoSettingsUtils.driverSetting import BooleanDriverSetting,NumericDriverSetting, DriverSetting
+	from autoSettingsUtils.utils import StringParameterInfo
 except ImportError:
-	from driverHandler import BooleanDriverSetting,NumericDriverSetting
+	from driverHandler import BooleanDriverSetting,NumericDriverSetting, DriverSetting
 
 import addonHandler
 addonHandler.initTranslation()
@@ -153,7 +154,9 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 		BooleanDriverSetting("ABRDICT", _("Enable &abbreviation dictionary"), False),
 		BooleanDriverSetting("phrasePrediction", _("Enable phrase prediction"), False),
 		BooleanDriverSetting("shortpause", _("&Shorten pauses"), False),
-		BooleanDriverSetting("sendParams", _("Always Send Current Speech Settings"), False))
+		BooleanDriverSetting("sendParams", _("Always Send Current Speech Settings"), False),
+		DriverSetting('sampleRate', _("Sa&mple Rate"), defaultVal='1'),
+		)
 	supportedCommands = {
 		IndexCommand,
 		CharacterModeCommand,
@@ -183,6 +186,7 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 		self.speakingLanguage=lang
 		self.variant="1"
 		self.currentEncoding = "mbcs"
+		self.sampleRate = '1'
 
 	PROSODY_ATTRS = {
 		PitchCommand: ECIVoiceParam.eciPitchBaseline,
@@ -434,6 +438,27 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 		elif lang == 655360: self.currentEncoding = "cp949"
 		elif lang == 720897: self.currentEncoding = "big5"
 		else: self.currentEncoding = "mbcs"
+
+	def _get_availableSamplerates(self):
+		rates = {}
+		rates["0"] = StringParameterInfo("0", "8 kHz")
+		rates["1"] = StringParameterInfo("1", "11 kHz")
+		if _ibmeci.isIBM:
+			rates["2"] = StringParameterInfo("2", "22 kHz")
+		return rates
+
+	def _set_sampleRate(self, val):
+		val = int(val)
+		if val == 2 and not _ibmeci.isIBM:
+			val = 1
+		self._sample_rate = val
+		if _ibmeci.player is not None:
+			self.cancel()
+		_ibmeci.setParam(_ibmeci.ECIParam.eciSampleRate, val)
+		_ibmeci.player = _ibmeci.create_player(val)
+
+	def _get_sampleRate(self):
+		return str(self._sample_rate)
 
 	def _get_lastIndex(self):
 		#fix?
