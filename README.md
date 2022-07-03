@@ -20,7 +20,7 @@ The latest release is available to [download in this link](https://davidacm.gith
 * Enable phrase prediction: if this option is enabled, the synthesizer will try to predict where pauses would occur in sentences based on their structure, for example, by using words like "and" or "the" as phrase boundaries. If this option is off, it will only pause if commas or other such punctuation is encountered.
 * Shortened pauses: enable this option for shorter punctuation pauses, like those seen in other screen readers.
 * Always send current speech settings: currently, there is a bug in the synthesizer that will occasionally cause the speech and pitch settings to be briefly reset to their default values. The cause of this issue is currently unknown, however a workaround is to continuously send the current speech rate and pitch settings. This option should generally be enabled. However, it should be disabled if you are using IBM binaries, as this setting will cause very long pauses to be inserted that will make them nearly unusable, or if you are reading text that contains backquote voice tags.
-
+* Sample rate: changes the synthesizer's sound quality. Most useful for IBMTTS, where it is possible to set the sample rate to 22 kHz.
 ## Requirements.
 ### NVDA.
   You need NVDA 2019.3 or later.
