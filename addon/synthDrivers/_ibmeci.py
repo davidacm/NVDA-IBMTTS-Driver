@@ -122,7 +122,7 @@ class EciThread(threading.Thread):
 			dictHandles[v[0]]=v[1]
 			dll.eciSetDict(handle,v[1])
 		version=eciVersion()
-		if version>'6.4':
+		if version>'6.2':
 			isIBM=True
 		else:
 			isIBM=False
