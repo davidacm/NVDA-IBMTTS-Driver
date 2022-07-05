@@ -153,8 +153,8 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 		BooleanDriverSetting("backquoteVoiceTags", _("Enable backquote voice &tags"), False),
 		BooleanDriverSetting("ABRDICT", _("Enable &abbreviation dictionary"), False),
 		BooleanDriverSetting("phrasePrediction", _("Enable phras&e prediction"), False),
-		BooleanDriverSetting("shortPause", _("&Shorten pauses"), False),
-		BooleanDriverSetting("sendParams", _("Al&ways Send Current Speech Settings"), False),
+		BooleanDriverSetting("shortPause", _("&Shorten pauses"), False, defaultVal=True),
+		BooleanDriverSetting("sendParams", _("Al&ways Send Current Speech Settings"), False, defaultVal=True),
 		DriverSetting('sampleRate', _("Sa&mple Rate"), defaultVal='1'),
 		)
 	supportedCommands = {

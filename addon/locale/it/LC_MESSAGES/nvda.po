@@ -7,88 +7,132 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 'IBMTTS' '20.02b3'\n"
 "Report-Msgid-Bugs-To: 'nvda-translations@freelists.org'\n"
-"POT-Creation-Date: 2020-02-20 10:45+0100\n"
-"PO-Revision-Date: 2020-02-24 00:53+0100\n"
+"POT-Creation-Date: 2022-07-04 19:57-0600\n"
+"PO-Revision-Date: 2022-07-04 20:03-0600\n"
 "Last-Translator: Chris\n"
 "Language-Team: \n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.6.11\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.1\n"
 
-#: addon\synthDrivers\_ibmeci.py:61
+#: addon\synthDrivers\_ibmeci.py:59
 msgid "Castilian Spanish"
 msgstr "Castilian Spanish"
 
-#: addon\synthDrivers\_ibmeci.py:62
+#: addon\synthDrivers\_ibmeci.py:60
 msgid "Latin American Spanish"
 msgstr "Latin American Spanish"
 
-#: addon\synthDrivers\_ibmeci.py:63
+#: addon\synthDrivers\_ibmeci.py:61
 msgid "Brazilian Portuguese"
 msgstr "Brazilian Portuguese"
 
-#: addon\synthDrivers\_ibmeci.py:64
+#: addon\synthDrivers\_ibmeci.py:62
 msgid "French"
 msgstr "French"
 
-#: addon\synthDrivers\_ibmeci.py:65
+#: addon\synthDrivers\_ibmeci.py:63
 msgid "French Canadian"
 msgstr "French Canadian"
 
-#: addon\synthDrivers\_ibmeci.py:66
+#: addon\synthDrivers\_ibmeci.py:64
 msgid "Finnish"
 msgstr "Finnish"
 
-#: addon\synthDrivers\_ibmeci.py:67
+#: addon\synthDrivers\_ibmeci.py:65
 msgid "Chinese"
 msgstr "Chinese"
 
-#: addon\synthDrivers\_ibmeci.py:68
+#: addon\synthDrivers\_ibmeci.py:66
 msgid "Japanese"
 msgstr "Japanese"
 
-#: addon\synthDrivers\_ibmeci.py:69
+#: addon\synthDrivers\_ibmeci.py:67
 msgid "Korean"
 msgstr "Korean"
 
-#: addon\synthDrivers\_ibmeci.py:70
+#: addon\synthDrivers\_ibmeci.py:68
 msgid "German"
 msgstr "German"
 
-#: addon\synthDrivers\_ibmeci.py:71
+#: addon\synthDrivers\_ibmeci.py:69
 msgid "Italian"
 msgstr "italiano"
 
-#: addon\synthDrivers\_ibmeci.py:72
+#: addon\synthDrivers\_ibmeci.py:70
 msgid "American English"
 msgstr "American English"
 
-#: addon\synthDrivers\_ibmeci.py:73
+#: addon\synthDrivers\_ibmeci.py:71
 msgid "British English"
 msgstr "British English"
 
-#: addon\synthDrivers\ibmeci.py:102
+#: addon\synthDrivers\_ibmeci.py:72
+msgid "Swedish"
+msgstr ""
+
+#: addon\synthDrivers\_ibmeci.py:73
+msgid "Norwegian"
+msgstr ""
+
+#: addon\synthDrivers\_ibmeci.py:74
+#, fuzzy
+#| msgid "Finnish"
+msgid "Danish"
+msgstr "Finnish"
+
+#: addon\synthDrivers\_ibmeci.py:75
+msgid "Hong Kong Cantonese"
+msgstr ""
+
+#: addon\synthDrivers\ibmeci.py:148
 msgid "Rate boos&t"
 msgstr "A&umento velocità"
 
-#: addon\synthDrivers\ibmeci.py:104
-msgid "Head size"
+#: addon\synthDrivers\ibmeci.py:150
+#, fuzzy
+#| msgid "Head size"
+msgid "Hea&d size"
 msgstr "&Dimensione della voce"
 
-#: addon\synthDrivers\ibmeci.py:105
-msgid "Roughness"
+#: addon\synthDrivers\ibmeci.py:151
+#, fuzzy
+#| msgid "Roughness"
+msgid "Rou&ghness"
 msgstr "V&oce rauca"
 
-#: addon\synthDrivers\ibmeci.py:106
-msgid "Breathiness"
+#: addon\synthDrivers\ibmeci.py:152
+#, fuzzy
+#| msgid "Breathiness"
+msgid "Breathi&ness"
 msgstr "Voce aspira&ta"
 
-#: addon\synthDrivers\ibmeci.py:107
+#: addon\synthDrivers\ibmeci.py:153
 msgid "Enable backquote voice &tags"
 msgstr "Abilita backquote vocale e tag"
+
+#: addon\synthDrivers\ibmeci.py:154
+msgid "Enable &abbreviation dictionary"
+msgstr ""
+
+#: addon\synthDrivers\ibmeci.py:155
+msgid "Enable phras&e prediction"
+msgstr ""
+
+#: addon\synthDrivers\ibmeci.py:156
+msgid "&Shorten pauses"
+msgstr ""
+
+#: addon\synthDrivers\ibmeci.py:157
+msgid "Al&ways Send Current Speech Settings"
+msgstr ""
+
+#: addon\synthDrivers\ibmeci.py:158
+msgid "Sa&mple Rate"
+msgstr ""
 
 #. Translators: This is the label for the IBMTTS settings category in NVDA Settings screen.
 #: addon\globalPlugins\ibmtts.py:17
@@ -122,6 +166,7 @@ msgstr "Seleziona la libreria IBMTTS (dll)"
 
 #. Translators: the label for the dynamic link library extension (dll) file type
 #: addon\globalPlugins\ibmtts.py:43
+#, python-brace-format
 msgid "dynamic link library (*.{ext})"
 msgstr "libreria a collegamento dinamico (*.{ext})"
 
@@ -239,21 +284,8 @@ msgstr ""
 "categoria IBMTTS e premi il pulsante \"Cerca libreria IBMTTS\" per "
 "selezionare la cartella dei file.\n"
 
-#. Translators: message box when user is installing the addon in NVDA.
-#: addon\installTasks.py:17
-msgid ""
-"if you are using another copy of IBMTTS or similar with a different name, "
-"you should not load this driver in the same NVDA session. If you do it, NVDA "
-"will fail.\n"
-"To resolve it switch to another synthesizer (E.G espeak) then restart NVDA. "
-"Afther that, you can use this new driver."
-msgstr ""
-"se si utilizza un altro sintetizzatore IBMTTS al caricare questo driver NVDA "
-"smetterà di funzionare. È consigliabile usare un altro sintetizzatore (E.G "
-"espeak). Al successivo riavvio sarà possibile caricare il driver."
-
 #. Translators: title of message box when user is installing NVDA
-#: addon\installTasks.py:23
+#: addon\installTasks.py:24
 msgid "IBMTTS driver for NVDA"
 msgstr "Driver IBMTTS per NVDA"
 
@@ -268,6 +300,18 @@ msgstr "Driver IBMTTS"
 #: buildVars.py:20
 msgid "This is the IBMTTS synthesizer driver for NVDA."
 msgstr "Driver del sintetizzatore IBMTTS per NVDA."
+
+#~ msgid ""
+#~ "if you are using another copy of IBMTTS or similar with a different name, "
+#~ "you should not load this driver in the same NVDA session. If you do it, "
+#~ "NVDA will fail.\n"
+#~ "To resolve it switch to another synthesizer (E.G espeak) then restart "
+#~ "NVDA. Afther that, you can use this new driver."
+#~ msgstr ""
+#~ "se si utilizza un altro sintetizzatore IBMTTS al caricare questo driver "
+#~ "NVDA smetterà di funzionare. È consigliabile usare un altro "
+#~ "sintetizzatore (E.G espeak). Al successivo riavvio sarà possibile "
+#~ "caricare il driver."
 
 #~ msgid ""
 #~ "Are you sure to copy IBMTTS files to local NVDA driver Add-on? It may not "
