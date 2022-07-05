@@ -21,6 +21,7 @@ La última versión está disponible para [descargar en este enlace](https://dav
 * Activar predicción de frases: si esta opción está activada, el sintetizador intentará predecir dónde se producirán las pausas en las frases basándose en su estructura, por ejemplo, utilizando palabras como "y" o "el" como límites de la frase. Si esta opción está desactivada, sólo hará una pausa si se encuentran comas u otros signos de puntuación.
 * Acortar las pausas: active esta opción para obtener pausas de puntuación más cortas, como las que se ven en otros lectores de pantalla.
 * Enviar siempre la configuración de voz actual: actualmente, hay un error en el sintetizador que ocasionalmente hace que la configuración de voz y del tono se restablezca brevemente a sus valores predeterminados. La causa de este problema es actualmente desconocida, sin embargo, una solución es enviar continuamente la configuración actual de la velocidad y el tono. Por lo general, esta opción debería estar activada. Sin embargo, debería estar desactivada si está utilizando binarios de IBM, ya que esta configuración provocará que se inserten pausas muy largas que las harán casi inutilizables, o si está leyendo un texto que contiene etiquetas de voz con comillas.
+* Frecuencia de muestreo: cambia la calidad del sonido del sintetizador. Útil para IBMTTS, donde es posible ajustar la frecuencia de muestreo a 22 kHz.
 
 ## requisitos.
 ### NVDA.
