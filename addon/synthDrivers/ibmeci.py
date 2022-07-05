@@ -153,7 +153,7 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 		BooleanDriverSetting("backquoteVoiceTags", _("Enable backquote voice &tags"), False),
 		BooleanDriverSetting("ABRDICT", _("Enable &abbreviation dictionary"), False),
 		BooleanDriverSetting("phrasePrediction", _("Enable phras&e prediction"), False),
-		BooleanDriverSetting("shortpause", _("&Shorten pauses"), False),
+		BooleanDriverSetting("shortPause", _("&Shorten pauses"), False),
 		BooleanDriverSetting("sendParams", _("Al&ways Send Current Speech Settings"), False),
 		DriverSetting('sampleRate', _("Sa&mple Rate"), defaultVal='1'),
 		)
@@ -257,10 +257,10 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 				outlist.append((_ibmeci.setProsodyParam, (self.PROSODY_ATTRS[type(item)], val)))
 			else:
 				log.error("Unknown speech: %s"%item)
-		if last is not None and last[-1] not in punctuation:
+		if last and last[-1] not in punctuation:
 			# check if a pitch command is at the end of the list, because p1 need to be send before this.
 			# index -2 is because -1 always seem to be an index command.
-			if self._shortpause:
+			if self._shortPause:
 				if outlist[-2][0] == _ibmeci.setProsodyParam: outlist.insert(-2, (_ibmeci.speak, (b'`p1 ',)))
 				else: outlist.append((_ibmeci.speak, (b'`p1 ',)))
 		if charmode:
@@ -288,7 +288,7 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 			text = resub(french_ibm_fixes, text)
 		if not self._backquoteVoiceTags:
 			text=text.replace(b'`', b' ') # no embedded commands
-		if self._shortpause:
+		if self._shortPause:
 			text = pause_re.sub(br'\1 `p1\2\3\4', text) # this enforces short, JAWS-like pauses.
 		if not _ibmeci.isIBM:
 			text = time_re.sub(br'\1:\2 \3', text) # apparently if this isn't done strings like 2:30:15 will only announce 2:30
@@ -314,7 +314,7 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 	_backquoteVoiceTags=False
 	_ABRDICT=False
 	_phrasePrediction=False
-	_shortpause=True
+	_shortPause=True
 	_sendParams=True
 	def _get_backquoteVoiceTags(self):
 		return self._backquoteVoiceTags
@@ -335,12 +335,12 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 		if enable == self._phrasePrediction:
 			return
 		self._phrasePrediction = enable
-	def _get_shortpause(self):
-		return self._shortpause
-	def _set_shortpause(self, enable):
-		if enable == self._shortpause:
+	def _get_shortPause(self):
+		return self._shortPause
+	def _set_shortPause(self, enable):
+		if enable == self._shortPause:
 			return
-		self._shortpause = enable
+		self._shortPause = enable
 	def _get_sendParams(self):
 		return self._sendParams
 	def _set_sendParams(self, enable):
