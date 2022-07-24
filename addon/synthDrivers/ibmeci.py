@@ -37,14 +37,13 @@ pause_re = re.compile(br'([a-zA-Z0-9]|\s)([%s])(\2*?)(\s|[\\/]|$)' %punctuation)
 time_re = re.compile(br"(\d):(\d+):(\d+)")
 
 english_fixes = {
-	#	Does not occur in normal use, however if a dictionary entry contains the Mc prefix, and NVDA splits it up, the synth will crash.
-	#	Also fixes ViaVoice, as the parser is more strict there and doesn't like spaces in Mc names.
+#	Does not occur in normal use, however if a dictionary entry contains the Mc prefix, and NVDA splits it up, the synth will crash.
 	re.compile(br"\b(Mc)\s+([A-Z][a-z]|[A-Z][A-Z]+)"): br"\1\2",
-	# Fixes a weird issue with the date parser. Without this fix, strings like "03 Marble" will be pronounced as "march threerd ble".
+	#Fixes a weird issue with the date parser. Without this fix, strings like "03 Marble" will be pronounced as "march threerd ble".
 	re.compile(br"\b(\d+) (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Sept|Oct|Nov|Dec)([a-z]+)"): br"\1  \2\3",
-	# Don't break UK formatted dates.
+	#Don't break UK formatted dates.
 	re.compile(br"\b(\d+)  (January|February|March|April|May|June|July|August|September|October|November|December)\b"): br"\1 \2",
-	# Crash words, formerly part of anticrash_res.
+	#Crash words, formerly part of anticrash_res.
 	re.compile(br'\b(.*?)c(ae|\xe6)sur(e)?', re.I): br'\1seizur',
 	re.compile(br"\b(|\d+|\W+)h'(r|v)[e]", re.I): br"\1h \2e",
 	re.compile(br"\b(\w+[bdfhjlmnqrvz])(h[he]s)([abcdefghjklmnopqrstvwy]\w+)\b", re.I): br"\1 \2\3",
@@ -60,12 +59,28 @@ english_fixes = {
 	re.compile(br"\b([bcdfghjklmnpqrstvwxz]*juar)([a-z']{9,})", re.I): br"\1 \2"
 }
 english_ibm_fixes = {
-	#Prevents the synth from spelling out everything if a punctuation mark follows a word.
+	#Mostly duplicates english_fixes, but removes unneded replacements
+	#This won't crash, but ViaVoice doesn't like spaces in Mc names.
+	re.compile(br"\b(Mc)\s+([A-Z][a-z]|[A-Z][A-Z]+)"): br"\1\2",
+	re.compile(br'\b(.*?)c(ae|\xe6)sur(e)?', re.I): br'\1seizur',
+	re.compile(br"\b(|\d+|\W+)h'(r|v)[e]", re.I): br"\1h \2e",
+	re.compile(br"\b(\w+[bdfhjlmnqrvz])(h[he]s)([abcdefghjklmnopqrstvwy]\w+)\b", re.I): br"\1 \2\3",
+	re.compile(br"\b(\w+[bdfhjlmnqrvz])(h[he]s)(iron+[degins]?)", re.I): br"\1 \2\3",
+	re.compile(br"\b(\w+'{1,}[bcdfghjklmnpqrstvwxz])'*(h+[he]s)([abcdefghijklmnopqrstvwy]\w+)\b", re.I): br"\1 \2\3",
+	re.compile(br"\b(\w+[bcdfghjklmnpqrstvwxz])('{1,}h+[he]s)([abcdefghijklmnopqrstvwy]\w+)\b", re.I): br"\1 \2\3",
+	re.compile(br"(\d):(\d\d[snrt][tdh])", re.I): br"\1 \2",
+	re.compile(br"\b([bcdfghjklmnpqrstvwxz]+)'([bcdefghjklmnpqrstvwxz']+)'([drtv][aeiou]?)", re.I): br"\1 \2 \3",
+	re.compile(br"\b(you+)'(re)+'([drv]e?)", re.I): br"\1 \2 \3",
+	re.compile(br"(re|un|non|anti)cosp", re.I): br"\1kosp",
+	re.compile(br"\b(\d+|\W+)?(\w+\_+)?(\_+)?([bcdfghjklmnpqrstvwxz]+)?(\d+)?t+z[s]che", re.I): br"\1 \2 \3 \4 \5 tz sche",
+	re.compile(br"\b([bcdfghjklmnpqrstvwxz]*juar)([a-z']{9,})", re.I): br"\1 \2",
+#	Prevents the synth from spelling out everything if a punctuation mark follows a word.
 	re.compile(br"([a-z]+)([~#$%^*({|\\[<%\x95])", re.I): br"\1 \2",
 	#Don't break phrases like books).
 	re.compile(br"([a-z]+)\s+(\(s\))", re.I): br"\1\2",
 	#Removes spaces if a string is followed by a punctuation mark, since ViaVoice doesn't tolerate that.
 	re.compile(br"([a-z]+|\d+|\W+)\s+([:.!;,])", re.I): br"\1\2",
+	#ViaVoice-Specific crash words
 	re.compile(br"(http://|ftp://)([a-z]+)(\W){1,3}([a-z]+)(/*\W){1,3}([a-z]){1}", re.I): br"\1\2\3\4 \5\6",
 	re.compile(br"(\d+)([-+*^/])(\d+)(\.)(\d+)(\.)(0{2,})", re.I): br"\1\2\3\4\5\6 \7",
 	re.compile(br"(\d+)([-+*^/])(\d+)(\.)(\d+)(\.)(0\W)", re.I): br"\1\2\3\4 \5\6\7",
@@ -153,8 +168,8 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 		BooleanDriverSetting("backquoteVoiceTags", _("Enable backquote voice &tags"), False),
 		BooleanDriverSetting("ABRDICT", _("Enable &abbreviation dictionary"), False),
 		BooleanDriverSetting("phrasePrediction", _("Enable phras&e prediction"), False),
-		BooleanDriverSetting("shortpause", _("&Shorten pauses"), False),
-		BooleanDriverSetting("sendParams", _("Al&ways Send Current Speech Settings"), False),
+		BooleanDriverSetting("shortPause", _("&Shorten pauses"), False, defaultVal=True),
+		BooleanDriverSetting("sendParams", _("Al&ways Send Current Speech Settings"), False, defaultVal=True),
 		DriverSetting('sampleRate', _("Sa&mple Rate"), defaultVal='1'),
 		)
 	supportedCommands = {
@@ -257,10 +272,10 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 				outlist.append((_ibmeci.setProsodyParam, (self.PROSODY_ATTRS[type(item)], val)))
 			else:
 				log.error("Unknown speech: %s"%item)
-		if last is not None and last[-1] not in punctuation:
+		if last and last[-1] not in punctuation:
 			# check if a pitch command is at the end of the list, because p1 need to be send before this.
 			# index -2 is because -1 always seem to be an index command.
-			if self._shortpause:
+			if self._shortPause:
 				if outlist[-2][0] == _ibmeci.setProsodyParam: outlist.insert(-2, (_ibmeci.speak, (b'`p1 ',)))
 				else: outlist.append((_ibmeci.speak, (b'`p1 ',)))
 		if charmode:
@@ -274,7 +289,7 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 		#this converts to ansi for anticrash. If this breaks with foreign langs, we can remove it.
 		text = text.encode(self.currentEncoding, 'replace') # special unicode symbols may encode to backquote. For this reason, backquote processing is after this.
 		text = text.rstrip()
-		if _ibmeci.params[9] in (65536, 65537, 393216, 655360, 720897): text = resub(english_fixes, text) #Applies to all languages with dual language support.
+		if _ibmeci.params[9] in (65536, 65537, 393216, 655360, 720897) and not _ibmeci.isIBM: text = resub(english_fixes, text) #Applies to all languages with dual language support.
 		if _ibmeci.params[9] in (65536, 65537, 393216, 655360, 720897) and _ibmeci.isIBM: text = resub(english_ibm_fixes, text)
 		if _ibmeci.params[9] in (131072,  131073) and not _ibmeci.isIBM: text = resub(spanish_fixes, text)
 		if _ibmeci.params[9] in ('esp', 131072) and _ibmeci.isIBM: text = resub(spanish_ibm_fixes, text)
@@ -288,7 +303,7 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 			text = resub(french_ibm_fixes, text)
 		if not self._backquoteVoiceTags:
 			text=text.replace(b'`', b' ') # no embedded commands
-		if self._shortpause:
+		if self._shortPause:
 			text = pause_re.sub(br'\1 `p1\2\3\4', text) # this enforces short, JAWS-like pauses.
 		if not _ibmeci.isIBM:
 			text = time_re.sub(br'\1:\2 \3', text) # apparently if this isn't done strings like 2:30:15 will only announce 2:30
@@ -314,7 +329,7 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 	_backquoteVoiceTags=False
 	_ABRDICT=False
 	_phrasePrediction=False
-	_shortpause=True
+	_shortPause=True
 	_sendParams=True
 	def _get_backquoteVoiceTags(self):
 		return self._backquoteVoiceTags
@@ -335,12 +350,12 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 		if enable == self._phrasePrediction:
 			return
 		self._phrasePrediction = enable
-	def _get_shortpause(self):
-		return self._shortpause
-	def _set_shortpause(self, enable):
-		if enable == self._shortpause:
+	def _get_shortPause(self):
+		return self._shortPause
+	def _set_shortPause(self, enable):
+		if enable == self._shortPause:
 			return
-		self._shortpause = enable
+		self._shortPause = enable
 	def _get_sendParams(self):
 		return self._sendParams
 	def _set_sendParams(self, enable):
