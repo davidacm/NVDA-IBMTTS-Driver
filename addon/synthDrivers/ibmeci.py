@@ -214,6 +214,18 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 		defaultLanguage=self.language
 		outlist = []
 		charmode=False
+		embeds=b''
+		if self._ABRDICT:
+			embeds+=b"`da1 "
+		else:
+			embeds+=b"`da0 "
+		if self._phrasePrediction:
+			embeds+=b"`pp1 "
+		else:
+			embeds+=b"`pp0 "
+		if self._sendParams:
+			embeds+=b"`vv%d `vs%d " % (_ibmeci.getVParam(ECIVoiceParam.eciVolume), _ibmeci.getVParam(ECIVoiceParam.eciSpeed))
+		outlist.append((_ibmeci.speak, (embeds,)))
 		for item in speechSequence:
 			if isinstance(item, string_types):
 				s = self.processText(item)
@@ -283,6 +295,7 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 		outlist.append((_ibmeci.setEndStringMark, ()))
 		outlist.append((_ibmeci.synth, ()))
 		_ibmeci.eciQueue.put(outlist)
+#		print(outlist)
 		_ibmeci.process()
 
 	def processText(self,text):
@@ -307,18 +320,6 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 			text = pause_re.sub(br'\1 `p1\2\3\4', text) # this enforces short, JAWS-like pauses.
 		if not _ibmeci.isIBM:
 			text = time_re.sub(br'\1:\2 \3', text) # apparently if this isn't done strings like 2:30:15 will only announce 2:30
-		embeds=b''
-		if self._ABRDICT:
-			embeds+=b"`da1 "
-		else:
-			embeds+=b"`da0 "
-		if self._phrasePrediction:
-			embeds+=b"`pp1 "
-		else:
-			embeds+=b"`pp0 "
-		if self._sendParams:
-			embeds+=b"`vv%d `vs%d " % (_ibmeci.getVParam(ECIVoiceParam.eciVolume), _ibmeci.getVParam(ECIVoiceParam.eciSpeed))
-		text = b"%s %s" % (embeds.rstrip(), text) # bring all the printf stuff into one call, in one string. This avoids all the concatonation and printf additions of the previous organization.
 		return text
 	def pause(self,switch):
 		_ibmeci.pause(switch)
