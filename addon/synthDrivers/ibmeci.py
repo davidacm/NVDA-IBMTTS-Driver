@@ -56,7 +56,7 @@ english_fixes = {
 	re.compile(br"(re|un|non|anti)cosp", re.I): br"\1kosp",
 	re.compile(br"(EUR[A-Z]+)(\d+)", re.I): br"\1 \2",
 	re.compile(br"\b(\d+|\W+)?(\w+\_+)?(\_+)?([bcdfghjklmnpqrstvwxz]+)?(\d+)?t+z[s]che", re.I): br"\1 \2 \3 \4 \5 tz sche",
-	re.compile(br"\b([bcdfghjklmnpqrstvwxz]*juar)([a-z']{9,})", re.I): br"\1 \2"
+	re.compile(br"(juar)([a-z']{9,})", re.I): br"\1 \2"
 }
 english_ibm_fixes = {
 	#Mostly duplicates english_fixes, but removes unneded replacements
@@ -73,7 +73,7 @@ english_ibm_fixes = {
 	re.compile(br"\b(you+)'(re)+'([drv]e?)", re.I): br"\1 \2 \3",
 	re.compile(br"(re|un|non|anti)cosp", re.I): br"\1kosp",
 	re.compile(br"\b(\d+|\W+)?(\w+\_+)?(\_+)?([bcdfghjklmnpqrstvwxz]+)?(\d+)?t+z[s]che", re.I): br"\1 \2 \3 \4 \5 tz sche",
-	re.compile(br"\b([bcdfghjklmnpqrstvwxz]*juar)([a-z']{9,})", re.I): br"\1 \2",
+	re.compile(br"(juar)([a-z']{9,})", re.I): br"\1 \2",
 #	Prevents the synth from spelling out everything if a punctuation mark follows a word.
 	re.compile(br"([a-z]+)([~#$%^*({|\\[<%\x95])", re.I): br"\1 \2",
 	#Don't break phrases like books).
