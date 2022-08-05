@@ -37,14 +37,13 @@ pause_re = re.compile(br'([a-zA-Z0-9]|\s)([%s])(\2*?)(\s|[\\/]|$)' %punctuation)
 time_re = re.compile(br"(\d):(\d+):(\d+)")
 
 english_fixes = {
-	#	Does not occur in normal use, however if a dictionary entry contains the Mc prefix, and NVDA splits it up, the synth will crash.
-	#	Also fixes ViaVoice, as the parser is more strict there and doesn't like spaces in Mc names.
+#	Does not occur in normal use, however if a dictionary entry contains the Mc prefix, and NVDA splits it up, the synth will crash.
 	re.compile(br"\b(Mc)\s+([A-Z][a-z]|[A-Z][A-Z]+)"): br"\1\2",
-	# Fixes a weird issue with the date parser. Without this fix, strings like "03 Marble" will be pronounced as "march threerd ble".
+	#Fixes a weird issue with the date parser. Without this fix, strings like "03 Marble" will be pronounced as "march threerd ble".
 	re.compile(br"\b(\d+) (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Sept|Oct|Nov|Dec)([a-z]+)"): br"\1  \2\3",
-	# Don't break UK formatted dates.
+	#Don't break UK formatted dates.
 	re.compile(br"\b(\d+)  (January|February|March|April|May|June|July|August|September|October|November|December)\b"): br"\1 \2",
-	# Crash words, formerly part of anticrash_res.
+	#Crash words, formerly part of anticrash_res.
 	re.compile(br'\b(.*?)c(ae|\xe6)sur(e)?', re.I): br'\1seizur',
 	re.compile(br"\b(|\d+|\W+)h'(r|v)[e]", re.I): br"\1h \2e",
 	re.compile(br"\b(\w+[bdfhjlmnqrvz])(h[he]s)([abcdefghjklmnopqrstvwy]\w+)\b", re.I): br"\1 \2\3",
@@ -57,15 +56,31 @@ english_fixes = {
 	re.compile(br"(re|un|non|anti)cosp", re.I): br"\1kosp",
 	re.compile(br"(EUR[A-Z]+)(\d+)", re.I): br"\1 \2",
 	re.compile(br"\b(\d+|\W+)?(\w+\_+)?(\_+)?([bcdfghjklmnpqrstvwxz]+)?(\d+)?t+z[s]che", re.I): br"\1 \2 \3 \4 \5 tz sche",
-	re.compile(br"\b(juar[aeiou][abcdefghijklmnpqrstuvwxyz])([aeiou]{6,})", re.I): br"\1 \2"
+	re.compile(br"(juar)([a-z']{9,})", re.I): br"\1 \2"
 }
 english_ibm_fixes = {
-	#Prevents the synth from spelling out everything if a punctuation mark follows a word.
+	#Mostly duplicates english_fixes, but removes unneded replacements
+	#This won't crash, but ViaVoice doesn't like spaces in Mc names.
+	re.compile(br"\b(Mc)\s+([A-Z][a-z]|[A-Z][A-Z]+)"): br"\1\2",
+	re.compile(br'\b(.*?)c(ae|\xe6)sur(e)?', re.I): br'\1seizur',
+	re.compile(br"\b(|\d+|\W+)h'(r|v)[e]", re.I): br"\1h \2e",
+	re.compile(br"\b(\w+[bdfhjlmnqrvz])(h[he]s)([abcdefghjklmnopqrstvwy]\w+)\b", re.I): br"\1 \2\3",
+	re.compile(br"\b(\w+[bdfhjlmnqrvz])(h[he]s)(iron+[degins]?)", re.I): br"\1 \2\3",
+	re.compile(br"\b(\w+'{1,}[bcdfghjklmnpqrstvwxz])'*(h+[he]s)([abcdefghijklmnopqrstvwy]\w+)\b", re.I): br"\1 \2\3",
+	re.compile(br"\b(\w+[bcdfghjklmnpqrstvwxz])('{1,}h+[he]s)([abcdefghijklmnopqrstvwy]\w+)\b", re.I): br"\1 \2\3",
+	re.compile(br"(\d):(\d\d[snrt][tdh])", re.I): br"\1 \2",
+	re.compile(br"\b([bcdfghjklmnpqrstvwxz]+)'([bcdefghjklmnpqrstvwxz']+)'([drtv][aeiou]?)", re.I): br"\1 \2 \3",
+	re.compile(br"\b(you+)'(re)+'([drv]e?)", re.I): br"\1 \2 \3",
+	re.compile(br"(re|un|non|anti)cosp", re.I): br"\1kosp",
+	re.compile(br"\b(\d+|\W+)?(\w+\_+)?(\_+)?([bcdfghjklmnpqrstvwxz]+)?(\d+)?t+z[s]che", re.I): br"\1 \2 \3 \4 \5 tz sche",
+	re.compile(br"(juar)([a-z']{9,})", re.I): br"\1 \2",
+#	Prevents the synth from spelling out everything if a punctuation mark follows a word.
 	re.compile(br"([a-z]+)([~#$%^*({|\\[<%\x95])", re.I): br"\1 \2",
 	#Don't break phrases like books).
 	re.compile(br"([a-z]+)\s+(\(s\))", re.I): br"\1\2",
 	#Removes spaces if a string is followed by a punctuation mark, since ViaVoice doesn't tolerate that.
 	re.compile(br"([a-z]+|\d+|\W+)\s+([:.!;,])", re.I): br"\1\2",
+	#ViaVoice-Specific crash words
 	re.compile(br"(http://|ftp://)([a-z]+)(\W){1,3}([a-z]+)(/*\W){1,3}([a-z]){1}", re.I): br"\1\2\3\4 \5\6",
 	re.compile(br"(\d+)([-+*^/])(\d+)(\.)(\d+)(\.)(0{2,})", re.I): br"\1\2\3\4\5\6 \7",
 	re.compile(br"(\d+)([-+*^/])(\d+)(\.)(\d+)(\.)(0\W)", re.I): br"\1\2\3\4 \5\6\7",
@@ -199,6 +214,18 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 		defaultLanguage=self.language
 		outlist = []
 		charmode=False
+		embeds=b''
+		if self._ABRDICT:
+			embeds+=b"`da1 "
+		else:
+			embeds+=b"`da0 "
+		if self._phrasePrediction:
+			embeds+=b"`pp1 "
+		else:
+			embeds+=b"`pp0 "
+		if self._sendParams:
+			embeds+=b"`vv%d `vs%d " % (_ibmeci.getVParam(ECIVoiceParam.eciVolume), _ibmeci.getVParam(ECIVoiceParam.eciSpeed))
+		outlist.append((_ibmeci.speak, (embeds,)))
 		for item in speechSequence:
 			if isinstance(item, string_types):
 				s = self.processText(item)
@@ -268,13 +295,14 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 		outlist.append((_ibmeci.setEndStringMark, ()))
 		outlist.append((_ibmeci.synth, ()))
 		_ibmeci.eciQueue.put(outlist)
+#		print(outlist)
 		_ibmeci.process()
 
 	def processText(self,text):
 		#this converts to ansi for anticrash. If this breaks with foreign langs, we can remove it.
 		text = text.encode(self.currentEncoding, 'replace') # special unicode symbols may encode to backquote. For this reason, backquote processing is after this.
 		text = text.rstrip()
-		if _ibmeci.params[9] in (65536, 65537, 393216, 655360, 720897): text = resub(english_fixes, text) #Applies to all languages with dual language support.
+		if _ibmeci.params[9] in (65536, 65537, 393216, 655360, 720897) and not _ibmeci.isIBM: text = resub(english_fixes, text) #Applies to all languages with dual language support.
 		if _ibmeci.params[9] in (65536, 65537, 393216, 655360, 720897) and _ibmeci.isIBM: text = resub(english_ibm_fixes, text)
 		if _ibmeci.params[9] in (131072,  131073) and not _ibmeci.isIBM: text = resub(spanish_fixes, text)
 		if _ibmeci.params[9] in ('esp', 131072) and _ibmeci.isIBM: text = resub(spanish_ibm_fixes, text)
@@ -292,18 +320,6 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 			text = pause_re.sub(br'\1 `p1\2\3\4', text) # this enforces short, JAWS-like pauses.
 		if not _ibmeci.isIBM:
 			text = time_re.sub(br'\1:\2 \3', text) # apparently if this isn't done strings like 2:30:15 will only announce 2:30
-		embeds=b''
-		if self._ABRDICT:
-			embeds+=b"`da1 "
-		else:
-			embeds+=b"`da0 "
-		if self._phrasePrediction:
-			embeds+=b"`pp1 "
-		else:
-			embeds+=b"`pp0 "
-		if self._sendParams:
-			embeds+=b"`vv%d `vs%d " % (_ibmeci.getVParam(ECIVoiceParam.eciVolume), _ibmeci.getVParam(ECIVoiceParam.eciSpeed))
-		text = b"%s %s" % (embeds.rstrip(), text) # bring all the printf stuff into one call, in one string. This avoids all the concatonation and printf additions of the previous organization.
 		return text
 	def pause(self,switch):
 		_ibmeci.pause(switch)
