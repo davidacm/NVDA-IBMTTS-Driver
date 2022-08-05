@@ -6,6 +6,10 @@
 ## Download.
 The latest release is available to [download in this link](https://davidacm.github.io/getlatest/gh/davidacm/NVDA-IBMTTS-Driver)
 
+## What is IBMTTS synthesizer?
+
+ViaVoice TTS is a text-to-speech engine developed by IBM, which synthesizes textual representation of human language into speech.
+
 ## Features:
 
 * Voice, variant, rate, pitch, inflection and volume  setting support.
@@ -82,9 +86,14 @@ add-on, the driver will update the ini library paths automatically. So you can u
 This driver is based on the IBM tts sdk, the documentation is available on:
 [this link](http://web.archive.org/web/20191125091344/http://www.wizzardsoftware.com/docs/tts.pdf)
 
-Or you can get a copy on [this repo](https://github.com/david-acm/NVDA-IBMTTS-Driver)
+also at the university of columbia in
+[this link](http://www1.cs.columbia.edu/~hgs/research/projects/simvoice/simvoice/docs/tts.pdf)
 
-See the files
+Or you can get a backup copy on [this repo](https://github.com/david-acm/NVDA-IBMTTS-Driver)
+
+[pyibmtts: Python wrapper for IBM TTS developed by Peter Parente](https://sourceforge.net/projects/ibmtts-sdk/)
+
+See the backup files here:
 
 [tts.pdf](https://cdn.jsdelivr.net/gh/davidacm/NVDA-IBMTTS-Driver/apiReference/tts.pdf)
 or [tts.txt.](https://cdn.jsdelivr.net/gh/davidacm/NVDA-IBMTTS-Driver/apiReference/tts.txt)
