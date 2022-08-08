@@ -11,7 +11,7 @@ from six import string_types
 from logHandler import log
 
 from synthDrivers import _ibmeci
-from synthDrivers._ibmeci import ECIVoiceParam, isIBM
+from synthDrivers._ibmeci import ECIParam, ECIVoiceParam, isIBM
 
 
 # compatibility with nvda 2021.1 alpha versions.
@@ -214,11 +214,11 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 		defaultLanguage=self.language
 		outlist = []
 		charmode=False
-		embeds=b''
 		if self._ABRDICT:
-			embeds+=b"`da1 "
+			_ibmeci.setParam(ECIParam.eciDictionary, 0)
 		else:
-			embeds+=b"`da0 "
+			_ibmeci.setParam(ECIParam.eciDictionary, 1)
+		embeds=b''
 		if self._phrasePrediction:
 			embeds+=b"`pp1 "
 		else:
