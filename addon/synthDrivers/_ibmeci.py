@@ -16,6 +16,8 @@ from . import _settingsDB
 addonHandler.initTranslation()
 
 player = None
+currentSoundcardOutput = None
+currentSampleRate = None
 
 class  ECIParam:
 	eciSynthMode=0
@@ -235,7 +237,7 @@ def setLast(lp):
 	onIndexReached(lp)
 
 def bgPlay(stri):
-	global player
+	global player, currentSampleRate
 	if not player or len(stri) == 0: return
 	# Sometimes player.feed() tries to open the device when it's already open,
 	# causing a WindowsError. This code catches and works around this.
@@ -250,7 +252,7 @@ def bgPlay(stri):
 		except FileNotFoundError:
 			# reset the player if the used soundcard is not present. E.G. the total number of sound devices has changed.
 			player.close()
-			player = create_player(sample_rate)
+			player = createPlayer(currentSampleRate)
 		except:
 			player.idle()
 			time.sleep(0.02)
@@ -315,7 +317,7 @@ def initialize(indexCallback, doneCallback):
 	onIndexReached = indexCallback
 	onDoneSpeaking = doneCallback
 	idleTimer = threading.Timer(0.3, time.sleep) # fake timer because this can't be None.
-#	player = create_player(1)
+#	player = createPlayer(1)
 	if not eciCheck():
 		raise RuntimeError("No IBMTTS  synthesizer  available")
 	eciQueue = queue.Queue()
@@ -326,6 +328,7 @@ def initialize(indexCallback, doneCallback):
 	callbackQueue = queue.Queue()
 	callbackThread = CallbackThread()
 	callbackThread.start()
+	config.post_configProfileSwitch.register(handleSoundcardChange)
 
 def speak(text):
 	# deleted the following fix because is incompatible with NVDA's speech change command. Now send it from speak in ibmeci.py
@@ -366,6 +369,7 @@ def terminate():
 	eciThread.join()
 	callbackThread.join()
 	idleTimer.cancel()	
+	config.post_configProfileSwitch.unregister(handleSoundcardChange)
 	player.close()
 	callbackQueue= callbackThread= dll= eciQueue=eciThread= handle= idleTimer= onDoneSpeaking= onIndexReached= player = None
 
@@ -461,13 +465,22 @@ def idlePlayer():
 		player.idle()
 		onDoneSpeaking()
 
-def create_player(sample_rate):
-	if sample_rate == 0:
-		player = nvwave.WavePlayer(1, 8000, 16, outputDevice=config.conf["speech"]["outputDevice"])
-	elif sample_rate == 1:
-		player = nvwave.WavePlayer(1, 11025, 16, outputDevice=config.conf["speech"]["outputDevice"])
-	elif sample_rate == 2:
-		player = nvwave.WavePlayer(1, 22050, 16, outputDevice=config.conf["speech"]["outputDevice"])
+def createPlayer(sampleRate):
+	global currentSoundcardOutput, currentSampleRate
+	currentSoundcardOutput = config.conf["speech"]["outputDevice"]
+	currentSampleRate = sampleRate
+	if sampleRate == 0:
+		player = nvwave.WavePlayer(1, 8000, 16, outputDevice=currentSoundcardOutput)
+	elif sampleRate == 1:
+		player = nvwave.WavePlayer(1, 11025, 16, outputDevice=currentSoundcardOutput)
+	elif sampleRate == 2:
+		player = nvwave.WavePlayer(1, 22050, 16, outputDevice=currentSoundcardOutput)
 	else:
-		player = nvwave.WavePlayer(1, 11025, 16, outputDevice=config.conf["speech"]["outputDevice"])
+		player = nvwave.WavePlayer(1, 11025, 16, outputDevice=currentSoundcardOutput)
 	return player
+
+def handleSoundcardChange():
+	global currentSoundcardOutput, currentSampleRate, player
+	if currentSoundcardOutput != config.conf["speech"]["outputDevice"]:
+		player.close()
+		player = createPlayer(currentSampleRate)

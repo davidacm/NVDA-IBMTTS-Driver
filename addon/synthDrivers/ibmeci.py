@@ -471,7 +471,7 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 		if _ibmeci.player is not None:
 			self.cancel()
 		_ibmeci.setParam(_ibmeci.ECIParam.eciSampleRate, val)
-		_ibmeci.player = _ibmeci.create_player(val)
+		_ibmeci.player = _ibmeci.createPlayer(val)
 
 	def _get_sampleRate(self):
 		return str(self._sample_rate)

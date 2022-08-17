@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: IBMTTS for NVDA\n"
 "Report-Msgid-Bugs-To: 'nvda-translations@freelists.org'\n"
-"POT-Creation-Date: 2022-07-04 19:57-0600\n"
-"PO-Revision-Date: 2022-07-04 20:24-0600\n"
+"POT-Creation-Date: 2022-08-16 21:09-0600\n"
+"PO-Revision-Date: 2022-08-16 21:11-0600\n"
 "Last-Translator: Rémy Ruiz <remyruiz@gmail.com>\n"
 "Language-Team: José Manuel Delicado <jmdaweb@hotmail.com>\n"
 "Language: es\n"
@@ -19,121 +19,121 @@ msgstr ""
 "X-Generator: Poedit 3.1\n"
 "X-Poedit-SourceCharset: iso-8859-1\n"
 
-#: addon\synthDrivers\_ibmeci.py:59
+#: addon\synthDrivers\_ibmeci.py:61
 msgid "Castilian Spanish"
 msgstr "Español de España"
 
-#: addon\synthDrivers\_ibmeci.py:60
+#: addon\synthDrivers\_ibmeci.py:62
 msgid "Latin American Spanish"
 msgstr "Español latinoamericano"
 
-#: addon\synthDrivers\_ibmeci.py:61
+#: addon\synthDrivers\_ibmeci.py:63
 msgid "Brazilian Portuguese"
 msgstr "Portugués de Brasil"
 
-#: addon\synthDrivers\_ibmeci.py:62
+#: addon\synthDrivers\_ibmeci.py:64
 msgid "French"
 msgstr "Francés"
 
-#: addon\synthDrivers\_ibmeci.py:63
+#: addon\synthDrivers\_ibmeci.py:65
 msgid "French Canadian"
 msgstr "Francés de Canadá"
 
-#: addon\synthDrivers\_ibmeci.py:64
+#: addon\synthDrivers\_ibmeci.py:66
 msgid "Finnish"
 msgstr "Finés"
 
-#: addon\synthDrivers\_ibmeci.py:65
+#: addon\synthDrivers\_ibmeci.py:67
 msgid "Chinese"
 msgstr "Chino"
 
-#: addon\synthDrivers\_ibmeci.py:66
+#: addon\synthDrivers\_ibmeci.py:68
 msgid "Japanese"
 msgstr "Japonés"
 
-#: addon\synthDrivers\_ibmeci.py:67
+#: addon\synthDrivers\_ibmeci.py:69
 msgid "Korean"
 msgstr "Coreano"
 
-#: addon\synthDrivers\_ibmeci.py:68
+#: addon\synthDrivers\_ibmeci.py:70
 msgid "German"
 msgstr "Alemán"
 
-#: addon\synthDrivers\_ibmeci.py:69
+#: addon\synthDrivers\_ibmeci.py:71
 msgid "Italian"
 msgstr "Italiano"
 
-#: addon\synthDrivers\_ibmeci.py:70
+#: addon\synthDrivers\_ibmeci.py:72
 msgid "American English"
 msgstr "Inglés americano"
 
-#: addon\synthDrivers\_ibmeci.py:71
+#: addon\synthDrivers\_ibmeci.py:73
 msgid "British English"
 msgstr "Inglés británico"
 
-#: addon\synthDrivers\_ibmeci.py:72
+#: addon\synthDrivers\_ibmeci.py:74
 msgid "Swedish"
 msgstr "Sueco"
 
-#: addon\synthDrivers\_ibmeci.py:73
+#: addon\synthDrivers\_ibmeci.py:75
 msgid "Norwegian"
 msgstr "Noruego"
 
-#: addon\synthDrivers\_ibmeci.py:74
+#: addon\synthDrivers\_ibmeci.py:76
 msgid "Danish"
 msgstr "Danés"
 
-#: addon\synthDrivers\_ibmeci.py:75
+#: addon\synthDrivers\_ibmeci.py:77
 msgid "Hong Kong Cantonese"
 msgstr "Cantonés de Hong Kong"
 
-#: addon\synthDrivers\ibmeci.py:148
+#: addon\synthDrivers\ibmeci.py:163
 msgid "Rate boos&t"
 msgstr "&Turbo de voz"
 
-#: addon\synthDrivers\ibmeci.py:150
+#: addon\synthDrivers\ibmeci.py:165
 #, fuzzy
 #| msgid "Head size"
 msgid "Hea&d size"
 msgstr "Tamaño de la cabeza"
 
-#: addon\synthDrivers\ibmeci.py:151
+#: addon\synthDrivers\ibmeci.py:166
 #, fuzzy
 #| msgid "Roughness"
 msgid "Rou&ghness"
 msgstr "Carraspeo"
 
-#: addon\synthDrivers\ibmeci.py:152
+#: addon\synthDrivers\ibmeci.py:167
 #, fuzzy
 #| msgid "Breathiness"
 msgid "Breathi&ness"
 msgstr "Respiración"
 
-#: addon\synthDrivers\ibmeci.py:153
+#: addon\synthDrivers\ibmeci.py:168
 msgid "Enable backquote voice &tags"
 msgstr "Activar &etiquetas de cambio de voz"
 
-#: addon\synthDrivers\ibmeci.py:154
+#: addon\synthDrivers\ibmeci.py:169
 msgid "Enable &abbreviation dictionary"
 msgstr "Habilitar diccionario de abreviaturas"
 
-#: addon\synthDrivers\ibmeci.py:155
+#: addon\synthDrivers\ibmeci.py:170
 #, fuzzy
 #| msgid "Enable phrase prediction"
 msgid "Enable phras&e prediction"
 msgstr "habilitar predicción de frases"
 
-#: addon\synthDrivers\ibmeci.py:156
+#: addon\synthDrivers\ibmeci.py:171
 msgid "&Shorten pauses"
 msgstr "Acortar las pausas"
 
-#: addon\synthDrivers\ibmeci.py:157
+#: addon\synthDrivers\ibmeci.py:172
 #, fuzzy
 #| msgid "Always Send Current Speech Settings"
 msgid "Al&ways Send Current Speech Settings"
 msgstr "Siempre enviar las configuraciones de voz actuales"
 
-#: addon\synthDrivers\ibmeci.py:158
+#: addon\synthDrivers\ibmeci.py:173
 msgid "Sa&mple Rate"
 msgstr "&Frecuencia de muestreo"
 
