@@ -166,7 +166,7 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 		NumericDriverSetting("rgh", _("Rou&ghness"), False),
 		NumericDriverSetting("bth", _("Breathi&ness"), False),
 		BooleanDriverSetting("backquoteVoiceTags", _("Enable backquote voice &tags"), False),
-		BooleanDriverSetting("ABRDICT", _("Enable &abbreviation dictionary"), False),
+		BooleanDriverSetting("ABRDICT", _("Enable &abbreviation expansion"), False),
 		BooleanDriverSetting("phrasePrediction", _("Enable phras&e prediction"), False),
 		BooleanDriverSetting("shortPause", _("&Shorten pauses"), False, defaultVal=True),
 		BooleanDriverSetting("sendParams", _("Al&ways Send Current Speech Settings"), False, defaultVal=True),
