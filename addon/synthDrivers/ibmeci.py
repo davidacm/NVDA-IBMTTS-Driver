@@ -114,10 +114,10 @@ french_ibm_fixes = {
 variants = {
 	1:"Reed",
 	2:"Shelley",
-	3:"Bobby",
+	3:"Sandy",
 	4:"Rocko",
-	5:"Glen",
-	6:"Sandy",
+	5:"Eddy",
+	6:"Flo",
 	7:"Grandma",
 	8:"Grandpa"
 }
