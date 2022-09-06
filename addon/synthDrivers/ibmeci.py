@@ -111,7 +111,6 @@ french_ibm_fixes = {
 	re.compile(br'(\d+)\s(000)\s*([$\x80\xa3])'): br'\1\2\3',
 }
 
-# fixme: These are only the variant names for enu. Does ECI have a way to obtain names for other languages?
 variants = {
 	1:"Reed",
 	2:"Shelley",
