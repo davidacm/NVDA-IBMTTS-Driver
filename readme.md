@@ -23,7 +23,7 @@ ViaVoice TTS is a text-to-speech engine developed by IBM, which synthesizes text
 
 ### Extra settings:
 
-* Enable abbreviation dictionary: toggles expannsion of abbreviations. Note that disabling this option will also disable the expansion of any abbreviations specified in user-provided abbreviation dictionaries.
+* Enable abbreviation expansion: toggles expannsion of abbreviations. Note that disabling this option will also disable the expansion of any abbreviations specified in user-provided abbreviation dictionaries.
 * Enable phrase prediction: if this option is enabled, the synthesizer will try to predict where pauses would occur in sentences based on their structure, for example, by using words like "and" or "the" as phrase boundaries. If this option is off, it will only pause if commas or other such punctuation is encountered.
 * Shorten pauses: enable this option for shorter punctuation pauses, like those seen in other screen readers.
 * Always send current speech settings: there is a bug in the synthesizer that will occasionally cause the speech and pitch settings to be briefly reset to their default values. The cause of this issue is currently unknown, however a workaround is to continuously send the current speech rate and pitch settings. This option should generally be enabled. However, it should be disabled if reading text that contains backquote voice tags.
