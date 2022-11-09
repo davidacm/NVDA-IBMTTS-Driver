@@ -458,13 +458,11 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 		rates = {}
 		rates["0"] = StringParameterInfo("0", "8 kHz")
 		rates["1"] = StringParameterInfo("1", "11 kHz")
-		if _ibmeci.isIBM:
-			rates["2"] = StringParameterInfo("2", "22 kHz")
 		return rates
 
 	def _set_sampleRate(self, val):
 		val = int(val)
-		if val == 2 and not _ibmeci.isIBM:
+		if val == 2:
 			val = 1
 		self._sample_rate = val
 		if _ibmeci.player is not None:

@@ -27,7 +27,7 @@ ViaVoice TTS is a text-to-speech engine developed by IBM, which synthesizes text
 * Enable phrase prediction: if this option is enabled, the synthesizer will try to predict where pauses would occur in sentences based on their structure, for example, by using words like "and" or "the" as phrase boundaries. If this option is off, it will only pause if commas or other such punctuation is encountered.
 * Shorten pauses: enable this option for shorter punctuation pauses, like those seen in other screen readers.
 * Always send current speech settings: there is a bug in the synthesizer that will occasionally cause the speech and pitch settings to be briefly reset to their default values. The cause of this issue is currently unknown, however a workaround is to continuously send the current speech rate and pitch settings. This option should generally be enabled. However, it should be disabled if reading text that contains backquote voice tags.
-* Sample rate: changes the synthesizer's sound quality. Most useful for IBMTTS, where it is possible to set the sample rate to 22 kHz.
+* Sample rate: changes the synthesizer's sound quality. Most useful for IBMTTS, where setting the sample rate to 8 kHz enables access to a new set of voices.
 
 ## Requirements.
 ### NVDA.
