@@ -446,7 +446,7 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 		# currently we don't need to consider the decimal part for the conversion.
 		if isinstance(lang, bytes): lang = int(float(lang[2:])) * 65536
 		#chinese
-		if lang == 393216: self.currentEncoding = "gb2312"
+		if lang == 393216: self.currentEncoding = "cp936"
 		# japan
 		elif lang == 524288: self.currentEncoding = "cp932"
 		# korean
