@@ -92,11 +92,13 @@ english_ibm_fixes = {
 spanish_fixes = {
 	# Euros
 	re.compile(b'([\x80$]\\d{1,3})((\\s\\d{3})+\\.\\d{2})'): r'\1 \2',
+	re.compile(br'(\d{13,})(\xaa)'): br'\1 \2',
 }
 spanish_ibm_fixes = {
 	#ViaVoice's time parser is slightly broken in Spanish, and will crash if the minute part goes from 20 to 59.
 	#For these times, convert the periods to colons.
 	re.compile(br'([0-2]?[0-4])\.([2-5][0-9])\.([0-5][0-9])'): br'\1:\2:\3',
+	re.compile(br'(\d{13,})(\xaa)'): br'\1 \2',
 }
 german_fixes = {
 # Crash words.
