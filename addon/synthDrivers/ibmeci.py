@@ -100,6 +100,9 @@ spanish_ibm_fixes = {
 	re.compile(br'([0-2]?[0-4])\.([2-5][0-9])\.([0-5][0-9])'): br'\1:\2:\3',
 	re.compile(br'(\d{13,})(\xaa)'): br'\1 \2',
 }
+spanish_ibm_anticrash = {
+	re.compile(br'(0{1,12})(\xaa)'): br'\1 \2'
+}
 german_fixes = {
 # Crash words.
 	re.compile(br'dane-ben', re.I): br'dane- ben',
@@ -307,6 +310,7 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 		if _ibmeci.params[9] in (65536, 65537, 393216, 655360, 720897) and _ibmeci.isIBM: text = resub(english_ibm_fixes, text)
 		if _ibmeci.params[9] in (131072,  131073) and not _ibmeci.isIBM: text = resub(spanish_fixes, text)
 		if _ibmeci.params[9] in ('esp', 131072) and _ibmeci.isIBM: text = resub(spanish_ibm_fixes, text)
+		if _ibmeci.params[9] in (131072, 131073) and _ibmeci.isIBM: text = resub(spanish_ibm_anticrash, text)
 		if _ibmeci.params[9] in (196609, 196608):
 			text = text.replace(br'quil', br'qil') #Sometimes this string make everything buggy with IBMTTS in French
 		if  _ibmeci.params[9] in ('deu', 262144):
