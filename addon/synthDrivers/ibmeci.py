@@ -91,8 +91,9 @@ english_ibm_fixes = {
 }
 spanish_fixes = {
 	# Euros
-	re.compile(b'([\x80$]\\d{1,3})((\\s\\d{3})+\\.\\d{2})'): r'\1 \2',
-	re.compile(br'(\d{13,})(\xaa)'): br'\1 \2',
+	re.compile(b'([\x80$]\\d{1,3})((\\s\\d{3})+\\.\\d{2})'): br'\1 \2',
+	# fix 0xaa (ordinal femenino) of 13 or more digits ended in (1 2 3 6 7 9).
+	re.compile(br'(\d{12,}[123679])(\xaa)'): br'\1 \2',
 }
 spanish_ibm_fixes = {
 	#ViaVoice's time parser is slightly broken in Spanish, and will crash if the minute part goes from 20 to 59.
