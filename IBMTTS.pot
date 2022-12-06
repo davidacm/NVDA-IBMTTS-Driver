@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 'IBMTTS' 'v22.07.3'\n"
 "Report-Msgid-Bugs-To: 'nvda-translations@freelists.org'\n"
-"POT-Creation-Date: 2022-08-16 21:09-0600\n"
+"POT-Creation-Date: 2022-12-06 16:44-0600\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -85,43 +85,43 @@ msgstr ""
 msgid "Hong Kong Cantonese"
 msgstr ""
 
-#: addon\synthDrivers\ibmeci.py:163
+#: addon\synthDrivers\ibmeci.py:169
 msgid "Rate boos&t"
 msgstr ""
 
-#: addon\synthDrivers\ibmeci.py:165
+#: addon\synthDrivers\ibmeci.py:171
 msgid "Hea&d size"
 msgstr ""
 
-#: addon\synthDrivers\ibmeci.py:166
+#: addon\synthDrivers\ibmeci.py:172
 msgid "Rou&ghness"
 msgstr ""
 
-#: addon\synthDrivers\ibmeci.py:167
+#: addon\synthDrivers\ibmeci.py:173
 msgid "Breathi&ness"
 msgstr ""
 
-#: addon\synthDrivers\ibmeci.py:168
+#: addon\synthDrivers\ibmeci.py:174
 msgid "Enable backquote voice &tags"
 msgstr ""
 
-#: addon\synthDrivers\ibmeci.py:169
-msgid "Enable &abbreviation dictionary"
+#: addon\synthDrivers\ibmeci.py:175
+msgid "Enable &abbreviation expansion"
 msgstr ""
 
-#: addon\synthDrivers\ibmeci.py:170
+#: addon\synthDrivers\ibmeci.py:176
 msgid "Enable phras&e prediction"
 msgstr ""
 
-#: addon\synthDrivers\ibmeci.py:171
+#: addon\synthDrivers\ibmeci.py:177
 msgid "&Shorten pauses"
 msgstr ""
 
-#: addon\synthDrivers\ibmeci.py:172
+#: addon\synthDrivers\ibmeci.py:178
 msgid "Al&ways Send Current Speech Settings"
 msgstr ""
 
-#: addon\synthDrivers\ibmeci.py:173
+#: addon\synthDrivers\ibmeci.py:179
 msgid "Sa&mple Rate"
 msgstr ""
 

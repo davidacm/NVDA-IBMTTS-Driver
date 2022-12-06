@@ -1,0 +1,9 @@
+autopep8==1.6.0
+entrypoints==0.3
+flake8==3.7.9
+Markdown==3.1.1
+mccabe==0.6.1
+pycodestyle==2.5.0
+pyflakes==2.1.1
+SCons==4.3.0
+toml==0.10.2

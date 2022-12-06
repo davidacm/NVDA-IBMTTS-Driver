@@ -75,6 +75,12 @@ para saber cómo empaquetar las bibliotecas en un complemento separado.
 * Las herramientas scons y gettext de este proyecto son compatibles con python 3 únicamente. No funcionan en python 2.7.
 * Puede agregar  los archivos extra requeridos de IBMTTS dentro del complemento (para uso personal solamente). Simplemente cópielos dentro de "addon\synthDrivers\ibmtts". Ajuste el nombre de la librería por defecto en "settingsDB.py" si es necesario.
 
+## Reporte de problemas.
+
+Si encuentra un problema de seguridad con algunas de las bibliotecas compatibles con este controlador, no abra un problema de github ni lo comente en los foros antes de que se resuelva el problema. Informe el problema en [este formulario.](https://docs.google.com/forms/d/123gSqayOAsIQLx1NiI98fEqr46oiJRZ9nNq0_KIF9WU/edit)
+
+Si el problema no perjudica el controlador o el lector de pantallas, abra un [problema de github aquí.](https://github.com/davidacm/NVDA-IBMTTS-Driver/issues)
+
 ## Referencias.
  Este controlador está basado en el SDK de Viavoice de IBM (IBMTTS) la documentación está disponible en [este enlace](http://web.archive.org/web/20191125091344/http://www.wizzardsoftware.com/docs/tts.pdf)
 

@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: IBMTTS for NVDA\n"
 "Report-Msgid-Bugs-To: 'nvda-translations@freelists.org'\n"
-"POT-Creation-Date: 2022-08-16 21:09-0600\n"
-"PO-Revision-Date: 2022-08-16 21:11-0600\n"
+"POT-Creation-Date: 2022-12-06 16:44-0600\n"
+"PO-Revision-Date: 2022-12-06 17:08-0600\n"
 "Last-Translator: Rémy Ruiz <remyruiz@gmail.com>\n"
 "Language-Team: José Manuel Delicado <jmdaweb@hotmail.com>\n"
 "Language: es\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.1\n"
+"X-Generator: Poedit 3.2.2\n"
 "X-Poedit-SourceCharset: iso-8859-1\n"
 
 #: addon\synthDrivers\_ibmeci.py:61
@@ -87,53 +87,53 @@ msgstr "Danés"
 msgid "Hong Kong Cantonese"
 msgstr "Cantonés de Hong Kong"
 
-#: addon\synthDrivers\ibmeci.py:163
+#: addon\synthDrivers\ibmeci.py:169
 msgid "Rate boos&t"
 msgstr "&Turbo de voz"
 
-#: addon\synthDrivers\ibmeci.py:165
+#: addon\synthDrivers\ibmeci.py:171
 #, fuzzy
 #| msgid "Head size"
 msgid "Hea&d size"
 msgstr "Tamaño de la cabeza"
 
-#: addon\synthDrivers\ibmeci.py:166
+#: addon\synthDrivers\ibmeci.py:172
 #, fuzzy
 #| msgid "Roughness"
 msgid "Rou&ghness"
 msgstr "Carraspeo"
 
-#: addon\synthDrivers\ibmeci.py:167
+#: addon\synthDrivers\ibmeci.py:173
 #, fuzzy
 #| msgid "Breathiness"
 msgid "Breathi&ness"
 msgstr "Respiración"
 
-#: addon\synthDrivers\ibmeci.py:168
+#: addon\synthDrivers\ibmeci.py:174
 msgid "Enable backquote voice &tags"
 msgstr "Activar &etiquetas de cambio de voz"
 
-#: addon\synthDrivers\ibmeci.py:169
-msgid "Enable &abbreviation dictionary"
-msgstr "Habilitar diccionario de abreviaturas"
+#: addon\synthDrivers\ibmeci.py:175
+msgid "Enable &abbreviation expansion"
+msgstr "Habilitar expansión de abreviaturas"
 
-#: addon\synthDrivers\ibmeci.py:170
+#: addon\synthDrivers\ibmeci.py:176
 #, fuzzy
 #| msgid "Enable phrase prediction"
 msgid "Enable phras&e prediction"
 msgstr "habilitar predicción de frases"
 
-#: addon\synthDrivers\ibmeci.py:171
+#: addon\synthDrivers\ibmeci.py:177
 msgid "&Shorten pauses"
 msgstr "Acortar las pausas"
 
-#: addon\synthDrivers\ibmeci.py:172
+#: addon\synthDrivers\ibmeci.py:178
 #, fuzzy
 #| msgid "Always Send Current Speech Settings"
 msgid "Al&ways Send Current Speech Settings"
 msgstr "Siempre enviar las configuraciones de voz actuales"
 
-#: addon\synthDrivers\ibmeci.py:173
+#: addon\synthDrivers\ibmeci.py:179
 msgid "Sa&mple Rate"
 msgstr "&Frecuencia de muestreo"
 
