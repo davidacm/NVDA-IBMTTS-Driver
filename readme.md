@@ -83,6 +83,12 @@ add-on, the driver will update the ini library paths automatically. So you can u
 * scons and gettext tools on this project are  compatible with python 3 only. Doesn't work with python 2.7.
 * You can put the extra IBMTTS required files in the add-on (for personal use only). Just copy them in "addon\synthDrivers\ibmtts" folder. Adjust the default library name in "settingsDB.py" if necessary.
 
+## Reporting issues:
+
+If you find a security issue with some of the libraries that are compatible with this driver, please do not open a github issue nor comment it on forums before the issue is solved. Please report the issue on [this form.](https://docs.google.com/forms/d/123gSqayOAsIQLx1NiI98fEqr46oiJRZ9nNq0_KIF9WU/edit)
+
+If the issue doesn't crash the driver or the screen reader, then open an [github issue here.](https://github.com/davidacm/NVDA-IBMTTS-Driver/issues)
+
 ## References.
 This driver is based on the IBM tts sdk, the documentation is available on:
 [this link](http://web.archive.org/web/20191125091344/http://www.wizzardsoftware.com/docs/tts.pdf)
