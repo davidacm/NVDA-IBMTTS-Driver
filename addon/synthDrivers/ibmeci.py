@@ -102,7 +102,7 @@ spanish_ibm_fixes = {
 	re.compile(br'(\d{13,})(\xaa)'): br'\1 \2',
 }
 spanish_ibm_anticrash = {
-	re.compile(br'(0{1,12})(\xaa)'): br'\1 \2',
+	re.compile(br'\b(0{1,12})(\xaa)'): br'\1 \2',
 	re.compile(br'(\d{12,}[123679])(\xaa)'): br'\1 \2',
 }
 german_fixes = {
