@@ -328,7 +328,9 @@ def initialize(indexCallback, doneCallback):
 	callbackQueue = queue.Queue()
 	callbackThread = CallbackThread()
 	callbackThread.start()
-	config.post_configProfileSwitch.register(handleSoundcardChange)
+	# the next function can be called on a profile change event. That's generate a mutation in the config handlers.
+	# then, a delay of 1s is added, handling soundcard changes is not usual at the start of the driver.
+	threading.Timer(1, config.post_configProfileSwitch.register, [handleSoundcardChange]).start()
 
 def speak(text):
 	# deleted the following fix because is incompatible with NVDA's speech change command. Now send it from speak in ibmeci.py
@@ -369,9 +371,11 @@ def terminate():
 	eciThread.join()
 	callbackThread.join()
 	idleTimer.cancel()	
-	config.post_configProfileSwitch.unregister(handleSoundcardChange)
 	player.close()
 	callbackQueue= callbackThread= dll= eciQueue=eciThread= handle= idleTimer= onDoneSpeaking= onIndexReached= player = None
+	# the situation is similar to post_configProfileSwitch.register
+	threading.Timer(1, config.post_configProfileSwitch.unregister, [handleSoundcardChange]).start()
+
 
 def setVoice(vl):
 	user32.PostThreadMessageA(eciThreadId, WM_PARAM, vl, ECIParam.eciLanguageDialect)
@@ -479,6 +483,8 @@ def createPlayer(sampleRate):
 
 def handleSoundcardChange():
 	global currentSoundcardOutput, currentSampleRate, player
-	if currentSoundcardOutput != config.conf["speech"]["outputDevice"]:
+	# if player is none, this driver is not active.
+	# This may occur because post_configProfileSwitch.unregister is delaied by 1 second.
+	if player and currentSoundcardOutput != config.conf["speech"]["outputDevice"]:
 		player.close()
 		player = createPlayer(currentSampleRate)
