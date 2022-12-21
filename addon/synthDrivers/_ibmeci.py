@@ -328,9 +328,7 @@ def initialize(indexCallback, doneCallback):
 	callbackQueue = queue.Queue()
 	callbackThread = CallbackThread()
 	callbackThread.start()
-	# the next function can be called on a profile change event. That's generate a mutation in the config handlers.
-	# then, a delay of 1s is added, handling soundcard changes is not usual at the start of the driver.
-	threading.Timer(1, config.post_configProfileSwitch.register, [handleSoundcardChange]).start()
+	toggleProbileSwitchRegistration(config.post_configProfileSwitch.register)
 
 def speak(text):
 	# deleted the following fix because is incompatible with NVDA's speech change command. Now send it from speak in ibmeci.py
@@ -373,8 +371,7 @@ def terminate():
 	idleTimer.cancel()	
 	player.close()
 	callbackQueue= callbackThread= dll= eciQueue=eciThread= handle= idleTimer= onDoneSpeaking= onIndexReached= player = None
-	# the situation is similar to post_configProfileSwitch.register
-	threading.Timer(1, config.post_configProfileSwitch.unregister, [handleSoundcardChange]).start()
+	toggleProbileSwitchRegistration(config.post_configProfileSwitch.unregister)
 
 
 def setVoice(vl):
@@ -488,3 +485,16 @@ def handleSoundcardChange():
 	if player and currentSoundcardOutput != config.conf["speech"]["outputDevice"]:
 		player.close()
 		player = createPlayer(currentSampleRate)
+
+profileSwitchRegister = None
+def toggleProbileSwitchRegistration(fn):
+	""" the register or unregister of the handler for config changes can't be done when a profile switch is being done.
+	this function helps to avoid that.
+	fn: the function to be called (usually register or unregister)
+	"""
+	global profileSwitchRegister
+	if profileSwitchRegister:
+		profileSwitchRegister.cancel()
+		profileSwitchRegister = None
+	profileSwitchRegister = threading.Timer(1, fn, [handleSoundcardChange])
+	profileSwitchRegister.start()
