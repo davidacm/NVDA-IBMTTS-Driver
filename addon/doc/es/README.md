@@ -1,10 +1,19 @@
 # Controlador de IBMTTS, complemento para NVDA #
+
   Este complemento implementa la compatibilidad de NVDA con el sintetizador IBMTTS.
   No podemos distribuir las librerías de IBMTTS. Esto es únicamente el controlador.
   Si deseas contribuir a mejorar este controlador ¡siéntete libre de enviarnos tus pull requests a través de GitHub!
 
+Aunque este driver es compatible con librerías de Eloquence debido a que Eloquence posee la misma api que IBMTTS, no se recomienda usar Eloquence con este controlador debido a problemas de licencias. Antes de usar cualquier librería de síntesis con este controlador, se recomienda obtener los derechos de uso primero.
+
+Este controlador fue desarrollado con la documentación disponible para IBMTTS, disponible públicamente en la web. Ver la sección referencias para más detalles.
+
 ## Descarga.
 La última versión está disponible para [descargar en este enlace](https://davidacm.github.io/getlatest/gh/davidacm/NVDA-IBMTTS-Driver)
+
+## ¿Qué es el sintetizador IBMTTS?
+
+ViaVoice TTS es un motor de texto a voz desarrollado por IBM, que sintetiza la representación textual del lenguaje humano en voz.
 
 ## Características:
 * Soporte para las configuraciones de voz,variante, velocidad, tono, entonación y volumen.
@@ -33,6 +42,7 @@ La última versión está disponible para [descargar en este enlace](https://dav
   A partir de la versión 21.03A1, el controlador también funciona con las librerías aún más nuevas de IBM, en lugar de solo los SpeechWorks. Se incluye un conjunto de correcciones independientes para esas librerías, y se tienen en cuenta los idiomas adicionales y otras diferencias. Solo se soportan las voces formantes en la actualidad. Gracias a @mohamed00 por este trabajo. Tenga en cuenta que cuando se utiliza las librerías de IBM, debes deshabilitar la opción Enviar siempre la configuración de voz actual.
 
 ## Instalación.
+
   Simplemente instálelo como cualquier otro complemento de NVDA. Después abre el diálogo de configuraciones de NVDA, y en la categoría IBMTTS establezca la ruta de los archivos de IBMTTS.
   En esta categoría también puedes copiar los archivos externos de IBMTTS dentro del complemento para usarlo localmente, útil para versiones portables de NVDA.
 
@@ -59,9 +69,20 @@ Nota: asegúrate de que has utilizado la última plantilla de cadenas de traducc
 Este es un método alternativo. Si quieres, siempre puedes usar la forma habitual. Haz un fork de este repo, actualiza la traducción para el idioma destino, y envía un PR. Pero esta forma sólo añadirá más complejidad para usted.
 
 ## Empaquetar el complemento para su distribución.
-  Abra una línea de comandos, cambie al directorio raíz del complemento y ejecute el comando scons. El complemento creado, si no hay errores, será puesto en la carpeta raíz del complemento.
+
+1. Instale python, actualmente se usa python 3.7, pero puedes usar una versión más reciente si lo deseas.
+2. Instala Gettext, puedes descargar una distribución para windows en [este enlace.](https://mlocati.github.io/articles/gettext-iconv-windows.html) Si estás usando Windows 64 bits, te recomiendo [esta versión.](https://github.com/mlocati/gettext-iconv-windows/releases/download/v0.21-v1.16/gettext0.21-iconv1.16-shared-64.exe)
+3. (paso opcional pero recomendado) crea un entorno virtual de python para administrar los complementos de NVDA. En la consola, use "python -m venv PAT_TO_FOLDER". Donde PAT_TO_FOLDER es la ruta deseada para el entorno virtual.
+4. Si realizaste el paso 2, Ve a PAT_TO_FOLDER y dentro de la carpeta de scripts, ejecuta "activate". El nombre del entorno debe mostrarse en el indicador de la consola.
+5. Clone este repositorio en la ruta deseada: git clone "https://github.com/davidacm/NVDA-IBMTTS-Driver.git".
+6. En la misma instancia de la consola, vaya a la carpeta de este repositorio.
+7. Instale los requisitos: "pip install -r requirements.txt".
+8. Ejecuta el comando scons. El complemento creado, si no hubo errores, se coloca en el directorio raíz de este repositorio.
+
+Una vez que cierras la consola, el entorno virtual se desactiva.
 
 ### Empaquetar las librerías como un complemento independiente.
+
 No se recomienda incluir las librerías con este controlador. Es porque si el usuario actualiza el driver desde el
 [repo oficial](https://github.com/davidacm/NVDA-IBMTTS-Driver),
 la versión antigua será eliminada incluyendo las librerías. Una solución para esto, es instalar las librerías en un complemento separado.

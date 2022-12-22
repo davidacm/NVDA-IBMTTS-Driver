@@ -4,6 +4,10 @@
   We can not distribute the IBMTTS libraries. So it is just the driver.  
   If you want to improve this driver, feel free to send your pull requests!  
 
+Although this driver is compatible with Eloquence libraries (since Eloquence has the same api as IBMTTS) it's not recommended to use Eloquence with this driver due to licensing issues. Before using any synthesis libraries with this driver, it's recommended to get the license usage rights first.
+
+This driver was developed with the documentation available for IBMTTS, publicly available on the web. See references section for more details.
+
 ## Download.
 The latest release is available to [download in this link](https://davidacm.github.io/getlatest/gh/davidacm/NVDA-IBMTTS-Driver)
 
@@ -65,9 +69,20 @@ Note: make sure you have used the latest translation strings template.
 This is an alternative method. If you want, you always can go by the usual way. Fork this repo, update the translation for your language, and send me a PR. But this way just will add more complexity for you.
 
 ## Packaging it for distribution.
-  Open a command line, change to the Add-on root folder  and run the scons command. The created add-on, if there were no errors, is placed in the root directory.
+
+1. Install python, currently python 3.7 is used, but You can use a newer version.
+2. Install gettext, you can download a distribution for windows in [this link.](https://mlocati.github.io/articles/gettext-iconv-windows.html) If you're using windows 64 bits, I recommend [this version.](https://github.com/mlocati/gettext-iconv-windows/releases/download/v0.21-v1.16/gettext0.21-iconv1.16-shared-64.exe)
+3. (optional but recommended step) create a python virtual environment to be used to manage NVDA add-ons. In the console, use "python -m venv PAT_TO_FOLDER". Where PAT_TO_FOLDER is the path of your desired path for the virtual environment.
+4. If you did step 2, go to the PAT_TO_FOLDER and inside scripts folder, execute "activate". The name of the environment should be shown in the console pront.
+5. Clone this repo in your desired path: "git clone https://github.com/davidacm/NVDA-IBMTTS-Driver.git".
+6. In the same console instance, go to the folder of this repo.
+7. Install the requirements: "pip install -r requirements.txt".
+8. Run the scons command. The created add-on, if there were no errors, is placed in the root directory of this repo.
+
+Once you close the console, the virtual environment is deactivated.
 
 ### Packagin libraries as an independent add-on.
+
 Is not recommended to include the libraries with this driver. It's because if the user updates the driver from the
 [official repo](https://github.com/davidacm/NVDA-IBMTTS-Driver),
 the old version will be deleted including the libraries. One solution for this, is to install the libraries in a separate add-on.
