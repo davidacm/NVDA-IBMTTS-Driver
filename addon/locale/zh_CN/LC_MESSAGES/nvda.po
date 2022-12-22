@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: IBMTTS for NVDA\n"
 "Report-Msgid-Bugs-To: 'nvda-translations@freelists.org'\n"
-"POT-Creation-Date: 2022-07-04 19:57-0600\n"
-"PO-Revision-Date: 2022-07-04 20:02-0600\n"
+"POT-Creation-Date: 2022-12-22 09:24+0800\n"
+"PO-Revision-Date: 2022-12-22 09:26+0800\n"
 "Last-Translator: Rémy Ruiz <remyruiz@gmail.com>\n"
 "Language-Team: Cary-rowen <manchen_0528@outlook.com>\n"
 "Language: zh_CN\n"
@@ -16,123 +16,115 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 3.1\n"
+"X-Generator: Poedit 2.4.3\n"
 
-#: addon\synthDrivers\_ibmeci.py:59
+#: addon\synthDrivers\_ibmeci.py:61
 msgid "Castilian Spanish"
 msgstr "卡斯蒂利亚西班牙语"
 
-#: addon\synthDrivers\_ibmeci.py:60
+#: addon\synthDrivers\_ibmeci.py:62
 msgid "Latin American Spanish"
 msgstr "拉丁美洲西班牙语"
 
-#: addon\synthDrivers\_ibmeci.py:61
+#: addon\synthDrivers\_ibmeci.py:63
 msgid "Brazilian Portuguese"
 msgstr "巴西葡萄牙语"
 
-#: addon\synthDrivers\_ibmeci.py:62
+#: addon\synthDrivers\_ibmeci.py:64
 msgid "French"
 msgstr "法语"
 
-#: addon\synthDrivers\_ibmeci.py:63
+#: addon\synthDrivers\_ibmeci.py:65
 msgid "French Canadian"
 msgstr "法语-加拿大"
 
-#: addon\synthDrivers\_ibmeci.py:64
+#: addon\synthDrivers\_ibmeci.py:66
 msgid "Finnish"
 msgstr "芬兰语"
 
-#: addon\synthDrivers\_ibmeci.py:65
+#: addon\synthDrivers\_ibmeci.py:67
 msgid "Chinese"
 msgstr "中文"
 
-#: addon\synthDrivers\_ibmeci.py:66
+#: addon\synthDrivers\_ibmeci.py:68
 msgid "Japanese"
 msgstr "日语"
 
-#: addon\synthDrivers\_ibmeci.py:67
+#: addon\synthDrivers\_ibmeci.py:69
 msgid "Korean"
 msgstr "韩语"
 
-#: addon\synthDrivers\_ibmeci.py:68
+#: addon\synthDrivers\_ibmeci.py:70
 msgid "German"
 msgstr "德语"
 
-#: addon\synthDrivers\_ibmeci.py:69
+#: addon\synthDrivers\_ibmeci.py:71
 msgid "Italian"
 msgstr "义大利语"
 
-#: addon\synthDrivers\_ibmeci.py:70
+#: addon\synthDrivers\_ibmeci.py:72
 msgid "American English"
 msgstr "美式英语"
 
-#: addon\synthDrivers\_ibmeci.py:71
+#: addon\synthDrivers\_ibmeci.py:73
 msgid "British English"
 msgstr "英式英语"
 
-#: addon\synthDrivers\_ibmeci.py:72
+#: addon\synthDrivers\_ibmeci.py:74
 msgid "Swedish"
 msgstr "瑞典语"
 
-#: addon\synthDrivers\_ibmeci.py:73
+#: addon\synthDrivers\_ibmeci.py:75
 msgid "Norwegian"
 msgstr "挪威语"
 
-#: addon\synthDrivers\_ibmeci.py:74
+#: addon\synthDrivers\_ibmeci.py:76
 msgid "Danish"
 msgstr "丹麦语"
 
-#: addon\synthDrivers\_ibmeci.py:75
+#: addon\synthDrivers\_ibmeci.py:77
 msgid "Hong Kong Cantonese"
 msgstr "中文香港"
 
-#: addon\synthDrivers\ibmeci.py:148
+#: addon\synthDrivers\ibmeci.py:169
 msgid "Rate boos&t"
 msgstr "语速加倍"
 
-#: addon\synthDrivers\ibmeci.py:150
-#, fuzzy
-#| msgid "Head size"
+#: addon\synthDrivers\ibmeci.py:171
 msgid "Hea&d size"
-msgstr "头部大小"
+msgstr "头部大小(&D)"
 
-#: addon\synthDrivers\ibmeci.py:151
-#, fuzzy
-#| msgid "Roughness"
+#: addon\synthDrivers\ibmeci.py:172
 msgid "Rou&ghness"
-msgstr "粗糙程度"
+msgstr "粗糙程度(&R)"
 
-#: addon\synthDrivers\ibmeci.py:152
-#, fuzzy
-#| msgid "Breathiness"
+#: addon\synthDrivers\ibmeci.py:173
 msgid "Breathi&ness"
-msgstr "呼吸"
+msgstr "呼吸(&N)"
 
-#: addon\synthDrivers\ibmeci.py:153
+#: addon\synthDrivers\ibmeci.py:174
 msgid "Enable backquote voice &tags"
 msgstr "启用反引号语音标签(&T)"
 
-#: addon\synthDrivers\ibmeci.py:154
-msgid "Enable &abbreviation dictionary"
-msgstr "启用缩写词典(&S)"
+#: addon\synthDrivers\ibmeci.py:175
+msgid "Enable &abbreviation expansion"
+msgstr "启用缩写扩展(&A)"
 
-#: addon\synthDrivers\ibmeci.py:155
-#, fuzzy
-#| msgid "Enable phrase prediction"
+#: addon\synthDrivers\ibmeci.py:176
 msgid "Enable phras&e prediction"
-msgstr "启用短语预测"
+msgstr "启用短语预测(&E)"
 
-#: addon\synthDrivers\ibmeci.py:156
+#: addon\synthDrivers\ibmeci.py:177
 msgid "&Shorten pauses"
 msgstr "缩短停顿时间"
 
-#: addon\synthDrivers\ibmeci.py:157
+#: addon\synthDrivers\ibmeci.py:178
 msgid "Al&ways Send Current Speech Settings"
-msgstr ""
+msgstr "始终发送当前语音设置(&W)"
 
-#: addon\synthDrivers\ibmeci.py:158
+#: addon\synthDrivers\ibmeci.py:179
 msgid "Sa&mple Rate"
-msgstr ""
+msgstr "采样率(&M)"
 
 #. Translators: This is the label for the IBMTTS settings category in NVDA Settings screen.
 #: addon\globalPlugins\ibmtts.py:17
@@ -166,7 +158,6 @@ msgstr "选择 IBMTTS 库（DLL）"
 
 #. Translators: the label for the dynamic link library extension (dll) file type
 #: addon\globalPlugins\ibmtts.py:43
-#, python-brace-format
 msgid "dynamic link library (*.{ext})"
 msgstr "动态链接库 (*.{ext})"
 
@@ -178,7 +169,7 @@ msgid ""
 "on\" button"
 msgstr ""
 "已设置 IBMTTS 文件位置。如果要在便携版 NVDA 中使用，请使用 \"将 IBMTTS 文件复"
-"制到驱动目录\" 按钮。"
+"制到驱动目录\" 按钮"
 
 #. Translators: The title displayed when the IBMTTS files folder and library name have been set.
 #. Translators: The title  displayed when copying IBMTTS files to Add-on was successful.
