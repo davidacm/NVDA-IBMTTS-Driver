@@ -7,7 +7,7 @@ import os, wx, winUser
 from os import path
 from ctypes import windll
 import config, globalVars, gui, globalPluginHandler, addonHandler
-from synthDrivers import _settingsDB
+from synthDrivers._settingsDB import appConfig
 from logHandler import log
 from gui import SettingsPanel
 addonHandler.initTranslation()
@@ -31,8 +31,8 @@ class IBMTTSSettingsPanel(SettingsPanel):
 		self._setValues()
 
 	def _setValues(self):
-		self._ttsPath.SetValue(config.conf.profiles[0]['ibmeci']['TTSPath'])
-		self._dllName.SetValue(config.conf.profiles[0]['ibmeci']['dllName'])
+		self._ttsPath.SetValue(appConfig.TTSPath)
+		self._dllName.SetValue(appConfig.dllName)
 
 	def _onBrowseClick(self, evt):
 		# Translators: The message displayed in the dialog that allows you to look for the IBMTTS library.
@@ -95,7 +95,7 @@ class IBMTTSSettingsPanel(SettingsPanel):
 			if res:
 				self._ttsPath.SetValue(r"..\..\eciLibraries")
 				# this parameter is saved even if the user doesn't click accept button.
-				config.conf.profiles[0]['ibmeci']['TTSPath'] = self._ttsPath.GetValue()
+				config.TTSPath = self._ttsPath.GetValue()
 				# Translators: The message displayed when copying IBMTTS files to Add-on was successful.
 				gui.messageBox(_("Successfully copied IBMTTS files. The local copy will be used after restart NVDA."),
 					# Translators: The title  displayed when copying IBMTTS files to Add-on was successful.
@@ -130,8 +130,8 @@ lastTestedNVDAVersion = 2030.1.1
 updateChannel = None''')
 
 	def onSave(self):
-		config.conf.profiles[0]['ibmeci']['dllName'] = self._dllName.GetValue()
-		config.conf.profiles[0]['ibmeci']['TTSPath'] = self._ttsPath.GetValue()
+		appConfig.dllName = self._dllName.GetValue()
+		appConfig.TTSPath = self._ttsPath.GetValue()
 
 
 class GlobalPlugin(globalPluginHandler.GlobalPlugin):

@@ -11,7 +11,7 @@ import queue
 import threading, time
 import config, languageHandler, nvwave, addonHandler
 from logHandler import log
-from . import _settingsDB
+from ._settingsDB import appConfig, speechConfig
 
 addonHandler.initTranslation()
 
@@ -186,8 +186,8 @@ def processEciQueue():
 
 def eciCheck():
 	global ttsPath, dllName, dll
-	dllName = config.conf.profiles[0]['ibmeci']['dllName']
-	ttsPath =  config.conf.profiles[0]['ibmeci']['TTSPath']
+	dllName = appConfig.dllName
+	ttsPath =  appConfig.TTSPath
 	if  not path.isabs(ttsPath):
 		ttsPath = path.abspath(path.join(path.abspath(path.dirname(__file__)), ttsPath))
 		if path.exists(ttsPath) and not isIBM: iniCheck()
@@ -219,9 +219,10 @@ def eciNew():
 	eci.eciGetAvailableLanguages(0,byref(b))
 	avLangs=(c_int*b.value)()
 	eci.eciGetAvailableLanguages(byref(avLangs),byref(b))
-	if 'ibmtts' in config.conf['speech'] and config.conf['speech']['ibmtts']['voice'] != '':
-		handle=eci.eciNewEx(int(config.conf['speech']['ibmtts']['voice']))
-	else: handle=eci.eciNewEx(getVoiceByLanguage(languageHandler.getLanguage())[0])
+	try:
+		handle=eci.eciNewEx(int(speechConfig.ibmtts['voice']))
+	except:
+		handle=eci.eciNewEx(getVoiceByLanguage(languageHandler.getLanguage())[0])
 	for i in ECIVoiceParam.params:
 		vparams[i] = eci.eciGetVoiceParam(handle, 0, i)
 	return eci,handle
@@ -468,7 +469,7 @@ def idlePlayer():
 
 def createPlayer(sampleRate):
 	global currentSoundcardOutput, currentSampleRate
-	currentSoundcardOutput = config.conf["speech"]["outputDevice"]
+	currentSoundcardOutput = speechConfig.outputDevice
 	currentSampleRate = sampleRate
 	if sampleRate == 0:
 		player = nvwave.WavePlayer(1, 8000, 16, outputDevice=currentSoundcardOutput)
@@ -482,7 +483,7 @@ def handleSoundcardChange():
 	global currentSoundcardOutput, currentSampleRate, player
 	# if player is none, this driver is not active.
 	# This may occur because post_configProfileSwitch.unregister is delaied by 1 second.
-	if player and currentSoundcardOutput != config.conf["speech"]["outputDevice"]:
+	if player and currentSoundcardOutput != speechConfig.outputDevice:
 		player.close()
 		player = createPlayer(currentSampleRate)
 

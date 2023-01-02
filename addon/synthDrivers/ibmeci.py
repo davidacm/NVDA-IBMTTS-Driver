@@ -3,7 +3,7 @@
 # Author: David CM <dhf360@gmail.com> and others.
 #synthDrivers/ibmeci.py
 
-import six, synthDriverHandler, languageHandler, config, os, re
+import six, synthDriverHandler, languageHandler, os, re
 from synthDriverHandler import synthDoneSpeaking, SynthDriver, synthIndexReached, VoiceInfo
 
 from collections import OrderedDict
@@ -497,8 +497,6 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 		self._variant = v if int(v) in variants else "1"
 		_ibmeci.setVariant(int(v))
 		_ibmeci.setVParam(ECIVoiceParam.eciSpeed, self._rate)
-		#if 'ibmtts' in config.conf['speech']:
-		#config.conf['speech']['ibmtts']['pitch'] = self.pitch
 
 	def _get_variant(self): return self._variant
 

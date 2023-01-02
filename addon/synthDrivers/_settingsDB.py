@@ -3,17 +3,17 @@
 # Author: David CM <dhf360@gmail.com> and others.
 #synthDrivers/settingsDB.py
 
-import config
-# Add-on config database
-confspec = {
-	"dllName": "string(default='eci.dll')",
-	"TTSPath": "string(default='ibmtts')"
-}
-config.conf.spec["ibmeci"]=confspec
+from ._configHelper import configSpec, registerConfig
 
-def setConfig():
-	d=config.conf['ibmeci'].dict()
-	if 'ibmeci' not in config.conf.profiles[0]: config.conf.profiles[0]['ibmeci'] = d
-	if 'TTSPath' not in config.conf.profiles[0]['ibmeci']: config.conf.profiles[0]['ibmeci']['TTSPath'] = d['TTSPath']
-	if 'dllName' not in config.conf.profiles[0]['ibmeci']: config.conf.profiles[0]['ibmeci']['dllName'] = d['dllName']
-setConfig()
+# Add-on config database
+@configSpec("ibmeci")
+class _AppConfig:
+	dllName = ("string(default='eci.dll')", True)
+	TTSPath = ("string(default='ibmtts')", True)
+appConfig = registerConfig(_AppConfig)
+
+@configSpec("speech")
+class _SpeechConfig:
+	ibmtts = ""
+	outputDevice = ""
+speechConfig = _SpeechConfig()
