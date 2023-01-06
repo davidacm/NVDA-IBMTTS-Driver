@@ -123,8 +123,8 @@ variants = {
 	2:"Shelley",
 	3:"Sandy",
 	4:"Rocko",
-	5:"Eddy",
-	6:"Flo",
+	5:"Glen",
+	6:"FastFlo",
 	7:"Grandma",
 	8:"Grandpa"
 }
