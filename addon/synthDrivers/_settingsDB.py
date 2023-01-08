@@ -10,6 +10,7 @@ from ._configHelper import configSpec, registerConfig
 class _AppConfig:
 	dllName = ("string(default='eci.dll')", True)
 	TTSPath = ("string(default='ibmtts')", True)
+	autoUpdate  = ('boolean(default=True)', True)
 appConfig = registerConfig(_AppConfig)
 
 @configSpec("speech")
