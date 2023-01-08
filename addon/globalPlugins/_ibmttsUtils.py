@@ -3,7 +3,7 @@
 # Author: David CM <dhf360@gmail.com> and others.
 #globalPlugins/_ibmttsutils.py
 
-import json, os, pickle, ssl, time, winUser, wx, zipfile
+import config, json, os, pickle, ssl, time, winUser, wx, zipfile
 from os import path
 from ctypes import windll
 from urllib.request import urlopen
@@ -242,6 +242,8 @@ class UpdateHandler:
 	handles the update of the add-on. You must provide the service class to get the update information.
 	"""
 	def __init__(self, addonName, service):
+		if config.isAppX:
+			return
 		self.service = service
 		self.addonName = addonName
 		self.storeUpdatesDir = path.join(globalVars.appArgs.configPath, 'updates')
@@ -301,6 +303,8 @@ class UpdateHandler:
 
 	def checkUpdate(self, fromGui=False):
 		log.info(f"checking for an update of the addon {self.addonName}")
+		if config.isAppX:
+			return
 		self.isError = False
 		if self.state.pendingFile and path.exists(self.state.pendingFile):
 			# if this happen, update the last check but don't save it to try again if the user restarts NVDA.
@@ -356,6 +360,8 @@ class UpdateHandler:
 			self.timer = None
 
 	def updateTimer(self):
+		if config.isAppX:
+			return
 		self.stopTimer()
 		if not self.isAutoUpdate:
 			return
