@@ -48,7 +48,7 @@ class IBMTTSSettingsPanel(SettingsPanel):
 		self._setValues()
 
 	def _setValues(self):
-		self._autoCheck.SetValue(eval(appConfig.autoUpdate))
+		self._autoCheck.SetValue(appConfig.autoUpdate)
 		self._ttsPath.SetValue(appConfig.TTSPath)
 		self._dllName.SetValue(appConfig.dllName)
 
@@ -148,7 +148,7 @@ lastTestedNVDAVersion = 2030.1.1
 updateChannel = None''')
 
 	def onSave(self):
-		appConfig.autoUpdate = str(self._autoCheck.GetValue())
+		appConfig.autoUpdate = self._autoCheck.GetValue()
 		updateHandler.isAutoUpdate = self._autoCheck.GetValue()
 		appConfig.dllName = self._dllName.GetValue()
 		appConfig.TTSPath = self._ttsPath.GetValue()
@@ -160,7 +160,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		super(GlobalPlugin, self).__init__()
 		if not globalVars.appArgs.secure:
 			gui.settingsDialogs.NVDASettingsDialog.categoryClasses.append(IBMTTSSettingsPanel)
-			updateHandler.isAutoUpdate = eval(appConfig.autoUpdate)
+			updateHandler.isAutoUpdate = appConfig.autoUpdate
 			updateHandler.updateTimer()
 
 	def terminate(self):

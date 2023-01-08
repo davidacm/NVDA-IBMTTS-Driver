@@ -37,6 +37,12 @@ def setConfigValue(path, optName, value, generalProfile=False):
 	getDictObjFromPath(obj, path)[optName] = value
 
 
+def boolValidator(val):
+	if isinstance(val, bool):
+		return val
+	return eval(val)
+
+
 def registerGeneralOption(path, option, defaultValue):
 	obj = config.conf.profiles[0]
 	for k in path:
@@ -58,7 +64,7 @@ def registerConfig(clsSpec, path=None):
 			registerGeneralOption(AF.__path__, k, getattr(AF, k))
 	return AF
 
-
+fakeValidator = lambda x: x
 class OptConfig:
 	""" just a helper descriptor to create the main class to accesing config values.
 	the option name will be taken from the declared variable.
@@ -69,8 +75,13 @@ class OptConfig:
 		@desc: the spec description. Can be a string (with the description of configobj) or a tuble with the configobj first, and the second value is a flag that if it's true, the option will be assigned to the default profile only.
 		"""
 		self.generalProfile = False
+		self.validator = fakeValidator
 		if isinstance(desc, tuple):
 			self.generalProfile = desc[1]
+			try:
+				self.validator = desc[2]
+			except:
+				pass
 			desc = desc[0]
 		self.desc = desc
 
@@ -80,7 +91,7 @@ class OptConfig:
 	def __get__(self, obj, type=None):
 		if obj:
 			try:
-				return getConfigValue(obj.__path__, self.name, self.generalProfile)
+				return self.validator(getConfigValue(obj.__path__, self.name, self.generalProfile))
 			except KeyError:
 				return getConfigValue(obj.__path__, self.name)
 		if self.generalProfile:
