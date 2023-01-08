@@ -1,8 +1,9 @@
-# v22.12.1
+# v23.01.1
 
-* fixed soundcard detection issues when another tts is used in other NVDA profile. This was happening because register and unregister the profile switch handler was being done exactly in the same moment as the profile changing. So, a delay of 1S was added to register or unregister that function.
-* Changed the Chinese encoding again, from CP936 to GB18030. This can represent more characters.
-* Added a \b to the Spanish IBM crashing expression to prevent false positives on things like 20ª.
-* Updated the english readme with specific steps to package the driver and a small note about Eloquence.
-* Updated the spanish documentation.
-* updated portuguese locale strings and documentation.
+* added auto update feature, this is a very alpha version. Please use this on your own risk. Report all issues with this feature.
+* updated locale strings template. A lot of new strings were added.
+* Changed voice names to reflect the original names given in official IBM documentation. Voice 5 has been reverted back to Glen, and voice 6 is now FastFlo.
+* a lot of code refactorings were made. This can cause issues, need more testing. Please report bugs.
+* Modified config to use configHelper utility. This helps to write more secure and short code when access to NVDA settings.
+* Added locale strings for chinese traditional language.
+* Updated translations for Simplified Chinese.
