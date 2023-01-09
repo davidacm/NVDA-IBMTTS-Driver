@@ -328,7 +328,7 @@ class UpdateHandler:
 		if curAddon.version == d['version']:
 			self.updateTimer()
 			if fromGui:
-				return gui.messageBox(
+				gui.messageBox(
 					# Translators: The message displayed when no updates were found.
 					_("There are no updates available for the %s addon.") % self.addonName,
 					# Translators: The title  displayed when no updates were found.
@@ -336,6 +336,7 @@ class UpdateHandler:
 					wx.OK|wx.ICON_INFORMATION,
 					gui.mainFrame
 				)
+			return
 		updateMsg = _(
 			# Translators: A message asking the user if they wish to update the add-on
 			"A new version of %s was found. The new version is %s. Would you like to update this add-on now?"
