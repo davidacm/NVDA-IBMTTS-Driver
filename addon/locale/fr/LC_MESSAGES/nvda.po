@@ -91,20 +91,14 @@ msgid "Rate boos&t"
 msgstr "Voix t&urbo"
 
 #: addon\synthDrivers\ibmeci.py:150
-#, fuzzy
-#| msgid "Head size"
 msgid "Hea&d size"
 msgstr "Taille de la tête"
 
 #: addon\synthDrivers\ibmeci.py:151
-#, fuzzy
-#| msgid "Roughness"
 msgid "Rou&ghness"
 msgstr "Enrouement"
 
 #: addon\synthDrivers\ibmeci.py:152
-#, fuzzy
-#| msgid "Breathiness"
 msgid "Breathi&ness"
 msgstr "Respiration"
 
@@ -117,8 +111,6 @@ msgid "Enable &abbreviation dictionary"
 msgstr "Activer le dictionnaire d'&abréviation"
 
 #: addon\synthDrivers\ibmeci.py:155
-#, fuzzy
-#| msgid "Enable phrase prediction"
 msgid "Enable phras&e prediction"
 msgstr "Activer la prédiction de phrase"
 

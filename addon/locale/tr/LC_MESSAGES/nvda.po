@@ -83,8 +83,6 @@ msgid "Norwegian"
 msgstr ""
 
 #: addon\synthDrivers\_ibmeci.py:74
-#, fuzzy
-#| msgid "Finnish"
 msgid "Danish"
 msgstr "Fince"
 
@@ -97,20 +95,14 @@ msgid "Rate boos&t"
 msgstr "Konuşma &hızlandırma"
 
 #: addon\synthDrivers\ibmeci.py:150
-#, fuzzy
-#| msgid "Head size"
 msgid "Hea&d size"
 msgstr "Kafa Büyüklüğü"
 
 #: addon\synthDrivers\ibmeci.py:151
-#, fuzzy
-#| msgid "Roughness"
 msgid "Rou&ghness"
 msgstr "Pürüzlülük"
 
 #: addon\synthDrivers\ibmeci.py:152
-#, fuzzy
-#| msgid "Breathiness"
 msgid "Breathi&ness"
 msgstr "nefes"
 
