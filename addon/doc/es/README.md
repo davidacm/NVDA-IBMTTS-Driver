@@ -15,7 +15,7 @@ La última versión está disponible para [descargar en este enlace](https://dav
 
 ViaVoice TTS es un motor de texto a voz desarrollado por IBM, que sintetiza la representación textual del lenguaje humano en voz.
 
-## Características:
+## Características y configuraciones.
 * Soporte para las configuraciones de voz,variante, velocidad, tono, entonación y volumen.
 * Soporte de  parámetros  extra como  tamaño de la cabeza, carraspeo, respiración. ¡Cree su propia voz!
 * Habilite o deshabilite las etiquetas de cambio de voz. Desactívalas para protegerte de códigos maliciosos de bromistas, actívalas para hacer muchas cosas divertidas con el sintetizador. Requiere un ajuste adicional con NVDA para que funcione correctamente.
@@ -31,6 +31,19 @@ ViaVoice TTS es un motor de texto a voz desarrollado por IBM, que sintetiza la r
 * Acortar las pausas: active esta opción para obtener pausas de puntuación más cortas, como las que se ven en otros lectores de pantalla.
 * Enviar siempre la configuración de voz actual: actualmente, hay un error en el sintetizador que ocasionalmente hace que la configuración de voz y del tono se restablezca brevemente a sus valores predeterminados. La causa de este problema es actualmente desconocida, sin embargo, una solución es enviar continuamente la configuración actual de la velocidad y el tono. Por lo general, esta opción debería estar activada. Sin embargo, debería estar desactivada si está utilizando binarios de IBM, ya que esta configuración provocará que se inserten pausas muy largas que las harán casi inutilizables, o si está leyendo un texto que contiene etiquetas de voz con comillas.
 * Frecuencia de muestreo: cambia la calidad del sonido del sintetizador. Útil para IBMTTS, donde es posible ajustar la frecuencia de muestreo a 22 kHz.
+
+### Categoría de configuraciones IBMTTS.
+
+Este complemento tiene su propia categoría de configuraciones dentro de las opciones de NVDA, para gestionar algunas funcionalidades internas no relacionadas con la síntesis de voz.
+
+* Buscar automáticamente actualizaciones para IBMTTS: si esta opción está marcada, el complemento verificará diariamente si hay nuevas versiones disponibles.
+* Buscar actualización: Verifica manualmente si hay nuevas actualizaciones de este complemento.
+* Dirección de carpeta de IBMTTS: la ruta para cargar la librería IBMTTS. Puede ser absoluta o relativa.
+* Nombre de la librería de IBMTTS: el nombre de la librería (dll). No incluya rutas, solo el nombre con la extensión, normalmente ".dll".
+* Buscar una librería de IBMTTS... Abre un diálogo  de exploración de archivos para buscar la librería IBMTTS en el sistema. Se guardará como una ruta absoluta.
+* Copiar los archivos de IBMTTS en un complemento. (puede no funcionar para algunas distribuciones de IBMTTS): si se ha establecido la ruta de la librería para IBMTTS, copiará todos los archivos de la carpeta en un nuevo complemento llamado "eciLibraries" y actualizará la ruta actual a una relativa. Es útil en las versiones portátiles de NVDA. Solo funciona para librerías que usan archivos "eci.ini" para la información de los idiomas de voz. Si la librería usa el registro de Windows, esta opción no funcionará.
+
+Nota: La funcionalidad de actualización automática o manual no borrará los archivos internos del complemento. Si mantienes tus librerías en ese lugar, puedes usar esta función con seguridad. Tus librerías estarán a salvo.
 
 ## requisitos.
 ### NVDA.
@@ -85,12 +98,13 @@ Una vez que cierras la consola, el entorno virtual se desactiva.
 
 No se recomienda incluir las librerías con este controlador. Es porque si el usuario actualiza el driver desde el
 [repo oficial](https://github.com/davidacm/NVDA-IBMTTS-Driver),
-la versión antigua será eliminada incluyendo las librerías. Una solución para esto, es instalar las librerías en un complemento separado.
+usando el instalador de complementos de NVDA, la versión antigua será eliminada incluyendo las librerías. Una solución para esto, es instalar las librerías en un complemento separado.
 [Siga este enlace](https://github.com/davidacm/ECILibrariesTemplate)
 para saber cómo empaquetar las bibliotecas en un complemento separado.
 
 ### Notas:
 
+* Si usa la función de actualización interna (manual o automática), las librerías no se eliminarán incluso si están dentro del complemento.
 * si el sintetizador está dentro de este complemento o en el complemento "eciLibraries", el controlador actualizará las rutas del archivo ini automáticamente. Así que puedes usarlo en versiones portables de NVDA.
 * cuando utilice el botón "Copiar archivos IBMTTS en un add-on", creará un nuevo add-on en NVDA. Por lo tanto, si desea desinstalar IBMTTS, necesitará desinstalar dos complementos: "Controlador de IBMTTS" y "Eci libraries".
 * Las herramientas scons y gettext de este proyecto son compatibles con python 3 únicamente. No funcionan en python 2.7.

@@ -15,7 +15,7 @@ The latest release is available to [download in this link](https://davidacm.gith
 
 ViaVoice TTS is a text-to-speech engine developed by IBM, which synthesizes textual representation of human language into speech.
 
-## Features:
+## Features and settings.
 
 * Voice, variant, rate, pitch, inflection and volume  setting support.
 * Extra head size, Roughness, Breathiness parameters settings support. Create your own voice!
@@ -32,6 +32,19 @@ ViaVoice TTS is a text-to-speech engine developed by IBM, which synthesizes text
 * Shorten pauses: enable this option for shorter punctuation pauses, like those seen in other screen readers.
 * Always send current speech settings: there is a bug in the synthesizer that will occasionally cause the speech and pitch settings to be briefly reset to their default values. The cause of this issue is currently unknown, however a workaround is to continuously send the current speech rate and pitch settings. This option should generally be enabled. However, it should be disabled if reading text that contains backquote voice tags.
 * Sample rate: changes the synthesizer's sound quality. Most useful for IBMTTS, where setting the sample rate to 8 kHz enables access to a new set of voices.
+
+### IBMTTS category settings.
+
+This add-on has its own category of settings within NVDA options, to manage some internal functionality not related to speech synthesis.
+
+* Automatically check for updates for IBMTTS: If this option is checked, the add-on will check daily for new versions available.
+* Check for update  button: Manually check for new add-on updates.
+* IBMTTS folder address: The path to load the IBMTTS library. It can be absolute or relative.
+* IBMTTS library name (dll): The name of the library (dll). Don't include paths, only the name with the extension, typically ".dll".
+* Browse for  IBMTTS library... Opens a file browse dialog to search for the IBMTTS library on the system. It will be saved as an absolute path.
+* Copy IBMTTS files in an  add-on (may not work for some IBMTTS distributions): If the library path for IBMTTS has been set, it will copy all the folder files to a new add-on called eciLibraries and update the current path to a relative path. I'ts very useful in NVDA portable versions. It only works for libraries that use "eci.ini" files for voice language information. If the library uses the Windows registry, then this option won't work.
+
+Note: The automatic or manual update functionality won't remove the internal files of the add-on. If you use your libraries in that place, you can safely use this function. Your libraries will be safe.
 
 ## Requirements.
 ### NVDA.
@@ -85,12 +98,13 @@ Once you close the console, the virtual environment is deactivated.
 
 Is not recommended to include the libraries with this driver. It's because if the user updates the driver from the
 [official repo](https://github.com/davidacm/NVDA-IBMTTS-Driver),
-the old version will be deleted including the libraries. One solution for this, is to install the libraries in a separate add-on.
+using the NVDA add-on installer, the old version will be deleted including the libraries. One solution for this, is to install the libraries in a separate add-on.
 [Follow this link](https://github.com/davidacm/ECILibrariesTemplate)
 to know how to package the libraries in a separate add-on.
 
 ### Notes:
 
+* If you use the internal update feature (manual or automatic) the libraries won't be deleted even if they are inside the add-on.
 * if the synthesizer is inside the add-on or in
 ["eciLibraries"](https://github.com/davidacm/ECILibrariesTemplate)
 add-on, the driver will update the ini library paths automatically. So you can use it on portable NVDA versions.
