@@ -21,16 +21,16 @@ ViaVoice TTS es un motor de texto a voz desarrollado por IBM, que sintetiza la r
 * Habilite o deshabilite las etiquetas de cambio de voz. Desactívalas para protegerte de códigos maliciosos de bromistas, actívalas para hacer muchas cosas divertidas con el sintetizador. Requiere un ajuste adicional con NVDA para que funcione correctamente.
 * Turbo de voz. Si el sintetizador no te habla lo suficientemente rápido ¡entonces activa el turbo de voz y obtén la velocidad máxima!
 * cambios automáticos de idioma. Permítele al sintetizador que lea el texto en el idioma correcto cuando se marca.
-* Filtrado ampliable. El controlador incluye un amplio conjunto de filtros para solucionar choques y otros comportamientos extraños del sintetizador.
+* Filtrado ampliable. El controlador incluye un amplio conjunto de filtros para solucionar errores de patrones de texto y otros comportamientos extraños del sintetizador.
 * Soporte de diccionario. El controlador soporta la integración de palabras especiales, diccionarios raíces y diccionarios de abreviatura de los usuarios para cada idioma. Se pueden obtener conjuntos de diccionarios preparados [desde el repositorio de diccionario de la comunidad](https://github.com/thunderdrop/IBMTTSDictionaries) o [desde el repositorio alternativo de mohamed00 (con diccionarios del sintetizador IBM)](https://github.com/mohamed00/AltIBMTTSDictionaries)
 
 ### Configuraciones extra:
 
-* Habilitar diccionario de abreviaturas: activa la expansión de las abreviaturas. Tenga en cuenta que al desactivar esta opción también se desactivará la expansión de cualquier abreviatura especificada en los diccionarios de abreviaturas proporcionados por el usuario.
+* Habilitar expansión de abreviaturas: activa la expansión de las abreviaturas. Tenga en cuenta que al desactivar esta opción también se desactivará la expansión de cualquier abreviatura especificada en los diccionarios de abreviaturas proporcionados por el usuario.
 * Activar predicción de frases: si esta opción está activada, el sintetizador intentará predecir dónde se producirán las pausas en las frases basándose en su estructura, por ejemplo, utilizando palabras como "y" o "el" como límites de la frase. Si esta opción está desactivada, sólo hará una pausa si se encuentran comas u otros signos de puntuación.
 * Acortar las pausas: active esta opción para obtener pausas de puntuación más cortas, como las que se ven en otros lectores de pantalla.
 * Enviar siempre la configuración de voz actual: actualmente, hay un error en el sintetizador que ocasionalmente hace que la configuración de voz y del tono se restablezca brevemente a sus valores predeterminados. La causa de este problema es actualmente desconocida, sin embargo, una solución es enviar continuamente la configuración actual de la velocidad y el tono. Por lo general, esta opción debería estar activada. Sin embargo, debería estar desactivada si está utilizando binarios de IBM, ya que esta configuración provocará que se inserten pausas muy largas que las harán casi inutilizables, o si está leyendo un texto que contiene etiquetas de voz con comillas.
-* Frecuencia de muestreo: cambia la calidad del sonido del sintetizador. Útil para IBMTTS, donde es posible ajustar la frecuencia de muestreo a 22 kHz.
+* Frecuencia de muestreo: cambia la calidad del sonido del sintetizador. Útil para IBMTTS, donde establecer la frecuencia de muestreo en 8 kHz permite acceder a un nuevo conjunto de voces.
 
 ### Categoría de configuraciones IBMTTS.
 
@@ -41,7 +41,7 @@ Este complemento tiene su propia categoría de configuraciones dentro de las opc
 * Dirección de carpeta de IBMTTS: la ruta para cargar la librería IBMTTS. Puede ser absoluta o relativa.
 * Nombre de la librería de IBMTTS: el nombre de la librería (dll). No incluya rutas, solo el nombre con la extensión, normalmente ".dll".
 * Buscar una librería de IBMTTS... Abre un diálogo  de exploración de archivos para buscar la librería IBMTTS en el sistema. Se guardará como una ruta absoluta.
-* Copiar los archivos de IBMTTS en un complemento. (puede no funcionar para algunas distribuciones de IBMTTS): si se ha establecido la ruta de la librería para IBMTTS, copiará todos los archivos de la carpeta en un nuevo complemento llamado "eciLibraries" y actualizará la ruta actual a una relativa. Es útil en las versiones portátiles de NVDA. Solo funciona para librerías que usan archivos "eci.ini" para la información de los idiomas de voz. Si la librería usa el registro de Windows, esta opción no funcionará.
+* Copiar los archivos de IBMTTS en un complemento. (puede no funcionar para algunas distribuciones de IBMTTS): si se ha establecido la ruta de la librería para IBMTTS, copiará todos los archivos de la carpeta en un nuevo complemento llamado "eciLibraries" y actualizará la ruta actual a una relativa. Es útil en las versiones portables de NVDA. Solo funciona para librerías que usan archivos "eci.ini" para la información de los idiomas de voz. Si la librería usa el registro de Windows, esta opción no funcionará.
 
 Nota: La funcionalidad de actualización automática o manual no borrará los archivos internos del complemento. Si mantienes tus librerías en ese lugar, puedes usar esta función con seguridad. Tus librerías estarán a salvo.
 
@@ -52,7 +52,7 @@ Nota: La funcionalidad de actualización automática o manual no borrará los ar
 ### Las librerías del sintetizador IBMTTS.
   Esto es solo el controlador, debes buscar las librerías en otro lugar.  
   El controlador soporta las librerías ligeramente más recientes que añaden el soporte del idioma este-asiático, y tiene correcciones específicas para la codificación adecuada del texto. Sin embargo, las librerías más antiguas sin esto deberían funcionar.  
-  A partir de la versión 21.03A1, el controlador también funciona con las librerías aún más nuevas de IBM, en lugar de solo los SpeechWorks. Se incluye un conjunto de correcciones independientes para esas librerías, y se tienen en cuenta los idiomas adicionales y otras diferencias. Solo se soportan las voces formantes en la actualidad. Gracias a @mohamed00 por este trabajo. Tenga en cuenta que cuando se utiliza las librerías de IBM, debes deshabilitar la opción Enviar siempre la configuración de voz actual.
+  A partir de la versión 21.03A1, el controlador también funciona con las librerías aún más nuevas de IBM, en lugar de solo las de SpeechWorks. Se incluye un conjunto de correcciones independientes para esas librerías, y se tienen en cuenta los idiomas adicionales y otras diferencias. Las voces concatenadas son compatibles y se puede acceder a ellas configurando la frecuencia de muestreo en 8 kHz después de instalar las voces. Para obtener mejores resultados, utilice la compilación de junio de 2005 de ibmeci.dll (versión 7.0.0.0) ya que las versiones anteriores pueden ser inestables al recibir texto rápidamente, por ejemplo, al desplazarse rápidamente por los elementos de una lista.
 
 ## Instalación.
 
@@ -109,6 +109,7 @@ para saber cómo empaquetar las bibliotecas en un complemento separado.
 * cuando utilice el botón "Copiar archivos IBMTTS en un add-on", creará un nuevo add-on en NVDA. Por lo tanto, si desea desinstalar IBMTTS, necesitará desinstalar dos complementos: "Controlador de IBMTTS" y "Eci libraries".
 * Las herramientas scons y gettext de este proyecto son compatibles con python 3 únicamente. No funcionan en python 2.7.
 * Puede agregar  los archivos extra requeridos de IBMTTS dentro del complemento (para uso personal solamente). Simplemente cópielos dentro de "addon\synthDrivers\ibmtts". Ajuste el nombre de la librería por defecto en "settingsDB.py" si es necesario.
+* Si la ruta configurada para la librería no es relativa, Este controlador no actualizará las rutas del archivo "eci.ini". El controlador supone que al usar rutas absolutas, las rutas son correctas en "eci.ini" y evitará realizar actualizaciones. Ten esto en cuenta al establecer la ruta de tus librerías. Si no fueran correctas en dicho archivo, podría causar errores que dejarían a NVDA sin habla cuando utilices este sintetizador.
 
 ## Reporte de problemas.
 
@@ -117,11 +118,17 @@ Si encuentra un problema de seguridad con algunas de las bibliotecas compatibles
 Si el problema no perjudica el controlador o el lector de pantallas, abra un [problema de github aquí.](https://github.com/davidacm/NVDA-IBMTTS-Driver/issues)
 
 ## Referencias.
- Este controlador está basado en el SDK de Viavoice de IBM (IBMTTS) la documentación está disponible en [este enlace](http://web.archive.org/web/20191125091344/http://www.wizzardsoftware.com/docs/tts.pdf)
+
+Este controlador está basado en el SDK de Viavoice de IBM (IBMTTS) la documentación está disponible en [este enlace](http://web.archive.org/web/20191125091344/http://www.wizzardsoftware.com/docs/tts.pdf)
+
+también en la universidad Columbia en [este enlace](http://www1.cs.columbia.edu/~hgs/research/projects/simvoice/simvoice/docs/tts.pdf)
 
 o puede encontrar una copia en [este repositorio](https://github.com/david-acm/NVDA-IBMTTS-Driver)
 
-Vea los archivos
+[pyibmtts: envoltorio de Python para IBM TTS desarrollado por Peter Parente](https://sourceforge.net/projects/ibmtts-sdk/)
+
+Vea los archivos de respaldo aquí:
 
 [tts.pdf](https://cdn.jsdelivr.net/gh/davidacm/NVDA-IBMTTS-Driver/apiReference/tts.pdf)
+
 o [tts.txt.](https://cdn.jsdelivr.net/gh/davidacm/NVDA-IBMTTS-Driver/apiReference/tts.txt)

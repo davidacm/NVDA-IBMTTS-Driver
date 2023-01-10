@@ -42,7 +42,7 @@ This add-on has its own category of settings within NVDA options, to manage some
 * IBMTTS folder address: The path to load the IBMTTS library. It can be absolute or relative.
 * IBMTTS library name (dll): The name of the library (dll). Don't include paths, only the name with the extension, typically ".dll".
 * Browse for  IBMTTS library... Opens a file browse dialog to search for the IBMTTS library on the system. It will be saved as an absolute path.
-* Copy IBMTTS files in an  add-on (may not work for some IBMTTS distributions): If the library path for IBMTTS has been set, it will copy all the folder files to a new add-on called eciLibraries and update the current path to a relative path. I'ts very useful in NVDA portable versions. It only works for libraries that use "eci.ini" files for voice language information. If the library uses the Windows registry, then this option won't work.
+* Copy IBMTTS files in an  add-on (may not work for some IBMTTS distributions): If the library path for IBMTTS has been set, it will copy all the folder files to a new add-on called eciLibraries and update the current path to a relative path. It's very useful in NVDA portable versions. It only works for libraries that use "eci.ini" files for voice language information. If the library uses the Windows registry, then this option won't work.
 
 Note: The automatic or manual update functionality won't remove the internal files of the add-on. If you use your libraries in that place, you can safely use this function. Your libraries will be safe.
 
@@ -53,7 +53,7 @@ Note: The automatic or manual update functionality won't remove the internal fil
 ### IBMTTS synthesizer libraries.
   This is just the driver, you must   get the libraries from  somewhere else.  
   This driver supports the slightly newer libraries that add East-Asian language support, and has specific fixes for the proper encoding of text. The older libraries without this should work, though.  
-  As of version 21.03A1, this driver also works with the even newer libraries from IBM, rather than just the SpeechWorks ones. A set of independent fixes for those libraries is included, and the additional languages and other differences are accounted for. Concatenative voices are supported, and can be accessed by setting the sample rate to 8 kHz after installing voices. For best results, use the June 2005 build of ibmeci.dll version 7.0.0.0, as older versions can be unstable when receiving text rapidly, for example, by quickly scrolling through items in a list.
+  As of version 21.03A1, this driver also works with the even newer libraries from IBM, rather than just the SpeechWorks ones. A set of independent fixes for those libraries is included, and the additional languages and other differences are accounted for. Concatenative voices are supported, and can be accessed by setting the sample rate to 8 kHz after installing voices. For best results, use the June 2005 build of ibmeci.dll (version 7.0.0.0) as older versions can be unstable when receiving text rapidly, for example, by quickly scrolling through items in a list.
 
 ## Installation.
   Just install it as an NVDA add-on. Then open NVDA dialog settings, and set the IBMTTS folder files in the IBMTTS category.
@@ -86,7 +86,7 @@ This is an alternative method. If you want, you always can go by the usual way. 
 1. Install python, currently python 3.7 is used, but You can use a newer version.
 2. Install gettext, you can download a distribution for windows in [this link.](https://mlocati.github.io/articles/gettext-iconv-windows.html) If you're using windows 64 bits, I recommend [this version.](https://github.com/mlocati/gettext-iconv-windows/releases/download/v0.21-v1.16/gettext0.21-iconv1.16-shared-64.exe)
 3. (optional but recommended step) create a python virtual environment to be used to manage NVDA add-ons. In the console, use "python -m venv PAT_TO_FOLDER". Where PAT_TO_FOLDER is the path of your desired path for the virtual environment.
-4. If you did step 2, go to the PAT_TO_FOLDER and inside scripts folder, execute "activate". The name of the environment should be shown in the console pront.
+4. If you did step 2, go to the PAT_TO_FOLDER and inside scripts folder, execute "activate". The name of the environment should be shown in the console prompt.
 5. Clone this repo in your desired path: "git clone https://github.com/davidacm/NVDA-IBMTTS-Driver.git".
 6. In the same console instance, go to the folder of this repo.
 7. Install the requirements: "pip install -r requirements.txt".
@@ -94,7 +94,7 @@ This is an alternative method. If you want, you always can go by the usual way. 
 
 Once you close the console, the virtual environment is deactivated.
 
-### Packagin libraries as an independent add-on.
+### Packaging libraries as an independent add-on.
 
 Is not recommended to include the libraries with this driver. It's because if the user updates the driver from the
 [official repo](https://github.com/davidacm/NVDA-IBMTTS-Driver),
@@ -111,6 +111,7 @@ add-on, the driver will update the ini library paths automatically. So you can u
 * when you use the "Copy IBMTTS files in an  add-on" button, it will create a new add-on. So, if you want to uninstall IBMTTS, you'll need to uninstall two add-ons: "IBMTTS driver" and "Eci libraries".
 * scons and gettext tools on this project are  compatible with python 3 only. Doesn't work with python 2.7.
 * You can put the extra IBMTTS required files in the add-on (for personal use only). Just copy them in "addon\synthDrivers\ibmtts" folder. Adjust the default library name in "settingsDB.py" if necessary.
+* if the configured library path is not relative, this add-on won't update the paths in the "eci.ini" file. The driver assumes that when using absolute paths, the paths are correct in "eci.ini" and will avoid making any updates. Keep this in mind when setting the path of your libraries. If they were not correct, this could cause errors that will render NVDA speechless when you use this synthesizer.
 
 ## Reporting issues:
 
@@ -122,7 +123,7 @@ If the issue doesn't crash the driver or the screen reader, then open an [github
 This driver is based on the IBM tts sdk, the documentation is available on:
 [this link](http://web.archive.org/web/20191125091344/http://www.wizzardsoftware.com/docs/tts.pdf)
 
-also at the university of columbia in
+also at the university of Columbia in
 [this link](http://www1.cs.columbia.edu/~hgs/research/projects/simvoice/simvoice/docs/tts.pdf)
 
 Or you can get a backup copy on [this repo](https://github.com/david-acm/NVDA-IBMTTS-Driver)
@@ -132,4 +133,5 @@ Or you can get a backup copy on [this repo](https://github.com/david-acm/NVDA-IB
 See the backup files here:
 
 [tts.pdf](https://cdn.jsdelivr.net/gh/davidacm/NVDA-IBMTTS-Driver/apiReference/tts.pdf)
+
 or [tts.txt.](https://cdn.jsdelivr.net/gh/davidacm/NVDA-IBMTTS-Driver/apiReference/tts.txt)
