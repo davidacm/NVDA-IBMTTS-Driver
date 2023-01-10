@@ -202,12 +202,13 @@ def eciCheck():
 def iniCheck():
 	ini=open(path.join(ttsPath, dllName[:-3] +"ini"), "r+")
 	ini.seek(12)
-	tml=ini.readline()[:-9]
-	if tml != ttsPath:
+	tml=ini.readline()[:-8]
+	newPath = ttsPath + "\\"
+	if tml != newPath:
 		ini.seek(12)
 		tmp=ini.read()
 		ini.seek(12)
-		ini.write(tmp.replace(tml, ttsPath))
+		ini.write(tmp.replace(tml, newPath))
 		ini.truncate()
 	ini.close()
 

@@ -106,9 +106,6 @@ class BaseConfig:
 	""" this class will help to get and set config values.
 	the idea behind this is to generalize the config path and config names.
 	sometimes, a mistake in the dict to access the values can produce an undetectable bug.
-	if returnValue attribute is set to False, this will return the option name instead of the value.
-	by default this value is False, to help to create the configuration spec first.
-	Set it to true after creating this spec.
 	"""
 	__path__ = None
 	def __init__(self, path=None):
