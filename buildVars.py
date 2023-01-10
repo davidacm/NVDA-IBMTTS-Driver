@@ -19,7 +19,7 @@ addon_info = {
 	# Translators: Long description to be shown for this add-on on add-on information from add-ons manager
 	"addon_description" : _("""This is the IBMTTS synthesizer driver for NVDA."""),
 	# version
-	"addon_version" : "v22.08.2-alpha",
+	"addon_version" : "v23.01.3",
 	# Author(s)
 	"addon_author" : u"David CM <dhf360@gmail.com>, x0 and others",
 	# URL for the add-on documentation support
