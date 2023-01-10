@@ -7,169 +7,282 @@ msgid ""
 msgstr ""
 "Project-Id-Version: IBMTTS for NVDA\n"
 "Report-Msgid-Bugs-To: 'nvda-translations@freelists.org'\n"
-"POT-Creation-Date: 2022-07-04 19:57-0600\n"
-"PO-Revision-Date: 2022-07-04 20:02-0600\n"
-"Last-Translator: Rémy Ruiz <remyruiz@gmail.com>\n"
+"POT-Creation-Date: 2023-01-08 22:55-0600\n"
+"PO-Revision-Date: 2023-01-10 15:45+0300\n"
+"Last-Translator: Umut KORKMAZ <umutkork@gmail.com>\n"
 "Language-Team: cagrid@hotmail.com\n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 3.1\n"
+"X-Generator: Poedit 3.2.2\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-Basepath: ../../..\n"
 "X-Poedit-SearchPath-0: globalPlugins\n"
 "X-Poedit-SearchPath-1: synthDrivers\n"
 
-#: addon\synthDrivers\_ibmeci.py:59
+#: addon\synthDrivers\_ibmeci.py:61
 msgid "Castilian Spanish"
 msgstr "İspanyolca İspanya"
 
-#: addon\synthDrivers\_ibmeci.py:60
+#: addon\synthDrivers\_ibmeci.py:62
 msgid "Latin American Spanish"
 msgstr "İspanyolca Latin Amerika"
 
-#: addon\synthDrivers\_ibmeci.py:61
+#: addon\synthDrivers\_ibmeci.py:63
 msgid "Brazilian Portuguese"
 msgstr "Portekizce Brezilya"
 
-#: addon\synthDrivers\_ibmeci.py:62
+#: addon\synthDrivers\_ibmeci.py:64
 msgid "French"
 msgstr "Fransızca"
 
-#: addon\synthDrivers\_ibmeci.py:63
+#: addon\synthDrivers\_ibmeci.py:65
 msgid "French Canadian"
 msgstr "Fransızca Kanada"
 
-#: addon\synthDrivers\_ibmeci.py:64
+#: addon\synthDrivers\_ibmeci.py:66
 msgid "Finnish"
 msgstr "Fince"
 
-#: addon\synthDrivers\_ibmeci.py:65
+#: addon\synthDrivers\_ibmeci.py:67
 msgid "Chinese"
 msgstr "Çince"
 
-#: addon\synthDrivers\_ibmeci.py:66
+#: addon\synthDrivers\_ibmeci.py:68
 msgid "Japanese"
 msgstr "Japonca"
 
-#: addon\synthDrivers\_ibmeci.py:67
+#: addon\synthDrivers\_ibmeci.py:69
 msgid "Korean"
 msgstr "Korece"
 
-#: addon\synthDrivers\_ibmeci.py:68
+#: addon\synthDrivers\_ibmeci.py:70
 msgid "German"
 msgstr "Almanca"
 
-#: addon\synthDrivers\_ibmeci.py:69
+#: addon\synthDrivers\_ibmeci.py:71
 msgid "Italian"
 msgstr "İtalyanca"
 
-#: addon\synthDrivers\_ibmeci.py:70
+#: addon\synthDrivers\_ibmeci.py:72
 msgid "American English"
 msgstr "İngilice ABD"
 
-#: addon\synthDrivers\_ibmeci.py:71
+#: addon\synthDrivers\_ibmeci.py:73
 msgid "British English"
 msgstr "İngilice Britanya"
 
-#: addon\synthDrivers\_ibmeci.py:72
-msgid "Swedish"
-msgstr ""
-
-#: addon\synthDrivers\_ibmeci.py:73
-msgid "Norwegian"
-msgstr ""
-
 #: addon\synthDrivers\_ibmeci.py:74
-msgid "Danish"
-msgstr "Fince"
+msgid "Swedish"
+msgstr "İsveççe"
 
 #: addon\synthDrivers\_ibmeci.py:75
-msgid "Hong Kong Cantonese"
-msgstr ""
+msgid "Norwegian"
+msgstr "Norveççe"
 
-#: addon\synthDrivers\ibmeci.py:148
+#: addon\synthDrivers\_ibmeci.py:76
+msgid "Danish"
+msgstr "Danca"
+
+#: addon\synthDrivers\_ibmeci.py:77
+msgid "Hong Kong Cantonese"
+msgstr "Hong Kong Kantonca"
+
+#: addon\synthDrivers\ibmeci.py:169
 msgid "Rate boos&t"
 msgstr "Konuşma &hızlandırma"
 
-#: addon\synthDrivers\ibmeci.py:150
+#: addon\synthDrivers\ibmeci.py:171
 msgid "Hea&d size"
-msgstr "Kafa Büyüklüğü"
+msgstr "Kafa &Büyüklüğü"
 
-#: addon\synthDrivers\ibmeci.py:151
+#: addon\synthDrivers\ibmeci.py:172
 msgid "Rou&ghness"
-msgstr "Pürüzlülük"
+msgstr "P&ürüzlülük"
 
-#: addon\synthDrivers\ibmeci.py:152
+#: addon\synthDrivers\ibmeci.py:173
 msgid "Breathi&ness"
-msgstr "nefes"
+msgstr "&Nefes"
 
-#: addon\synthDrivers\ibmeci.py:153
+#: addon\synthDrivers\ibmeci.py:174
 msgid "Enable backquote voice &tags"
 msgstr "Ses de&ğiştirme etiketlerini etkinleştir"
 
-#: addon\synthDrivers\ibmeci.py:154
-msgid "Enable &abbreviation dictionary"
-msgstr ""
+#: addon\synthDrivers\ibmeci.py:175
+msgid "Enable &abbreviation expansion"
+msgstr "Kıs&altma genişletmeyi etkinleştir"
 
-#: addon\synthDrivers\ibmeci.py:155
+#: addon\synthDrivers\ibmeci.py:176
 msgid "Enable phras&e prediction"
-msgstr ""
+msgstr "Cüml&e tahminini etkinleştir"
 
-#: addon\synthDrivers\ibmeci.py:156
+#: addon\synthDrivers\ibmeci.py:177
 msgid "&Shorten pauses"
-msgstr ""
+msgstr "Duraklamaları kı&saltın"
 
-#: addon\synthDrivers\ibmeci.py:157
+#: addon\synthDrivers\ibmeci.py:178
 msgid "Al&ways Send Current Speech Settings"
-msgstr ""
+msgstr "Her Zaman Geçerli &Konuşma Ayarlarını Gönder"
 
-#: addon\synthDrivers\ibmeci.py:158
+#: addon\synthDrivers\ibmeci.py:179
 msgid "Sa&mple Rate"
+msgstr "&Örnekleme değeri"
+
+#. Translators: a message dialog asking to retry or cancel when downloading a file.
+#: addon\globalPlugins\_ibmttsUtils.py:77
+msgid ""
+"Unable to download the file. Perhaps there is no internet access or the "
+"server is not responding. Do you want to try again?"
 msgstr ""
+"Dosya indirilemiyor. Internet erişimi yok veya sunucu yanıt vermiyor "
+"olabilir. Tekrar denemek ister misiniz?"
+
+#. Translators: the title of a retry cancel dialog when downloading a file.
+#: addon\globalPlugins\_ibmttsUtils.py:79
+msgid "Error downloading"
+msgstr "İndirme hatası"
+
+#. Translators: a message dialog asking to retry or cancel when copying files.
+#: addon\globalPlugins\_ibmttsUtils.py:115
+msgid ""
+"Unable to copy a file. Perhaps it is currently being used by another process "
+"or you have run out of disc space on the drive you are copying to."
+msgstr ""
+"Bir dosya kopyalanamıyor. Belki başka bir işlem tarafından kullanılıyordur "
+"veya kopyaladığınız sürücüde yeterli disk alanı yoktur."
+
+#. Translators: the title of a retry cancel dialog when copying files.
+#: addon\globalPlugins\_ibmttsUtils.py:117
+msgid "Error Copying"
+msgstr "Kopyalama hatası"
+
+#. Translators: The message displayed when an error occurs when opening an add-on package for adding.
+#: addon\globalPlugins\_ibmttsUtils.py:136
+#, python-format
+msgid ""
+"Failed to open add-on update file at %s - missing file or invalid file format"
+msgstr ""
+"%s adresindeki eklenti güncelleme dosyası açılamadı - eksik dosya veya "
+"geçersiz dosya biçimi"
+
+#. Translators: The title of a dialog presented when an error occurs.
+#. Translators: The title displayed if the folder to store the downloaded file can't be created.
+#. Translators: The title  displayed when copying IBMTTS files to Add-on was successful.
+#: addon\globalPlugins\_ibmttsUtils.py:138
+#: addon\globalPlugins\_ibmttsUtils.py:165
+#: addon\globalPlugins\_ibmttsUtils.py:290 addon\globalPlugins\ibmtts.py:108
+#: addon\globalPlugins\ibmtts.py:136
+msgid "Error"
+msgstr "Hata"
+
+#. Translators: The title of the dialog presented while an Addon is being installed.
+#: addon\globalPlugins\_ibmttsUtils.py:152
+#, python-format
+msgid "Installing %s"
+msgstr "%s yükleniyor"
+
+#. Translators: The message displayed while an addon is being installed.
+#: addon\globalPlugins\_ibmttsUtils.py:154
+msgid "Please wait while the add-on is being installed."
+msgstr "Eklenti kurulurken lütfen bekleyin."
+
+#. Translators: The message displayed when an error occurs when installing an add-on package.
+#: addon\globalPlugins\_ibmttsUtils.py:163
+#, python-format
+msgid "Failed to install add-on from %s"
+msgstr "%s'den eklenti yüklenemedi"
+
+#. Translators: The message displayed if the folder to store the downloaded file can't be created.
+#: addon\globalPlugins\_ibmttsUtils.py:288
+msgid "Unable to create the folder to save the update file."
+msgstr "Güncelleme dosyasının kaydedileceği klasör oluşturulamıyor."
+
+#: addon\globalPlugins\_ibmttsUtils.py:298
+#, python-format
+msgid "Downloading the new %s update"
+msgstr "Yeni %s güncellemesi indiriliyor"
+
+#: addon\globalPlugins\_ibmttsUtils.py:299
+msgid "downloading"
+msgstr "indiriliyor"
+
+#. Translators: The message displayed when no updates were found.
+#: addon\globalPlugins\_ibmttsUtils.py:333
+#, python-format
+msgid "There are no updates available for the %s addon."
+msgstr "%s eklentisi için güncelleme mevcut değil."
+
+#. Translators: The title  displayed when no updates were found.
+#: addon\globalPlugins\_ibmttsUtils.py:335
+msgid "No updates available"
+msgstr "Güncelleme mevcut değil"
+
+#. Translators: A message asking the user if they wish to update the add-on
+#: addon\globalPlugins\_ibmttsUtils.py:342
+#, python-format
+msgid ""
+"A new version of %s was found. The new version is %s. Would you like to "
+"update this add-on now?"
+msgstr ""
+"%s'nin yeni bir sürümü bulundu. Yeni sürüm %s. Bu eklentiyi şimdi "
+"güncellemek ister misiniz?"
+
+#. Translators: Title for message asking if the user wishes to update the add-on.
+#: addon\globalPlugins\_ibmttsUtils.py:345
+msgid "Update add-on"
+msgstr "Eklentiyi güncelle"
 
 #. Translators: This is the label for the IBMTTS settings category in NVDA Settings screen.
-#: addon\globalPlugins\ibmtts.py:17
+#: addon\globalPlugins\ibmtts.py:26
 msgid "IBMTTS"
 msgstr "IBMTTS"
 
+#: addon\globalPlugins\ibmtts.py:33
+msgid "&Automatically check for updates for IBMTTS"
+msgstr "IBMTTS için güncellemeleri otom&atik olarak denetle"
+
+#. Translators: This is the button to check for new updates of the add-on.
+#: addon\globalPlugins\ibmtts.py:36
+msgid "&Check for update"
+msgstr "&Güncellemeleri denetle"
+
 #. Translators: This is the label for the IBMTTS folder address.
-#: addon\globalPlugins\ibmtts.py:22
+#: addon\globalPlugins\ibmtts.py:39
 msgid "IBMTTS folder address"
 msgstr "IBMTTS klasör adresi"
 
 #. Translators: This is the label for the IBMTTS library name.
-#: addon\globalPlugins\ibmtts.py:24
+#: addon\globalPlugins\ibmtts.py:41
 msgid "IBMTTS library name (dll)"
 msgstr "IBMTTS kütüphane adı (dll)"
 
 #. Translators: This is the button to explore and find for an IBMTTS library and files.
-#: addon\globalPlugins\ibmtts.py:26
+#: addon\globalPlugins\ibmtts.py:43
 msgid "&Browse for  IBMTTS library..."
 msgstr "&Bir IBMTTS kütüphanesi bul..."
 
 #. Translators: This is the button to copy external IBMTTS files into synth driver Add-on.
-#: addon\globalPlugins\ibmtts.py:29
+#: addon\globalPlugins\ibmtts.py:46
 msgid ""
 "&Copy IBMTTS files in an  add-on (may not work for some IBMTTS distributions)"
 msgstr ""
 "&IBMTTS dosyalarını sürücü eklentisine kopyala (bazı IBMTTS dağıtımlarıyla "
 "çalışmayabilir)"
 
-#: addon\globalPlugins\ibmtts.py:41
+#: addon\globalPlugins\ibmtts.py:62
 msgid "Select the IBMTTS library (dll)"
 msgstr "IBMTTS kütüphanesini seçin (dll)"
 
 #. Translators: the label for the dynamic link library extension (dll) file type
-#: addon\globalPlugins\ibmtts.py:43
+#: addon\globalPlugins\ibmtts.py:64
 #, python-brace-format
 msgid "dynamic link library (*.{ext})"
 msgstr "dinamik bağlantı kütüphanesi (*.{ext})"
 
 #. Translators: The message displayed when the IBMTTS files folder and library name have  been set.
-#: addon\globalPlugins\ibmtts.py:52
+#: addon\globalPlugins\ibmtts.py:74
 msgid ""
 "The IBMTTS files location has been set. If you want  to use it with a "
 "portable version of NVDA, please use the \"Copy IBMTTS files into driver add-"
@@ -177,16 +290,16 @@ msgid ""
 msgstr ""
 "IBMTTS dosyalarının konumu ayarlandı. NVDA'nın taşınabilir bir sürümüyle "
 "kullanmak istiyorsanız, lütfen \"IBMTTS dosyalarını sürücü eklentisine "
-"kopyala\" düğmesini kullanın."
+"kopyala\" düğmesini kullanın"
 
 #. Translators: The title displayed when the IBMTTS files folder and library name have been set.
 #. Translators: The title  displayed when copying IBMTTS files to Add-on was successful.
-#: addon\globalPlugins\ibmtts.py:54 addon\globalPlugins\ibmtts.py:102
+#: addon\globalPlugins\ibmtts.py:76 addon\globalPlugins\ibmtts.py:130
 msgid "Success"
-msgstr "başarılı"
+msgstr "Başarılı"
 
 #. Translators: The message displayed in the dialog that inform you the specified library is invalid.
-#: addon\globalPlugins\ibmtts.py:58
+#: addon\globalPlugins\ibmtts.py:82
 msgid ""
 "The specified dll file seems to be an incorrect IBMTTS library. Would you "
 "like to select another library?"
@@ -194,21 +307,11 @@ msgstr ""
 "Belirtilen dll dosyası yanlış bir IBMTTS kütüphanesi gibi görünüyor. Başka "
 "bir kütüphane seçmek ister misiniz?"
 
-#: addon\globalPlugins\ibmtts.py:59
+#: addon\globalPlugins\ibmtts.py:83
 msgid "Error loading library"
 msgstr "Kütüphane yüklenirken hata oluştu"
 
-#. Translators: The message displayed when the current source path is relative.
-#: addon\globalPlugins\ibmtts.py:66
-msgid "Relative paths are not allowed."
-msgstr "Göreli adreslere izin verilmiyor."
-
-#: addon\globalPlugins\ibmtts.py:66 addon\globalPlugins\ibmtts.py:105
-msgid "Error"
-msgstr "Hata"
-
-#. Translators: A message to ask the user to copy IBMTTS files to Add-on folder.
-#: addon\globalPlugins\ibmtts.py:69
+#: addon\globalPlugins\ibmtts.py:91
 msgid ""
 "Are you sure to copy IBMTTS files to local NVDA installation and register a "
 "new add-on called \"eciLibraries\" to store the libraries? It may not work "
@@ -225,36 +328,28 @@ msgstr ""
 "Bu ve \"eciLibraries\""
 
 #. Translators: The title of the Asking dialog displayed when trying to copy IBMTTS files.
-#: addon\globalPlugins\ibmtts.py:72
+#: addon\globalPlugins\ibmtts.py:94
 msgid "Copy IBMTTS files"
 msgstr "IBMTTS dosyalarını kopyala"
 
+#: addon\globalPlugins\ibmtts.py:106
+msgid ""
+"Unable to copy the files because the source and destination paths are the "
+"same."
+msgstr "Kaynak ve hedef yolları aynı olduğundan dosyalar kopyalanamıyor."
+
 #. Translators: The title of the dialog presented while IBMTTS files  are being copied.
-#: addon\globalPlugins\ibmtts.py:76
+#: addon\globalPlugins\ibmtts.py:117
 msgid "Copying files"
 msgstr "Dosyalar kopyalanıyor"
 
 #. Translators: The message displayed while IBMTTS files are being copied.
-#: addon\globalPlugins\ibmtts.py:78
+#: addon\globalPlugins\ibmtts.py:119
 msgid "Please wait while IBMTTS files  are copied into add-on."
 msgstr "IBMTTS dosyaları eklentiye kopyalanırken lütfen bekleyin."
 
-#. Translators: a message dialog asking to retry or cancel when copying IBMTTS files.
-#: addon\globalPlugins\ibmtts.py:86
-msgid ""
-"Unable to copy a file. Perhaps it is currently being used by another process "
-"or you have run out of disc space on the drive you are copying to."
-msgstr ""
-"Bir dosya kopyalanamıyor. Belki başka bir işlem tarafından kullanılıyordur "
-"veya kopyaladığınız sürücüde yeterli disk alanı yoktur."
-
-#. Translators: the title of a retry cancel dialog when copying IBMTTS files.
-#: addon\globalPlugins\ibmtts.py:88
-msgid "Error Copying"
-msgstr "Kopyalama hatası"
-
 #. Translators: The message displayed when copying IBMTTS files to Add-on was successful.
-#: addon\globalPlugins\ibmtts.py:100
+#: addon\globalPlugins\ibmtts.py:128
 msgid ""
 "Successfully copied IBMTTS files. The local copy will be used after restart "
 "NVDA."
@@ -263,7 +358,7 @@ msgstr ""
 "başlattıktan sonra kullanılacaktır."
 
 #. Translators: The message displayed when errors were found while trying to copy IBMTTS files to Add-on.
-#: addon\globalPlugins\ibmtts.py:105
+#: addon\globalPlugins\ibmtts.py:136
 msgid "Error copying IBMTTS files"
 msgstr "IBMTTS dosyaları kopyalanırken hata oluştu"
 
@@ -300,12 +395,16 @@ msgstr "IBMTTS sürücüsü"
 msgid "This is the IBMTTS synthesizer driver for NVDA."
 msgstr "Bu, NVDA için IBMTTS sentezleyici sürücüsüdür."
 
-#~ msgid ""
-#~ "Are you sure to copy IBMTTS files to local NVDA driver Add-on? It may not "
-#~ "work in some IBMTTS distributions."
-#~ msgstr ""
-#~ "IBMTTS dosyalarını NVDA sürücü eklentisine kopyalayacağınızdan emin "
-#~ "misiniz? Bu, bazı IBMTTS dağıtımlarında çalışmayabilir."
+msgid ""
+"Always Send Current Speech Settings (enable to prevent some tags from "
+"sticking, disable for viavoice binary compatibility)"
+msgstr ""
+"Enviar siempre la configuración de voz actual (habilitar para evitar que se "
+"peguen algunas etiquetas, deshabilitar si requiere compatibilidad con "
+"viavoice)"
+
+#~ msgid "Relative paths are not allowed."
+#~ msgstr "Göreli adreslere izin verilmiyor."
 
 #~ msgid ""
 #~ "if you are using another copy of IBMTTS or similar with a different name, "
@@ -319,6 +418,13 @@ msgstr "Bu, NVDA için IBMTTS sentezleyici sürücüsüdür."
 #~ "yaparsanız, NVDA başarısız olur.\n"
 #~ "Çözüm için başka bir sentezleyiciye (örneğin espeak) geçin ve NVDA'yı "
 #~ "yeniden başlatın. Bundan sonra, bu yeni sürücüyü kullanabilirsiniz."
+
+#~ msgid ""
+#~ "Are you sure to copy IBMTTS files to local NVDA driver Add-on? It may not "
+#~ "work in some IBMTTS distributions."
+#~ msgstr ""
+#~ "IBMTTS dosyalarını NVDA sürücü eklentisine kopyalayacağınızdan emin "
+#~ "misiniz? Bu, bazı IBMTTS dağıtımlarında çalışmayabilir."
 
 #~ msgid ""
 #~ "The synthesizer won't be available until you set   IBMTTS files. NVDA "

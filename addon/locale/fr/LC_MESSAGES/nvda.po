@@ -8,15 +8,15 @@ msgstr ""
 "Project-Id-Version: IBMTTS for NVDA\n"
 "Report-Msgid-Bugs-To: 'nvda-translations@freelists.org'\n"
 "POT-Creation-Date: 2022-07-04 19:57-0600\n"
-"PO-Revision-Date: 2022-07-04 20:00-0600\n"
-"Last-Translator: Rémy Ruiz <remyruiz@gmail.com>\n"
+"PO-Revision-Date: 2023-01-10 15:04+0100\n"
+"Last-Translator: Michel Such <michelsuch93@gmail.com>\n"
 "Language-Team: \n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 3.1\n"
+"X-Generator: Poedit 3.2\n"
 
 #: addon\synthDrivers\_ibmeci.py:59
 msgid "Castilian Spanish"
@@ -92,27 +92,27 @@ msgstr "Voix t&urbo"
 
 #: addon\synthDrivers\ibmeci.py:150
 msgid "Hea&d size"
-msgstr "Taille de la tête"
+msgstr "Taille de la &tête"
 
 #: addon\synthDrivers\ibmeci.py:151
 msgid "Rou&ghness"
-msgstr "Enrouement"
+msgstr "E&nrouement"
 
 #: addon\synthDrivers\ibmeci.py:152
 msgid "Breathi&ness"
-msgstr "Respiration"
+msgstr "&Respiration"
 
 #: addon\synthDrivers\ibmeci.py:153
 msgid "Enable backquote voice &tags"
 msgstr "Activer les &balises de changement de voix"
 
-#: addon\synthDrivers\ibmeci.py:154
-msgid "Enable &abbreviation dictionary"
-msgstr "Activer le dictionnaire d'&abréviation"
+#: addon\synthDrivers\ibmeci.py:175
+msgid "Enable &abbreviation expansion"
+msgstr "Activer l'e&xpansion des abréviations"
 
 #: addon\synthDrivers\ibmeci.py:155
 msgid "Enable phras&e prediction"
-msgstr "Activer la prédiction de phrase"
+msgstr "Activer la prédiction de phras&e"
 
 #: addon\synthDrivers\ibmeci.py:156
 msgid "&Shorten pauses"
@@ -120,16 +120,25 @@ msgstr "&Réduire les pauses"
 
 #: addon\synthDrivers\ibmeci.py:157
 msgid "Al&ways Send Current Speech Settings"
-msgstr ""
+msgstr "Tou&jours envoyer les paramètres vocaux"
 
 #: addon\synthDrivers\ibmeci.py:158
 msgid "Sa&mple Rate"
-msgstr ""
+msgstr "Tau&x d'échantillonnage"
 
 #. Translators: This is the label for the IBMTTS settings category in NVDA Settings screen.
 #: addon\globalPlugins\ibmtts.py:17
 msgid "IBMTTS"
 msgstr "IBMTTS"
+
+#: addon\globalPlugins\ibmtts.py:33
+msgid "&Automatically check for updates for IBMTTS"
+msgstr "Rechercher automatiquement les mises à jour pour IBMTTS"
+
+#. Translators: This is the button to check for new updates of the add-on.
+#: addon\globalPlugins\ibmtts.py:36
+msgid "&Check for update"
+msgstr "Rechercher une mise à jour"
 
 #. Translators: This is the label for the IBMTTS folder address.
 #: addon\globalPlugins\ibmtts.py:22
