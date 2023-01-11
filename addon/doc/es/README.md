@@ -63,6 +63,10 @@ Nota: La funcionalidad de actualización automática o manual no borrará los ar
 
 Para facilitar tu trabajo, he dejado una
 [plantilla de traducción en la rama principal](https://raw.githubusercontent.com/davidacm/NVDA-IBMTTS-Driver/master/IBMTTS.pot).
+
+Para la documentación, creé un archivo llamado ["docChangelog-for-translators.md".](https://raw.githubusercontent.com/davidacm/NVDA-IBMTTS-Driver/master/docChangelog-for-translators.md)
+puedes usar ese archivo para ver qué se ha cambiado en la documentación y actualizar la documentación de tu idioma.
+
 Si quieres traducir este complemento a otro idioma y no quieres abrir una cuenta en github o instalar python y otras herramientas necesarias para la traducción, haz los siguientes pasos:
 
 1. Utiliza
@@ -71,8 +75,9 @@ como base para el idioma de destino.
 2. Descargue
 ["poedit"](https://poedit.net/),
 este software le ayudará a gestionar las cadenas de traducción.
-3. Si quieres traducir también la documentación, puedes utilizar la
-[Documentación en inglés en este enlace](https://raw.githubusercontent.com/davidacm/NVDA-IBMTTS-Driver/master/README.md)
+
+3. Si quieres traducir la documentación también, puedes ver los nuevos cambios de la documentación
+[en este enlace.](https://raw.githubusercontent.com/davidacm/NVDA-IBMTTS-Driver/master/docChangelog-for-translators.md) Puedes ver la [documentación completa en inglés aquí.](https://raw.githubusercontent.com/davidacm/NVDA-IBMTTS-Driver/master/readme.md)
 4. Una vez que hayas terminado la traducción, puedes enviármela a "dhf360@gmail.com".
 
 No necesitarás compilar los archivos fuente. Lo haré cuando lance una nueva versión del complemento. Mencionaré tu nombre en el respectivo commit. Si no deseas ser mencionado, házmelo saber en el correo electrónico.

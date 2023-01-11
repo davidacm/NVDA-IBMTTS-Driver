@@ -63,6 +63,10 @@ Note: The automatic or manual update functionality won't remove the internal fil
 
 In order to make your work easier, I have left a 
 [translation template in the master branch.](https://raw.githubusercontent.com/davidacm/NVDA-IBMTTS-Driver/master/IBMTTS.pot)
+
+For the documentation, I created a file called ["docChangelog-for-translators.md".](https://raw.githubusercontent.com/davidacm/NVDA-IBMTTS-Driver/master/docChangelog-for-translators.md)
+you can use that file to see what has been changed in the documentation and update the documentation for your language.
+
 If you want to translate this add-on to another language and you don't want to open a github account or install python and other tools needed for the translation, do the following steps:
 
 1. Use
@@ -71,8 +75,8 @@ as a base for the target language.
 2. Download
 ["poedit"](https://poedit.net/),
 this software will help you manage the translation strings.
-3. If you want to translate the documentation too, you can use the
-[English documentation at this link.](https://raw.githubusercontent.com/davidacm/NVDA-IBMTTS-Driver/master/README.md)
+3. If you want to translate the documentation too, you can see the new changes of the documentation
+[at this link.](https://raw.githubusercontent.com/davidacm/NVDA-IBMTTS-Driver/master/docChangelog-for-translators.md) You can see the [full english documentation here.](https://raw.githubusercontent.com/davidacm/NVDA-IBMTTS-Driver/master/readme.md)
 4. Once you finished the translation, you can send me it to: "dhf360@gmail.com".
 
 You won't need to compile the source files. I'll do it when releasing a new add-on version. I will mention your name in the respective commit. If you don't wish to be mentioned, let me in the e-mail.
