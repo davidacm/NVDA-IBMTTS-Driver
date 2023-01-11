@@ -63,6 +63,10 @@ Remarque: La fonctionnalité de mise à jour automatique ou manuelle ne supprime
 
 Afin de faciliter votre travail, j'ai laissé un 
 [modèle de traduction dans la branche master.](https://raw.githubusercontent.com/davidacm/NVDA-IBMTTS-Driver/master/IBMTTS.pot)
+
+Pour la documentation, j'ai créé un fichier appelé ["docChangelog-for-translators.md".](https://raw.githubusercontent.com/davidacm/NVDA-IBMTTS-Driver/master/docChangelog-for-translators.md)
+Vous pouvez utiliser ce fichier pour voir ce qui a été modifié dans la documentation et mettre à jour la documentation de votre langue.
+
 Si vous souhaitez traduire cette extension dans une autre langue et que vous ne souhaitez pas ouvrir un compte GitHub ou installer Python et d'autres outils nécessaires pour la traduction, effectuez les étapes suivantes:
 
 1. Utilisez
@@ -71,8 +75,8 @@ comme base pour la langue cible.
 2. Téléchargez
 ["poedit"](https://poedit.net/),
 ce logiciel vous aidera à gérer les chaînes de traduction.
-3. Si vous souhaitez également traduire la documentation, vous pouvez utiliser la
-[documentation en anglais sur ce lien.](https://raw.githubusercontent.com/davidacm/NVDA-IBMTTS-Driver/master/README.md)
+3. Si vous souhaitez également traduire la documentation, vous pouvez voir les nouveaux changements de la documentation
+[sur ce lien.](https://raw.githubusercontent.com/davidacm/NVDA-IBMTTS-Driver/master/docChangelog-for-translators.md) Vous pouvez voir la [documentation en anglais complète ici.](https://raw.githubusercontent.com/davidacm/NVDA-IBMTTS-Driver/master/readme.md)
 4. Une fois que vous avez terminé la traduction, vous pouvez m'envoyer à: "dhf360@gmail.com".
 
 Vous n'aurez pas besoin de compiler les fichiers source. Je le ferai lors du lancement d'une nouvelle version de l'extension. Je mentionnerai votre nom dans le commit respectif. Si vous ne voulez pas être mentionné, faites-le moi savoir par e-mail.

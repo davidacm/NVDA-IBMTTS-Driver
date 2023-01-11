@@ -75,7 +75,6 @@ como base para el idioma de destino.
 2. Descargue
 ["poedit"](https://poedit.net/),
 este software le ayudará a gestionar las cadenas de traducción.
-
 3. Si quieres traducir la documentación también, puedes ver los nuevos cambios de la documentación
 [en este enlace.](https://raw.githubusercontent.com/davidacm/NVDA-IBMTTS-Driver/master/docChangelog-for-translators.md) Puedes ver la [documentación completa en inglés aquí.](https://raw.githubusercontent.com/davidacm/NVDA-IBMTTS-Driver/master/readme.md)
 4. Una vez que hayas terminado la traducción, puedes enviármela a "dhf360@gmail.com".
