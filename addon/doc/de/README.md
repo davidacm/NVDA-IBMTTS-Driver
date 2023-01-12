@@ -61,6 +61,9 @@ Hinweis: Die automatische oder manuelle Aktualisierungsfunktion wird die interne
 
 ## Zur Übersetzung beitragen.
 
+Für die Dokumentation habe ich eine Datei namens ["docChangelog-for-translators.md".](https://raw.githubusercontent.com/davidacm/NVDA-IBMTTS-Driver/master/docChangelog-for-translators.md) erstellt.
+Sie können diese Datei verwenden, um zu sehen, was in der Dokumentation geändert wurde, und die Dokumentation für Ihre Sprache aktualisieren.
+
 Zur Erleichterung der Arbeit ist eine 
 [Übersetzungsvorlage im Master-Branch enthalten.](https://raw.githubusercontent.com/davidacm/NVDA-IBMTTS-Driver/master/IBMTTS.pot)
 Falls Sie eine neue Übersetzung erstellen möchten, jedoch auf die Verwendung von GitHub und die notwendigen Python-Werkzeuge verzichten wollen, führen Sie bitte die folgenden Schritte aus:
@@ -71,8 +74,8 @@ Als Grundlage für die Zielsprache.
 2. Laden Sie sich
 ["Poedit"](https://poedit.net/).
 herunter. Diese Software hilft Ihnen bei der Verwaltung der Übersetzung.
-3. Falls Sie auch die Dokumentation übersetzen möchten, können Sie die
-[englische Dokumentation als Vorlage verwenden.](https://raw.githubusercontent.com/davidacm/NVDA-IBMTTS-Driver/master/README.md)
+3. Falls Sie auch die Dokumentation übersetzen möchten, können Sie die letzten Änderungen an der Dokumentation 
+[unter diesem Link einsehen.](https://raw.githubusercontent.com/davidacm/NVDA-IBMTTS-Driver/master/docChangelog-for-translators.md) You can see the [full english documentation here.](https://raw.githubusercontent.com/davidacm/NVDA-IBMTTS-Driver/master/readme.md)
 4. Wenn die Übersetzung fertig ist, senden Sie mir diese unter der E-Mail-Adresse "dhf360@gmail.com".
 
 Sie müssen die Quelldateien nicht selbst kompilieren, dies geschieht bei der Veröffentlichung einer neuen Version der Erweiterung. Ihr Name wird im entsprechenden Commit erwähnt. Wünschen Sie keine Erwähnung, lassen Sie es mich bitte in Ihrer E-Mail wissen.
