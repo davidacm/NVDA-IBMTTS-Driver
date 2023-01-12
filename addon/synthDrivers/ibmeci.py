@@ -99,7 +99,6 @@ spanish_ibm_fixes = {
 	#ViaVoice's time parser is slightly broken in Spanish, and will crash if the minute part goes from 20 to 59.
 	#For these times, convert the periods to colons.
 	re.compile(br'([0-2]?[0-4])\.([2-5][0-9])\.([0-5][0-9])'): br'\1:\2:\3',
-	re.compile(br'(\d{13,})(\xaa)'): br'\1 \2',
 }
 spanish_ibm_anticrash = {
 	re.compile(br'\b(0{1,12})(\xaa)'): br'\1 \2',
