@@ -4,6 +4,10 @@
   Die eigentlichen IBMTTS-Bibliotheken dürfen wir nicht anbieten, daher handelt es sich hierbei nur um den Treiber.  
   Wenn Sie bei der Verbesserung des Treibers mithelfen möchten, zögern Sie nicht uns einen Pull-Request zu senden!  
 
+Auch wenn dieser Treiber mit Eloquence-Bibliotheken kompatibel ist, da Eloquence die gleiche API wie IBMTTS verwendet, wird die Verwendung von Eloquence mit diesem Treiber aufgrund von Lizenzierungsproblemen nicht empfohlen. Vor der Verwendung von Synthesebibliotheken mit diesem Treiber wird empfohlen, zuerst die Nutzungsrechte zu erwerben.
+
+Dieser Treiber wurde mit der für IBMTTS verfügbaren Dokumentation entwickelt, die im Internet öffentlich zugänglich ist. Weitere Einzelheiten finden Sie im Abschnitt Referenzen.
+
 ## Herunterladen.
 Die neueste Version kann unter [diesem Link heruntergeladen werden](https://davidacm.github.io/getlatest/gh/davidacm/NVDA-IBMTTS-Driver)
 
@@ -27,7 +31,20 @@ ViaVoice TTS ist eine von IBM entwickelte Sprachausgabe, welche die textuelle Da
 * Satzvorhersage einschalten: Ist diese Funktion eingeschaltet, versucht die Sprachausgabe die Satzstruktur zum Einfügen von Sprechpausen zu analysieren, beispielsweise durch die Verwendung der Worte "und" oder "oder" zur Begrenzung von Nebensätzen. Bei ausgeschalteter Funktion werden Pausen ausschließlich bei einem vorhandenem Komma oder anderen Satzzeichen eingefügt.
 * Pausen verkürzen: Schalten Sie diese Option ein, um die Pausen zwischen Satzzeichen zu verkürzen.
 * Aktuelle Sprachausgabeneinstellungen immer senden: Ein Fehler in der Sprachausgabe bewirkt, dass hin und wieder die Einstellungen für Sprache und Geschwindigkeit kurzzeitig auf ihre Standardwerte zurückgesetzt werden. Die Ursache ist nicht bekannt, jedoch wird dieses Verhalten durch kontinuierliches Senden der Sprachausgabeneinstellungen vermieden. Generell sollte diese Funktion eingeschaltet sein, muss jedoch bei der Verwendung von Backquote-Sprachtags ausgeschaltet werden.
-* Sample-Rate: Ändert die Klangqualität der Sprachausgabe. Diese Einstellung kann am sinnvollsten mit IBM TTS verwendet werden, bei welcher eine Sample-Rate von 22 kHz unterstützt wird.
+* Sample-Rate: Ändert die Klangqualität der Sprachausgabe. Diese Einstellung kann am sinnvollsten mit IBM TTS verwendet werden, bei welcher eine Sample-Rate von 8 kHz den Zugriff auf einen neuen Satz von Stimmen erlaubt.
+
+### IBMTTS-Kategorieeinstellungen.
+
+Diese Erweiterung hat eine eigene Einstellungskategorie innerhalb der NVDA-Optionen, um einige nicht direkt mit der Sprachsynthese verbundenen Einstellungen zu verwalten.
+
+* Automatisch nach Updates für IBMTTS suchen: Bei eingeschalteter Option sucht die Erweiterung einmal täglich nach neuen Versionen.
+* Nach Update suchen: Eine Schaltfläche zum manuellen Prüfen auf Aktualisierungen.
+* IBMTTS-Verzeichnispfad: Der absolute oder relative Pfad zum Laden der IBMTTS-Bibliotheken.
+* IBMTTS-Bibliotheksname (DLL): Name der Bibliothek (DLL). Verwenden Sie hier keinen Pfad, sondern nur den Dateinamen der Bibliothek inklusive Erweiterung, typischerweise ".dll".
+* Nach IBMTTS-Bibliothek suchen... Öffnet einen Dialog zum Durchsuchen des Systems nach der IBMTTS-Bibliothek. Die Bibliothek wird als absoluter Pfad gespeichert.
+* IBMTTS-Dateien in eine Erweiterung kopieren (funktioniert möglicherweise nicht mit einigen IBMTTS-Distributionen): Wenn der Bibliothekspfad für IBMTTS festgelegt wurde, kopiert es alle Ordnerdateien in eine neue Erweiterung namens eciLibraries und wandelt den momentanen Pfad in einen relativen Pfad um. Dies ist sehr nützlich in portablen NVDA-Versionen. Es funktioniert nur für Bibliotheken, die "eci.ini"-Dateien für Stimmen- und Sprachinformationen verwenden. Wenn die Bibliothek die Windows-Registrierung verwendet, wird diese Option nicht funktionieren.
+
+Hinweis: Die automatische oder manuelle Aktualisierungsfunktion wird die internen Dateien der Erweiterung nicht entfernen. Wenn Sie Ihre Bibliotheken an dieser Stelle verwenden, können Sie diese Funktion gefahrlos nutzen. Ihre Bibliotheken sind sicher.
 
 ## Voraussetzungen.
 ### NVDA.
@@ -65,9 +82,20 @@ Hinweis: Bitte verwenden Sie immer die neueste Übersetzungsvorlage.
 Dies ist nur eine alternative Methode, natürlich können Sie auch den üblichen Weg gehen. Erstellen Sie einen Fork dieses Repositories, nehmen die Übersetzung für Ihre Sprache vor und  senden mir danach einen Pull-Request. Der alternative Weg macht den Vorgang nur etwas komplizierter.
 
 ## Für die Weiterverbreitung paketieren.
-  Öffnen Sie eine Kommandozeile im Hauptverzeichnis der Erweiterung und lassen den Befehl scons laufen. Die Erstellte Erweiterung wird, sofern keine Fehler aufgetreten sind, im Hauptverzeichnis abgelegt.
+
+1. Installieren Sie Python. Momentan wird Python 3.7 verwendet, Sie können jedoch eine neuere Version nutzen.
+2. Installieren Sie Gettext, eine Distribution für Windows ist unter [diesem Link verfügbar.](https://mlocati.github.io/articles/gettext-iconv-windows.html) Wenn sie Windows 64 Bit verwenden ist [diese Version empfehlenswert.](https://github.com/mlocati/gettext-iconv-windows/releases/download/v0.21-v1.16/gettext0.21-iconv1.16-shared-64.exe)
+3. (optional, jedoch ein empfohlener Schritt) erstellen Sie eine virtuelle Umgebung in Python zur Verwaltung von NVDA-Erweiterungen. Geben sie in der Konsole "python -m venv PFAD_ZUM_ORDNER". ein, wobei PFAD_ZUM_ORDNER der gewünschte Pfad der virtuellen Umgebung ist.
+4. Wenn Sie Schritt zwei ausgeführt haben, gehen Sie in den Ordnerpfad und geben dort "activate" ein. Der Umgebungsname sollte nun im Konsolenprompt angezeigt werden.
+5. Clonen sie das Repository im gewünschten Pfad: "git clone https://github.com/davidacm/NVDA-IBMTTS-Driver.git".
+6. Gehen Sie zum Pfad des Repositories in derselben Instanz.
+7. Installieren Sie die Abhängigkeiten: "pip install -r requirements.txt".
+8. Lassen Sie das Kommando scons laufen. Die erstellte Erweiterung wird, sofern keine Fehler aufgetreten sind, im Hauptverzeichnis des Repositories generiert.
+
+Sobald Sie die Konsole schließen, wird die virtuelle Umgebung deaktiviert.
 
 ### Bibliotheken als unabhängige Erweiterung paketieren.
+
 Es ist nicht empfehlenswert die Sprachausgaben-Bibliotheken direkt mit dem Treiber zu bündeln, da sie entfernt werden, wenn man die Erweiterung aus dem [offiziellem Repo](https://github.com/davidacm/NVDA-IBMTTS-Driver) aktualisiert. 
 Zur Lösung dieses Problems können die Bibliotheken als separate Erweiterung installiert werden. 
 [Folgen Sie diesem Link](https://github.com/davidacm/ECILibrariesTemplate), 
@@ -75,10 +103,18 @@ um mehr über die Installation als separate Erweiterung zu erfahren.
 
 ### Hinweise:
 
-* Wenn sich die Sprachausgabe in der Erweiterung oder der "eciLibraries"-Erweiterung befindet, aktualisiert der Treiber automatisch die Pfade in den Ini-Dateien, sodass Sie sie in einer portablen NVDA-Kopie verwenden können.
+* Wenn Sie die interne Aktualisierung verwenden (manuell oder automatisch), werden die Bibliotheken nicht gelöscht, sogar wenn sie sich in der Erweiterung befinden.
+* Wenn sich die Sprachausgabe in der Erweiterung oder der ["eciLibraries"-Erweiterung](https://github.com/davidacm/ECILibrariesTemplate) befindet, aktualisiert der Treiber automatisch die Pfade in den Ini-Dateien, sodass Sie sie in einer portablen NVDA-Kopie verwenden können.
 * Beim Verwenden der Schaltfläche zum Kopieren der IBMTTS-Dateien wird eine neue Erweiterung erstellt. Wenn Sie IBMTTS wieder deinstallieren möchten, müssen zwei Erweiterungen deinstalliert werden, nämlich "IBMTTS-Treiber" und "Eci libraries".
 * Die Scons und Gettext-Werkzeuge in diesem Projekt sind nur mit Python 3 kompatibel. Python 2.7 funktioniert nicht.
 * Sie können die benötigten IBMTTS-Dateien auch direkt in der Erweiterung ablegen (nur für persönliche Nutzung). Kopieren Sie sie einfach in das Verzeichnis "addon\synthDrivers\ibmtts". Der Standard-Bibliotheksname kann falls notwendig in der Datei "settingsDB.py" angepasst werden.
+* Wenn der konfigurierte Bibliothekspfad nicht relativ ist, wird dieses Add-on die Pfade in der Datei "eci.ini" nicht aktualisieren. Der Treiber geht davon aus, dass bei der Verwendung von absoluten Pfaden die Pfade in der Datei "eci.ini" korrekt sind und vermeidet jegliche Aktualisierung. Beachten Sie dies, wenn Sie den Pfad Ihrer Bibliotheken festlegen. Wenn sie nicht korrekt sind, kann dies zu Fehlern führen, die NVDA bei der Verwendung des Synthesizers sprachlos machen.
+
+## Probleme melden:
+
+Wenn Sie ein Sicherheitsproblem mit einigen der Bibliotheken finden, die mit diesem Treiber kompatibel sind, öffnen Sie bitte kein Github-Issue und kommentieren Sie es nicht in Foren, bevor das Problem gelöst ist. Bitte melden Sie das Problem über [dieses Formular].(https://docs.google.com/forms/d/123gSqayOAsIQLx1NiI98fEqr46oiJRZ9nNq0_KIF9WU/edit)
+
+Wenn das Problem den Treiber oder den Bildschirmleser nicht zum Absturz bringt, öffne hier ein [Github-Issue.](https://github.com/davidacm/NVDA-IBMTTS-Driver/issues)
 
 ## Referenzen.
 Dieser Treiber basiert auf dem IBM-TTS-SDK, dessen Dokumentation unter [diesem Link](http://web.archive.org/web/20191125091344/http://www.wizzardsoftware.com/docs/tts.pdf) verfügbar ist.
