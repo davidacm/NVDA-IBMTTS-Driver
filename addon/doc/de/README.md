@@ -112,7 +112,7 @@ um mehr über die Installation als separate Erweiterung zu erfahren.
 
 ## Probleme melden:
 
-Wenn Sie ein Sicherheitsproblem mit einigen der Bibliotheken finden, die mit diesem Treiber kompatibel sind, öffnen Sie bitte kein Github-Issue und kommentieren Sie es nicht in Foren, bevor das Problem gelöst ist. Bitte melden Sie das Problem über [dieses Formular].(https://docs.google.com/forms/d/123gSqayOAsIQLx1NiI98fEqr46oiJRZ9nNq0_KIF9WU/edit)
+Wenn Sie ein Sicherheitsproblem mit einigen der Bibliotheken finden, die mit diesem Treiber kompatibel sind, öffnen Sie bitte kein Github-Issue und kommentieren Sie es nicht in Foren, bevor das Problem gelöst ist. Bitte melden Sie das Problem über [dieses Formular.](https://docs.google.com/forms/d/123gSqayOAsIQLx1NiI98fEqr46oiJRZ9nNq0_KIF9WU/edit)
 
 Wenn das Problem den Treiber oder den Bildschirmleser nicht zum Absturz bringt, öffne hier ein [Github-Issue.](https://github.com/davidacm/NVDA-IBMTTS-Driver/issues)
 
