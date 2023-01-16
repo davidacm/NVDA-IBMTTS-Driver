@@ -7,3 +7,5 @@ you can use that file to see what has been changed in the documentation and upda
 
 3. If you want to translate the documentation too, you can see the new changes of the documentation
 [at this link.](https://raw.githubusercontent.com/davidacm/NVDA-IBMTTS-Driver/master/docChangelog-for-translators.md) You can see the [full english documentation here.](https://raw.githubusercontent.com/davidacm/NVDA-IBMTTS-Driver/master/readme.md)
+
+New sentence: Also note that if you are using Hong Kong Cantonese or Chinese IBMTTS libraries, you may want to disable the use spelling functionality if supported option, to prevent some characters in these languages from being spelled out using the pinyins they are internally converted to.
