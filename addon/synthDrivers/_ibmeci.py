@@ -476,6 +476,8 @@ def createPlayer(sampleRate):
 		player = nvwave.WavePlayer(1, 8000, 16, outputDevice=currentSoundcardOutput)
 	elif sampleRate == 1:
 		player = nvwave.WavePlayer(1, 11025, 16, outputDevice=currentSoundcardOutput)
+	elif sampleRate == 2:
+		player = nvwave.WavePlayer(1, 22050, 16, outputDevice=currentSoundcardOutput)
 	else:
 		player = nvwave.WavePlayer(1, 11025, 16, outputDevice=currentSoundcardOutput)
 	return player
