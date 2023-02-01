@@ -11,6 +11,7 @@ import queue
 import threading, time
 import config, languageHandler, nvwave, addonHandler
 from logHandler import log
+from fileUtils import getFileVersionInfo
 from ._settingsDB import appConfig, speechConfig
 
 addonHandler.initTranslation()
@@ -158,7 +159,7 @@ vparams = {}
 
 class EciThread(threading.Thread):
 	def run(self):
-		global vparams, params, speaking, endMarkersCount, isIBM
+		global vparams, params, speaking, endMarkersCount
 		global eciThreadId, dll, handle
 		eciThreadId = windll.kernel32.GetCurrentThreadId()
 		msg = wintypes.MSG()
@@ -173,11 +174,6 @@ class EciThread(threading.Thread):
 		if v is not None:
 			dictHandles[v[0]]=v[1]
 			dll.eciSetDict(handle,v[1])
-		version=eciVersion()
-		if version>'6.2':
-			isIBM=True
-		else:
-			isIBM=False
 		started.set()
 		while True:
 			user32.GetMessageA(byref(msg), 0, 0, 0)
@@ -234,23 +230,20 @@ def processEciQueue():
 		func(*args)
 	eciQueue.task_done()
 
-def eciCheck():
-	global ttsPath, dllName, dll
+
+def setPathsFromConfig():
+	global ttsPath, dllName
 	dllName = appConfig.dllName
 	ttsPath =  appConfig.TTSPath
 	if  not path.isabs(ttsPath):
 		ttsPath = path.abspath(path.join(path.abspath(path.dirname(__file__)), ttsPath))
-		if path.exists(ttsPath) and not isIBM: iniCheck()
-	if not path.exists(ttsPath): return False
-	if dll: return True
-	try:
-		windll.LoadLibrary(path.join(ttsPath, dllName)).eciVersion
-		return True
-	except:
-		return False
 
-def iniCheck():
-	ini=open(path.join(ttsPath, dllName[:-3] +"ini"), "r+")
+
+def updateIniPaths():
+	iniPath = path.join(ttsPath, dllName[:-3] +"ini")
+	if path.isabs(appConfig.TTSPath) or not path.exists(iniPath):
+		return
+	ini=open(iniPath, "r+")
 	ini.seek(12)
 	tml=ini.readline()[:-8]
 	newPath = ttsPath + "\\"
@@ -262,10 +255,41 @@ def iniCheck():
 		ini.truncate()
 	ini.close()
 
+
+def loadEciLibrary():
+	global isIBM
+	# the absolute paths must be set first.
+	# if the dll has been loaded, it won't load the library again.
+	if dll:
+		return dll
+	etidevLibPath = path.join(ttsPath, "etidev.dll")
+	eciLibPath = path.join(ttsPath, dllName)
+	if getFileVersionInfo(eciLibPath, 'ProductName')['ProductName'] == 'IBMECI':
+		isIBM = True
+	else:
+		isIBM = False
+	if path.exists(etidevLibPath):
+		windll.LoadLibrary(etidevLibPath)
+	return windll.LoadLibrary(eciLibPath)
+
+
+def eciCheck():
+	if dll: return True
+	setPathsFromConfig()
+	if not path.exists(ttsPath): return False
+	try:
+		loadEciLibrary().eciVersion
+		return True
+	except:
+		log.info("Error checking the IBMTTS library", exc_info=True)
+		return False
+
+
 def eciNew():
 	global avLangs
 	eciCheck()
-	eci = windll.LoadLibrary(path.join(ttsPath, dllName))
+	updateIniPaths()
+	eci = loadEciLibrary()
 	b=c_int()
 	eci.eciGetAvailableLanguages(0,byref(b))
 	avLangs=(c_int*b.value)()
@@ -277,6 +301,7 @@ def eciNew():
 	for i in ECIVoiceParam.params:
 		vparams[i] = eci.eciGetVoiceParam(handle, 0, i)
 	return eci,handle
+
 
 @WINFUNCTYPE(c_int,c_int,c_int,c_long,c_void_p)
 def _callbackExec(func, *args, **kwargs):
