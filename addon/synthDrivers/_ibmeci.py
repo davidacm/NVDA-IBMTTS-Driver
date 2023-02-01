@@ -278,6 +278,8 @@ def eciCheck():
 	setPathsFromConfig()
 	if not path.exists(ttsPath): return False
 	try:
+		# the ini file must be updated before the first load of the library.
+		updateIniPaths()
 		loadEciLibrary().eciVersion
 		return True
 	except:
@@ -288,7 +290,6 @@ def eciCheck():
 def eciNew():
 	global avLangs
 	eciCheck()
-	updateIniPaths()
 	eci = loadEciLibrary()
 	b=c_int()
 	eci.eciGetAvailableLanguages(0,byref(b))
