@@ -43,11 +43,74 @@ class ECIMessage:
 
 class ECICallbackReturn:
 	eciDataNotProcessed, eciDataProcessed, eciDataAbort= range(3)
-isIBM=False
+
+
+class ECILanguages:
+	NODEFINEDCODESET = 0x00000000
+	GeneralAmericanEnglish = 0x00010000
+	BritishEnglish = 0x00010001
+	CastilianSpanish = 0x00020000
+	MexicanSpanish = 0x00020001
+	StandardFrench = 0x00030000
+	CanadianFrench = 0x00030001
+	StandardGerman = 0x00040000
+	StandardItalian = 0x00050000
+	MandarinChinese = 0x00060000
+	MandarinChineseGB = MandarinChinese
+	MandarinChinesePinYin = 0x00060100
+	MandarinChineseUCS = 0x00060800
+	TaiwaneseMandarin = 0x00060001
+	TaiwaneseMandarinBig5 = TaiwaneseMandarin
+	TaiwaneseMandarinZhuYin = 0x00060101
+	TaiwaneseMandarinPinYin = 0x00060201
+	TaiwaneseMandarinUCS = 0x00060801
+	BrazilianPortuguese = 0x00070000
+	StandardJapanese = 0x00080000
+	StandardJapaneseSJIS = StandardJapanese
+	StandardJapaneseUCS = 0x00080800
+	StandardFinnish = 0x00090000
+	StandardKorean = 0x000A0000
+	StandardKoreanUHC = StandardKorean
+	StandardKoreanUCS = 0x000A0800
+	StandardCantonese = 0x000B0000
+	StandardCantoneseGB = StandardCantonese
+	StandardCantoneseUCS = 0x000B0800
+	HongKongCantonese = 0x000B0001
+	HongKongCantoneseBig5 = HongKongCantonese
+	HongKongCantoneseUCS = 0x000B0801
+	StandardDutch = 0x000C0000
+	StandardNorwegian = 0x000D0000
+	StandardSwedish = 0x000E0000
+	StandardDanish = 0x000F0000
+	StandardReserved = 0x00100000
+	StandardThai = 0x00110000
+
+
+langs={
+	'esp': (ECILanguages.CastilianSpanish, _('Castilian Spanish'), 'es_ES', 'es'),
+	'esm': (ECILanguages.MexicanSpanish, _('Latin American Spanish'), 'es_MX', 'es_CO'),
+	'ptb': (ECILanguages.BrazilianPortuguese, _('Brazilian Portuguese'), 'pt_BR', 'pt'),
+	'fra': (ECILanguages.StandardFrench, _('French'), 'fr_FR', 'fr'),
+	'frc': (ECILanguages.CanadianFrench, _('French Canadian'), 'fr_CA', ''),
+	'fin': (ECILanguages.StandardFinnish, _('Finnish'), 'fi_FI', 'fi'),
+	'chs': (ECILanguages.MandarinChinese, _('Chinese'), 'zh_CN', 'zh'),
+	'jpn': (ECILanguages.StandardJapanese, _('Japanese'), 'ja_JP', 'jp'),
+	'kor': (ECILanguages.StandardKorean, _('Korean'), 'ko_KR', 'ko'),
+	'deu': (ECILanguages.StandardGerman, _('German'), 'de_DE', 'de'),
+	'ita': (ECILanguages.StandardItalian, _('Italian'), 'it_IT', 'it'),
+	'enu': (ECILanguages.GeneralAmericanEnglish, _('American English'), 'en_US', 'en'),
+	'eng': (ECILanguages.BritishEnglish, _('British English'), 'en_UK', ''),
+	'swe': (ECILanguages.StandardSwedish, _('Swedish'), 'sv_SE', 'sv'),
+	'nor': (ECILanguages.StandardNorwegian, _('Norwegian'), 'nb_NO', 'nb'),
+	'dan': (ECILanguages.StandardDanish, _('Danish'), 'da_DK', 'da'),
+	'ctt': (ECILanguages.HongKongCantonese, _('Hong Kong Cantonese'), 'yue', '')
+}
+
 
 # constants
 samples=3300
 user32 = windll.user32
+
 WM_PROCESS = 1025
 WM_SILENCE = 1026
 WM_PARAM = 1027
@@ -57,27 +120,10 @@ WM_KILL=1030
 WM_SYNTH=1031
 WM_INDEX=1032
 
-langs={
-	'esp': (131072, _('Castilian Spanish'), 'es_ES', 'es'),
-	'esm': (131073, _('Latin American Spanish'), 'es_MX', 'es_CO'),
-	'ptb': (458752, _('Brazilian Portuguese'), 'pt_BR', 'pt'),
-	'fra': (196608, _('French'), 'fr_FR', 'fr'),
-	'frc': (196609, _('French Canadian'), 'fr_CA', ''),
-	'fin': (589824, _('Finnish'), 'fi_FI', 'fi'),
-	'chs': (393216, _('Chinese'), 'zh_CN', 'zh'),
-	'jpn': (524288, _('Japanese'), 'ja_JP', 'jp'),
-	'kor': (655360, _('Korean'), 'ko_KR', 'ko'),
-	'deu': (262144, _('German'), 'de_DE', 'de'),
-	'ita': (327680, _('Italian'), 'it_IT', 'it'),
-	'enu': (65536, _('American English'), 'en_US', 'en'),
-	'eng': (65537, _('British English'), 'en_UK', ''),
-	'swe': (917504, _('Swedish'), 'sv_SE', 'sv'),
-	'nor': (851968, _('Norwegian'), 'nb_NO', 'nb'),
-	'dan': (983040, _('Danish'), 'da_DK', 'da'),
-	'ctt': (720897, _('Hong Kong Cantonese'), 'yue', '')
-}
-
 audioStream = BytesIO()
+
+# global variables
+isIBM=False
 speaking=False
 eciThread = None
 callbackQueue = None
@@ -89,7 +135,6 @@ onIndexReached = None
 onDoneSpeaking = None
 
 buffer = create_string_buffer(samples*2)
-
 
 stopped = threading.Event()
 started = threading.Event()

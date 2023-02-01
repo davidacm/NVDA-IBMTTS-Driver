@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-#Copyright (C) 2009 - 2019 David CM, released under the GPL.
+#Copyright (C) 2009 - 2023 David CM, released under the GPL.
 # Author: David CM <dhf360@gmail.com> and others.
 #synthDrivers/ibmeci.py
 
@@ -11,7 +11,7 @@ from six import string_types
 from logHandler import log
 
 from synthDrivers import _ibmeci
-from synthDrivers._ibmeci import ECIParam, ECIVoiceParam, isIBM
+from synthDrivers._ibmeci import ECILanguages as EciLangs, ECIParam, ECIVoiceParam
 
 
 # compatibility with nvda 2021.1 alpha versions.
@@ -111,6 +111,24 @@ german_fixes = {
 }
 portuguese_ibm_fixes = {
 	re.compile(br'(\d{1,2}):(00):(\d{1,2})'): br'\1:\2 \3',
+}
+french_fixes = {
+	# Convert n� to num�ro
+	re.compile(br'\bn\xb0', re.I): b'num\xe9ro',
+	# anticrash for "quil" that sometimes breaks Eloquence
+	# but, depending on the context, "quil" does not always pronounce the same
+	re.compile(br'(?<=anq)uil(?=l)', re.I): br'i',
+	re.compile(br'quil(?=\W)', re.I | re.L): br'kil',
+	# Fixes function keys names (f1 to f12) that are pronounced 1 franc... 12 francs
+	re.compile(br'f(?=\s?\d)', re.I | re.L): br'f ',
+	# fix for capitalised roman numbers followed by 'e' or 'eme' which are broken by NVDA
+	# for example IIIe (third) is parsed in II Ie	
+	re.compile(br'\b([CDILMVX]+)(\s?)([CDILMVX]e)(me)?\b'): b'\\1\\3',
+	# fix right parenthesis inside a word which is always spoken despite the punctuation level
+	re.compile(br'(\w\))(?=\w)', re.I | re.L): br'\1 ',
+	re.compile(br'(n\s?vda)', re.I): b' \xe8nv\xe9d\xe9a ',
+	# In some situations letter 'y' is completely ignored
+	re.compile(br'([ou])y([bnp])', re.I): br"\1i\2",
 }
 french_ibm_fixes = {
 	re.compile(br'([$\x80\xa3])\s*(\d+)\s(000)'): br'\1\2\3',
@@ -307,19 +325,29 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 		#this converts to ansi for anticrash. If this breaks with foreign langs, we can remove it.
 		text = text.encode(self.currentEncoding, 'replace') # special unicode symbols may encode to backquote. For this reason, backquote processing is after this.
 		text = text.rstrip()
-		if _ibmeci.params[9] in (65536, 65537, 393216, 655360, 720897) and not _ibmeci.isIBM: text = resub(english_fixes, text) #Applies to all languages with dual language support.
-		if _ibmeci.params[9] in (65536, 65537, 393216, 655360, 720897) and _ibmeci.isIBM: text = resub(english_ibm_fixes, text)
-		if _ibmeci.params[9] in (131072,  131073) and not _ibmeci.isIBM: text = resub(spanish_fixes, text)
-		if _ibmeci.params[9] in ('esp', 131072) and _ibmeci.isIBM: text = resub(spanish_ibm_fixes, text)
-		if _ibmeci.params[9] in (131072, 131073) and _ibmeci.isIBM: text = resub(spanish_ibm_anticrash, text)
-		if _ibmeci.params[9] in (196609, 196608):
-			text = text.replace(br'quil', br'qil') #Sometimes this string make everything buggy with IBMTTS in French
-		if  _ibmeci.params[9] in ('deu', 262144):
+		# language crash fixes.
+		# first those that applies for all synths.
+		if _ibmeci.params[9] in ('deu', EciLangs.StandardGerman):
 			text = resub(german_fixes, text)
-		if  _ibmeci.params[9] in ('ptb', 458752) and _ibmeci.isIBM:
-			text = resub(portuguese_ibm_fixes, text)
-		if  _ibmeci.params[9] in ('fra', 196608) and _ibmeci.isIBM:
-			text = resub(french_ibm_fixes, text)
+		elif _ibmeci.isIBM:
+			if _ibmeci.params[9] in (EciLangs.GeneralAmericanEnglish, EciLangs.BritishEnglish, EciLangs.MandarinChinese, EciLangs.StandardKorean, EciLangs.StandardCantonese):
+				text = resub(english_ibm_fixes, text)
+			elif _ibmeci.params[9] in ('esp', EciLangs.CastilianSpanish):
+				text = resub(spanish_ibm_fixes, text)
+			elif _ibmeci.params[9] in (EciLangs.CastilianSpanish,  EciLangs.MexicanSpanish):
+				text = resub(spanish_ibm_anticrash, text)
+			elif _ibmeci.params[9] in ('fra', EciLangs.StandardFrench):
+				text = resub(french_ibm_fixes, text)
+			elif _ibmeci.params[9] in ('ptb', EciLangs.BrazilianPortuguese):
+				text = resub(portuguese_ibm_fixes, text)
+		else:
+			if _ibmeci.params[9] in (EciLangs.GeneralAmericanEnglish, EciLangs.BritishEnglish, EciLangs.MandarinChinese, EciLangs.StandardKorean, EciLangs.StandardCantonese):
+				text = resub(english_fixes, text) #Applies to all languages with dual language support.
+			elif _ibmeci.params[9] in (EciLangs.CastilianSpanish,  EciLangs.MexicanSpanish):
+				text = resub(spanish_fixes, text)
+			elif _ibmeci.params[9] in (EciLangs.StandardFrench, EciLangs.CanadianFrench):
+				text = resub(french_fixes, text)
+
 		if not self._backquoteVoiceTags:
 			text=text.replace(b'`', b' ') # no embedded commands
 		if self._shortPause:
@@ -327,6 +355,7 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 		if not _ibmeci.isIBM:
 			text = time_re.sub(br'\1:\2 \3', text) # apparently if this isn't done strings like 2:30:15 will only announce 2:30
 		return text
+
 	def pause(self,switch):
 		_ibmeci.pause(switch)
 
@@ -452,14 +481,16 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 	def updateEncoding(self, lang): # lang must be a number asociated with IBMTTS languages or a string with an annotation language.
 		# currently we don't need to consider the decimal part for the conversion.
 		if isinstance(lang, bytes): lang = int(float(lang[2:])) * 65536
-		#chinese
-		if lang == 393216: self.currentEncoding = "gb18030"
-		# japan
-		elif lang == 524288: self.currentEncoding = "cp932"
-		# korean
-		elif lang == 655360: self.currentEncoding = "cp949"
-		elif lang == 720897: self.currentEncoding = "big5"
-		else: self.currentEncoding = "mbcs"
+		if lang == EciLangs.MandarinChinese:
+			self.currentEncoding = "gb18030"
+		elif lang == EciLangs.StandardJapanese:
+			self.currentEncoding = "cp932"
+		elif lang == EciLangs.StandardKorean:
+			self.currentEncoding = "cp949"
+		elif lang == EciLangs.StandardCantonese:
+			self.currentEncoding = "big5"
+		else:
+			self.currentEncoding = "mbcs"
 
 	def _get_availableSamplerates(self):
 		rates = {}
