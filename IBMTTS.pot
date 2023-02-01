@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: 'IBMTTS' 'v23.01.3'\n"
+"Project-Id-Version: 'IBMTTS' 'v23.02.1'\n"
 "Report-Msgid-Bugs-To: 'nvda-translations@freelists.org'\n"
-"POT-Creation-Date: 2023-01-10 16:31-0600\n"
+"POT-Creation-Date: 2023-02-01 02:44-0600\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,111 +17,111 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: addon\synthDrivers\_ibmeci.py:61
+#: addon\synthDrivers\_ibmeci.py:91
 msgid "Castilian Spanish"
 msgstr ""
 
-#: addon\synthDrivers\_ibmeci.py:62
+#: addon\synthDrivers\_ibmeci.py:92
 msgid "Latin American Spanish"
 msgstr ""
 
-#: addon\synthDrivers\_ibmeci.py:63
+#: addon\synthDrivers\_ibmeci.py:93
 msgid "Brazilian Portuguese"
 msgstr ""
 
-#: addon\synthDrivers\_ibmeci.py:64
+#: addon\synthDrivers\_ibmeci.py:94
 msgid "French"
 msgstr ""
 
-#: addon\synthDrivers\_ibmeci.py:65
+#: addon\synthDrivers\_ibmeci.py:95
 msgid "French Canadian"
 msgstr ""
 
-#: addon\synthDrivers\_ibmeci.py:66
+#: addon\synthDrivers\_ibmeci.py:96
 msgid "Finnish"
 msgstr ""
 
-#: addon\synthDrivers\_ibmeci.py:67
+#: addon\synthDrivers\_ibmeci.py:97
 msgid "Chinese"
 msgstr ""
 
-#: addon\synthDrivers\_ibmeci.py:68
+#: addon\synthDrivers\_ibmeci.py:98
 msgid "Japanese"
 msgstr ""
 
-#: addon\synthDrivers\_ibmeci.py:69
+#: addon\synthDrivers\_ibmeci.py:99
 msgid "Korean"
 msgstr ""
 
-#: addon\synthDrivers\_ibmeci.py:70
+#: addon\synthDrivers\_ibmeci.py:100
 msgid "German"
 msgstr ""
 
-#: addon\synthDrivers\_ibmeci.py:71
+#: addon\synthDrivers\_ibmeci.py:101
 msgid "Italian"
 msgstr ""
 
-#: addon\synthDrivers\_ibmeci.py:72
+#: addon\synthDrivers\_ibmeci.py:102
 msgid "American English"
 msgstr ""
 
-#: addon\synthDrivers\_ibmeci.py:73
+#: addon\synthDrivers\_ibmeci.py:103
 msgid "British English"
 msgstr ""
 
-#: addon\synthDrivers\_ibmeci.py:74
+#: addon\synthDrivers\_ibmeci.py:104
 msgid "Swedish"
 msgstr ""
 
-#: addon\synthDrivers\_ibmeci.py:75
+#: addon\synthDrivers\_ibmeci.py:105
 msgid "Norwegian"
 msgstr ""
 
-#: addon\synthDrivers\_ibmeci.py:76
+#: addon\synthDrivers\_ibmeci.py:106
 msgid "Danish"
 msgstr ""
 
-#: addon\synthDrivers\_ibmeci.py:77
+#: addon\synthDrivers\_ibmeci.py:107
 msgid "Hong Kong Cantonese"
 msgstr ""
 
-#: addon\synthDrivers\ibmeci.py:169
+#: addon\synthDrivers\ibmeci.py:186
 msgid "Rate boos&t"
 msgstr ""
 
-#: addon\synthDrivers\ibmeci.py:171
+#: addon\synthDrivers\ibmeci.py:188
 msgid "Hea&d size"
 msgstr ""
 
-#: addon\synthDrivers\ibmeci.py:172
+#: addon\synthDrivers\ibmeci.py:189
 msgid "Rou&ghness"
 msgstr ""
 
-#: addon\synthDrivers\ibmeci.py:173
+#: addon\synthDrivers\ibmeci.py:190
 msgid "Breathi&ness"
 msgstr ""
 
-#: addon\synthDrivers\ibmeci.py:174
+#: addon\synthDrivers\ibmeci.py:191
 msgid "Enable backquote voice &tags"
 msgstr ""
 
-#: addon\synthDrivers\ibmeci.py:175
+#: addon\synthDrivers\ibmeci.py:192
 msgid "Enable &abbreviation expansion"
 msgstr ""
 
-#: addon\synthDrivers\ibmeci.py:176
+#: addon\synthDrivers\ibmeci.py:193
 msgid "Enable phras&e prediction"
 msgstr ""
 
-#: addon\synthDrivers\ibmeci.py:177
+#: addon\synthDrivers\ibmeci.py:194
 msgid "&Shorten pauses"
 msgstr ""
 
-#: addon\synthDrivers\ibmeci.py:178
+#: addon\synthDrivers\ibmeci.py:195
 msgid "Al&ways Send Current Speech Settings"
 msgstr ""
 
-#: addon\synthDrivers\ibmeci.py:179
+#: addon\synthDrivers\ibmeci.py:196
 msgid "Sa&mple Rate"
 msgstr ""
 

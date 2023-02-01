@@ -3,7 +3,7 @@
 # Author: David CM <dhf360@gmail.com> and others.
 #synthDrivers/_ibmeci.py
 
-from ctypes import *
+from ctypes import byref, create_string_buffer, c_int, c_long, c_void_p, pointer, string_at, windll, wintypes, WINFUNCTYPE
 from io import BytesIO
 from os import path
 import queue
@@ -15,9 +15,6 @@ from ._settingsDB import appConfig, speechConfig
 
 addonHandler.initTranslation()
 
-player = None
-currentSoundcardOutput = None
-currentSampleRate = None
 
 class  ECIParam:
 	eciSynthMode=0
@@ -31,21 +28,25 @@ class  ECIParam:
 	eciNumberMode=10
 	eciWantWordIndex = 12
 
+
 class ECIVoiceParam:
 	params = range(1,8)
 	eciGender, eciHeadSize, eciPitchBaseline, eciPitchFluctuation, eciRoughness, eciBreathiness, eciSpeed, eciVolume = range(8)
 
+
 class ECIDictVolume:
 	eciMainDict, eciRootDict, eciAbbvDict, eciMainDictExt = range(4)
 
+
 class ECIMessage:
 	eciWaveformBuffer, eciPhonemeBuffer, eciIndexReply, eciPhonemeIndexReply, eciWordIndexReply = range(5)
+
 
 class ECICallbackReturn:
 	eciDataNotProcessed, eciDataProcessed, eciDataAbort= range(3)
 
 
-class ECILanguages:
+class ECILanguageDialect:
 	NODEFINEDCODESET = 0x00000000
 	GeneralAmericanEnglish = 0x00010000
 	BritishEnglish = 0x00010001
@@ -87,23 +88,23 @@ class ECILanguages:
 
 
 langs={
-	'esp': (ECILanguages.CastilianSpanish, _('Castilian Spanish'), 'es_ES', 'es'),
-	'esm': (ECILanguages.MexicanSpanish, _('Latin American Spanish'), 'es_MX', 'es_CO'),
-	'ptb': (ECILanguages.BrazilianPortuguese, _('Brazilian Portuguese'), 'pt_BR', 'pt'),
-	'fra': (ECILanguages.StandardFrench, _('French'), 'fr_FR', 'fr'),
-	'frc': (ECILanguages.CanadianFrench, _('French Canadian'), 'fr_CA', ''),
-	'fin': (ECILanguages.StandardFinnish, _('Finnish'), 'fi_FI', 'fi'),
-	'chs': (ECILanguages.MandarinChinese, _('Chinese'), 'zh_CN', 'zh'),
-	'jpn': (ECILanguages.StandardJapanese, _('Japanese'), 'ja_JP', 'jp'),
-	'kor': (ECILanguages.StandardKorean, _('Korean'), 'ko_KR', 'ko'),
-	'deu': (ECILanguages.StandardGerman, _('German'), 'de_DE', 'de'),
-	'ita': (ECILanguages.StandardItalian, _('Italian'), 'it_IT', 'it'),
-	'enu': (ECILanguages.GeneralAmericanEnglish, _('American English'), 'en_US', 'en'),
-	'eng': (ECILanguages.BritishEnglish, _('British English'), 'en_UK', ''),
-	'swe': (ECILanguages.StandardSwedish, _('Swedish'), 'sv_SE', 'sv'),
-	'nor': (ECILanguages.StandardNorwegian, _('Norwegian'), 'nb_NO', 'nb'),
-	'dan': (ECILanguages.StandardDanish, _('Danish'), 'da_DK', 'da'),
-	'ctt': (ECILanguages.HongKongCantonese, _('Hong Kong Cantonese'), 'yue', '')
+	'esp': (ECILanguageDialect.CastilianSpanish, _('Castilian Spanish'), 'es_ES', 'es'),
+	'esm': (ECILanguageDialect.MexicanSpanish, _('Latin American Spanish'), 'es_MX', 'es_CO'),
+	'ptb': (ECILanguageDialect.BrazilianPortuguese, _('Brazilian Portuguese'), 'pt_BR', 'pt'),
+	'fra': (ECILanguageDialect.StandardFrench, _('French'), 'fr_FR', 'fr'),
+	'frc': (ECILanguageDialect.CanadianFrench, _('French Canadian'), 'fr_CA', ''),
+	'fin': (ECILanguageDialect.StandardFinnish, _('Finnish'), 'fi_FI', 'fi'),
+	'chs': (ECILanguageDialect.MandarinChinese, _('Chinese'), 'zh_CN', 'zh'),
+	'jpn': (ECILanguageDialect.StandardJapanese, _('Japanese'), 'ja_JP', 'jp'),
+	'kor': (ECILanguageDialect.StandardKorean, _('Korean'), 'ko_KR', 'ko'),
+	'deu': (ECILanguageDialect.StandardGerman, _('German'), 'de_DE', 'de'),
+	'ita': (ECILanguageDialect.StandardItalian, _('Italian'), 'it_IT', 'it'),
+	'enu': (ECILanguageDialect.GeneralAmericanEnglish, _('American English'), 'en_US', 'en'),
+	'eng': (ECILanguageDialect.BritishEnglish, _('British English'), 'en_UK', ''),
+	'swe': (ECILanguageDialect.StandardSwedish, _('Swedish'), 'sv_SE', 'sv'),
+	'nor': (ECILanguageDialect.StandardNorwegian, _('Norwegian'), 'nb_NO', 'nb'),
+	'dan': (ECILanguageDialect.StandardDanish, _('Danish'), 'da_DK', 'da'),
+	'ctt': (ECILanguageDialect.HongKongCantonese, _('Hong Kong Cantonese'), 'yue', '')
 }
 
 
@@ -120,9 +121,12 @@ WM_KILL=1030
 WM_SYNTH=1031
 WM_INDEX=1032
 
-audioStream = BytesIO()
 
 # global variables
+audioStream = BytesIO()
+player = None
+currentSoundcardOutput = None
+currentSampleRate = None
 isIBM=False
 speaking=False
 eciThread = None
@@ -133,6 +137,7 @@ eciThreadId = None
 idleTimer = None
 onIndexReached = None
 onDoneSpeaking = None
+endMarkersCount = 0
 
 buffer = create_string_buffer(samples*2)
 

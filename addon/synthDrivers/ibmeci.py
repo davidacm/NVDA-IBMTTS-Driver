@@ -11,7 +11,7 @@ from six import string_types
 from logHandler import log
 
 from synthDrivers import _ibmeci
-from synthDrivers._ibmeci import ECILanguages as EciLangs, ECIParam, ECIVoiceParam
+from synthDrivers._ibmeci import ECILanguageDialect as EciLangs, ECIParam, ECIVoiceParam
 
 
 # compatibility with nvda 2021.1 alpha versions.
@@ -326,26 +326,27 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 		text = text.encode(self.currentEncoding, 'replace') # special unicode symbols may encode to backquote. For this reason, backquote processing is after this.
 		text = text.rstrip()
 		# language crash fixes.
+		curLang = _ibmeci.params[_ibmeci.ECIParam.eciLanguageDialect]
 		# first those that applies for all synths.
-		if _ibmeci.params[9] in ('deu', EciLangs.StandardGerman):
+		if curLang in ('deu', EciLangs.StandardGerman):
 			text = resub(german_fixes, text)
 		elif _ibmeci.isIBM:
-			if _ibmeci.params[9] in (EciLangs.GeneralAmericanEnglish, EciLangs.BritishEnglish, EciLangs.MandarinChinese, EciLangs.StandardKorean, EciLangs.StandardCantonese):
+			if curLang in (EciLangs.GeneralAmericanEnglish, EciLangs.BritishEnglish, EciLangs.MandarinChinese, EciLangs.StandardKorean, EciLangs.HongKongCantonese):
 				text = resub(english_ibm_fixes, text)
-			elif _ibmeci.params[9] in ('esp', EciLangs.CastilianSpanish):
+			elif curLang in ('esp', EciLangs.CastilianSpanish):
 				text = resub(spanish_ibm_fixes, text)
-			elif _ibmeci.params[9] in (EciLangs.CastilianSpanish,  EciLangs.MexicanSpanish):
+			elif curLang in (EciLangs.CastilianSpanish,  EciLangs.MexicanSpanish):
 				text = resub(spanish_ibm_anticrash, text)
-			elif _ibmeci.params[9] in ('fra', EciLangs.StandardFrench):
+			elif curLang in ('fra', EciLangs.StandardFrench):
 				text = resub(french_ibm_fixes, text)
-			elif _ibmeci.params[9] in ('ptb', EciLangs.BrazilianPortuguese):
+			elif curLang in ('ptb', EciLangs.BrazilianPortuguese):
 				text = resub(portuguese_ibm_fixes, text)
 		else:
-			if _ibmeci.params[9] in (EciLangs.GeneralAmericanEnglish, EciLangs.BritishEnglish, EciLangs.MandarinChinese, EciLangs.StandardKorean, EciLangs.StandardCantonese):
+			if curLang in (EciLangs.GeneralAmericanEnglish, EciLangs.BritishEnglish, EciLangs.MandarinChinese, EciLangs.StandardKorean):
 				text = resub(english_fixes, text) #Applies to all languages with dual language support.
-			elif _ibmeci.params[9] in (EciLangs.CastilianSpanish,  EciLangs.MexicanSpanish):
+			elif curLang in (EciLangs.CastilianSpanish,  EciLangs.MexicanSpanish):
 				text = resub(spanish_fixes, text)
-			elif _ibmeci.params[9] in (EciLangs.StandardFrench, EciLangs.CanadianFrench):
+			elif curLang in (EciLangs.StandardFrench, EciLangs.CanadianFrench):
 				text = resub(french_fixes, text)
 
 		if not self._backquoteVoiceTags:
@@ -487,7 +488,7 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 			self.currentEncoding = "cp932"
 		elif lang == EciLangs.StandardKorean:
 			self.currentEncoding = "cp949"
-		elif lang == EciLangs.StandardCantonese:
+		elif lang == EciLangs.HongKongCantonese:
 			self.currentEncoding = "big5"
 		else:
 			self.currentEncoding = "mbcs"
