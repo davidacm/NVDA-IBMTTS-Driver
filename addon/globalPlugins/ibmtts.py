@@ -77,6 +77,7 @@ class IBMTTSSettingsPanel(SettingsPanel):
 				)
 				break
 			except:
+				log.info("Error loading the IBMTTS library", exc_info=True)
 				if gui.messageBox(
 					# Translators: The message displayed in the dialog that inform you the specified library is invalid.
 					_("The specified dll file seems to be an incorrect IBMTTS library. Would you like to select another library?"),
