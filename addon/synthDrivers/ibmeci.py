@@ -79,7 +79,7 @@ english_ibm_fixes = {
 	#Don't break phrases like books).
 	re.compile(br"([a-z]+)\s+(\(s\))", re.I): br"\1\2",
 	#Removes spaces if a string is followed by a punctuation mark, since ViaVoice doesn't tolerate that.
-	re.compile(br"([a-z]+|\d+|\W+)\s+([:.!;,](?![a-z]))", re.I): br"\1\2",
+	re.compile(br"([a-z]+|\d+|\W+)\s+([:.!;,?](?![a-z]|\d))", re.I): br"\1\2",
 	#ViaVoice-Specific crash words
 	re.compile(br"(http://|ftp://)([a-z]+)(\W){1,3}([a-z]+)(/*\W){1,3}([a-z]){1}", re.I): br"\1\2\3\4 \5\6",
 	re.compile(br"(\d+)([-+*^/])(\d+)(\.)(\d+)(\.)(0{2,})", re.I): br"\1\2\3\4\5\6 \7",
