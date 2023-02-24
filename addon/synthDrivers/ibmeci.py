@@ -79,7 +79,7 @@ english_ibm_fixes = {
 	#Don't break phrases like books).
 	re.compile(br"([a-z]+)\s+(\(s\))", re.I): br"\1\2",
 	#Removes spaces if a string is followed by a punctuation mark, since ViaVoice doesn't tolerate that.
-	re.compile(br"([a-z]+|\d+|\W+)\s+([:.!;,])", re.I): br"\1\2",
+	re.compile(br"([a-z]+|\d+|\W+)\s+([:.!;,](?![a-z]))", re.I): br"\1\2",
 	#ViaVoice-Specific crash words
 	re.compile(br"(http://|ftp://)([a-z]+)(\W){1,3}([a-z]+)(/*\W){1,3}([a-z]){1}", re.I): br"\1\2\3\4 \5\6",
 	re.compile(br"(\d+)([-+*^/])(\d+)(\.)(\d+)(\.)(0{2,})", re.I): br"\1\2\3\4\5\6 \7",
@@ -113,7 +113,7 @@ portuguese_ibm_fixes = {
 	re.compile(br'(\d{1,2}):(00):(\d{1,2})'): br'\1:\2 \3',
 }
 french_fixes = {
-	# Convert n� to num�ro
+	# Convert n  to num ro
 	re.compile(br'\bn\xb0', re.I): b'num\xe9ro',
 	# anticrash for "quil" that sometimes breaks Eloquence
 	# but, depending on the context, "quil" does not always pronounce the same
