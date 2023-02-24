@@ -108,6 +108,12 @@ german_fixes = {
 # Crash words.
 	re.compile(br'dane-ben', re.I): br'dane- ben',
 	re.compile(br'dage-gen', re.I): br'dage- gen',
+	re.compile(br'video-enco', re.I): br'video- enco',
+}
+german_ibm_fixes = {
+# Crash words.
+	re.compile(br'dane-ben', re.I): br'dane- ben',
+	re.compile(br'dage-gen', re.I): br'dage- gen',
 }
 portuguese_ibm_fixes = {
 	re.compile(br'(\d{1,2}):(00):(\d{1,2})'): br'\1:\2 \3',
@@ -327,10 +333,7 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 		text = text.rstrip()
 		# language crash fixes.
 		curLang = _ibmeci.params[_ibmeci.ECIParam.eciLanguageDialect]
-		# first those that applies for all synths.
-		if curLang in ('deu', EciLangs.StandardGerman):
-			text = resub(german_fixes, text)
-		elif _ibmeci.isIBM:
+		if _ibmeci.isIBM:
 			if curLang in (EciLangs.GeneralAmericanEnglish, EciLangs.BritishEnglish, EciLangs.MandarinChinese, EciLangs.StandardKorean, EciLangs.HongKongCantonese):
 				text = resub(english_ibm_fixes, text)
 			elif curLang in ('esp', EciLangs.CastilianSpanish):
@@ -341,6 +344,8 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 				text = resub(french_ibm_fixes, text)
 			elif curLang in ('ptb', EciLangs.BrazilianPortuguese):
 				text = resub(portuguese_ibm_fixes, text)
+			elif curLang in ('deu', EciLangs.StandardGerman):
+				text = resub(german_ibm_fixes, text)
 		else:
 			if curLang in (EciLangs.GeneralAmericanEnglish, EciLangs.BritishEnglish, EciLangs.MandarinChinese, EciLangs.StandardKorean):
 				text = resub(english_fixes, text) #Applies to all languages with dual language support.
@@ -348,7 +353,8 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 				text = resub(spanish_fixes, text)
 			elif curLang in (EciLangs.StandardFrench, EciLangs.CanadianFrench):
 				text = resub(french_fixes, text)
-
+			if curLang in ('deu', EciLangs.StandardGerman):
+				text = resub(german_fixes, text)
 		if not self._backquoteVoiceTags:
 			text=text.replace(b'`', b' ') # no embedded commands
 		if self._shortPause:
