@@ -59,7 +59,7 @@ english_fixes = {
 	re.compile(br"(juar)([a-z']{9,})", re.I): br"\1 \2"
 }
 english_ibm_fixes = {
-	#Mostly duplicates english_fixes, but removes unneded replacements
+	#Mostly duplicates english_fixes, but removes unneeded replacements
 	#This won't crash, but ViaVoice doesn't like spaces in Mc names.
 	re.compile(br"\b(Mc)\s+([A-Z][a-z]|[A-Z][A-Z]+)"): br"\1\2",
 	re.compile(br'\b(.*?)c(ae|\xe6)sur(e)?', re.I): br'\1seizur',
@@ -111,7 +111,7 @@ german_fixes = {
 	re.compile(br'(audio|video)(-)(en[bcdfghjklmnpqrsvwxz][a-z]+)', re.I): br'\1\2 \3',
 }
 german_ibm_fixes = {
-# Crash words.
+# Just like english_ibm_fixes, also avoids unneeded replacements
 	re.compile(br'dane-ben', re.I): br'dane- ben',
 	re.compile(br'dage-gen', re.I): br'dage- gen',
 }
