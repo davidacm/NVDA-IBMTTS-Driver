@@ -108,7 +108,7 @@ german_fixes = {
 # Crash words.
 	re.compile(br'dane-ben', re.I): br'dane- ben',
 	re.compile(br'dage-gen', re.I): br'dage- gen',
-	re.compile(br'video-enco', re.I): br'video- enco',
+	re.compile(br'(audio|video)(-)(en[bcdfghjklmnpqrsvwxz][a-z]+)', re.I): br'\1\2 \3',
 }
 german_ibm_fixes = {
 # Crash words.
