@@ -60,6 +60,14 @@ english_fixes = {
 	re.compile(br"\b(\d+|\W+)?(\w+\_+)?(\_+)?([bcdfghjklmnpqrstvwxz]+)?(\d+)?t+z[s]che", re.I): br"\1 \2 \3 \4 \5 tz sche",
 	re.compile(br"(juar)([a-z']{9,})", re.I): br"\1 \2"
 }
+ibm_global_fixes = {
+#	Prevents the synth from spelling out everything if a punctuation mark follows a word.
+	re.compile(br"([a-z]+)([~#$%^*({|\\[<%\x95])", re.I): br"\1 \2",
+	#Don't break phrases like books).
+	re.compile(br"([a-z]+)\s+(\(s\))", re.I): br"\1\2",
+	#Removes spaces if a string is followed by a punctuation mark, since ViaVoice doesn't tolerate that.
+	re.compile(br"([a-z]+|\d+|\W+)\s+([:.!;,?](?![a-z]|\d))", re.I): br"\1\2",
+}
 english_ibm_fixes = {
 	#Mostly duplicates english_fixes, but removes unneded replacements.
 	#This won't crash, but ViaVoice doesn't like spaces in Mc names.
@@ -76,12 +84,6 @@ english_ibm_fixes = {
 	re.compile(br"(re|un|non|anti)cosp", re.I): br"\1kosp",
 	re.compile(br"\b(\d+|\W+)?(\w+\_+)?(\_+)?([bcdfghjklmnpqrstvwxz]+)?(\d+)?t+z[s]che", re.I): br"\1 \2 \3 \4 \5 tz sche",
 	re.compile(br"(juar)([a-z']{9,})", re.I): br"\1 \2",
-#	Prevents the synth from spelling out everything if a punctuation mark follows a word.
-	re.compile(br"([a-z]+)([~#$%^*({|\\[<%\x95])", re.I): br"\1 \2",
-	#Don't break phrases like books).
-	re.compile(br"([a-z]+)\s+(\(s\))", re.I): br"\1\2",
-	#Removes spaces if a string is followed by a punctuation mark, since ViaVoice doesn't tolerate that.
-	re.compile(br"([a-z]+|\d+|\W+)\s+([:.!;,?](?![a-z]|\d))", re.I): br"\1\2",
 	#ViaVoice-Specific crash words
 	re.compile(br"(http://|ftp://)([a-z]+)(\W){1,3}([a-z]+)(/*\W){1,3}([a-z]){1}", re.I): br"\1\2\3\4 \5\6",
 	re.compile(br"(\d+)([-+*^/])(\d+)(\.)(\d+)(\.)(0{2,})", re.I): br"\1\2\3\4\5\6 \7",
@@ -336,6 +338,7 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 		# language crash fixes.
 		curLang = _ibmeci.params[_ibmeci.ECIParam.eciLanguageDialect]
 		if _ibmeci.isIBM:
+			text = resub(ibm_global_fixes, text)
 			if curLang in (EciLangs.GeneralAmericanEnglish, EciLangs.BritishEnglish, EciLangs.MandarinChinese, EciLangs.StandardKorean, EciLangs.HongKongCantonese):
 				text = resub(english_ibm_fixes, text)
 			elif curLang in ('esp', EciLangs.CastilianSpanish):
