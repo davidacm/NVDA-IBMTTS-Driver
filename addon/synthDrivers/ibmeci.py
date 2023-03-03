@@ -33,6 +33,8 @@ addonHandler.initTranslation()
 minRate=40
 maxRate=156
 punctuation = b"-,.:;)(?!\x96\x97"
+ibm_punctuation = b"-,.:;?!\x96\x97"
+ibm_pause_re = re.compile(br'([a-zA-Z0-9]|\s)([%s])(\2*?)(\s|[\\/]|$)' %ibm_punctuation)
 pause_re = re.compile(br'([a-zA-Z0-9]|\s)([%s])(\2*?)(\s|[\\/]|$)' %punctuation)
 time_re = re.compile(br"(\d):(\d+):(\d+)")
 
@@ -59,7 +61,7 @@ english_fixes = {
 	re.compile(br"(juar)([a-z']{9,})", re.I): br"\1 \2"
 }
 english_ibm_fixes = {
-	#Mostly duplicates english_fixes, but removes unneeded replacements
+	#Mostly duplicates english_fixes, but removes unneded replacements.
 	#This won't crash, but ViaVoice doesn't like spaces in Mc names.
 	re.compile(br"\b(Mc)\s+([A-Z][a-z]|[A-Z][A-Z]+)"): br"\1\2",
 	re.compile(br'\b(.*?)c(ae|\xe6)sur(e)?', re.I): br'\1seizur',
@@ -358,7 +360,10 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 		if not self._backquoteVoiceTags:
 			text=text.replace(b'`', b' ') # no embedded commands
 		if self._shortPause:
-			text = pause_re.sub(br'\1 `p1\2\3\4', text) # this enforces short, JAWS-like pauses.
+			if _ibmeci.isIBM:
+				text = ibm_pause_re.sub(br'\1 `p1\2\3\4', text) # this enforces short, JAWS-like pauses.
+			else:
+				text = pause_re.sub(br'\1 `p1\2\3\4', text) # this enforces short, JAWS-like pauses.
 		if not _ibmeci.isIBM:
 			text = time_re.sub(br'\1:\2 \3', text) # apparently if this isn't done strings like 2:30:15 will only announce 2:30
 		return text
