@@ -92,6 +92,11 @@ english_ibm_fixes = {
 	re.compile(br"(\d+)(\.+)(\d+)(\.+)(0{2,})(\.\d*)\s*\.*([-+*^/])", re.I): br"\1\2\3\4 \5\6\7",
 	re.compile(br"(\d+)\s*([-+*^/])\s*(\d+)(,)(00\b)", re.I): br"\1\2\3\4 \5",
 	re.compile(br"(\d+)\s*([-+*^/])\s*(\d+)(,)(0{4,})", re.I): br"\1\2\3\4 \5",
+	#Work around various bugs where the synth can say "comma hundred" or other similarly weird things if numbers are separated by commas by removing them in some situations. These expressions aren't perfect, but should generally work.
+	re.compile(br'\b(\d{1,3}),(000),(\d{1,3})\b'): br'\1\2\3',
+	re.compile(br'\b(\d{1,3}),(000),(\d{1,3}),(\d{1,3})\b'): br'\1\2\3\4',
+	re.compile(br'\b(\d{1,3}),(000),(\d{1,3}),(\d{1,3}),(\d{1,3})\b'): br'\1\2\3\4\5',
+	re.compile(br'\b(\d{1,3}),(000),(\d{1,3}),(\d{1,3}),(\d{1,3}),(\d{1,3})\b'): br'\1\2\3\4\5\6',
 }
 spanish_fixes = {
 	# Euros
