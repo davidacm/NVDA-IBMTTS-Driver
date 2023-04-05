@@ -333,7 +333,6 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 		outlist.append((_ibmeci.setEndStringMark, ()))
 		outlist.append((_ibmeci.synth, ()))
 		_ibmeci.eciQueue.put(outlist)
-#		print(outlist)
 		_ibmeci.process()
 
 	def processText(self,text):
