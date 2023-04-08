@@ -165,8 +165,9 @@ class EciThread(threading.Thread):
 		msg = wintypes.MSG()
 		user32.PeekMessageA(byref(msg), None, 0x400, 0x400, 0)
 		(dll, handle) = eciNew()
-		dll.eciRegisterCallback(handle, callback, None)
+		dll.eciRegisterCallback(handle, eciCallback, None)
 		dll.eciSetOutputBuffer(handle, samples, pointer(buffer))
+		dll.eciSetParam(handle, ECIParam.eciSynthMode, 1)
 		dll.eciSetParam(handle, ECIParam.eciInputType, 1)
 		params[ECIParam.eciLanguageDialect] = dll.eciGetParam(handle, ECIParam.eciLanguageDialect)
 		# loading of fallback root.dic/main.dic/abbr.dic officially removed as of 20.08-x0_personal, to make room for other languages' dictionaries.
@@ -351,9 +352,9 @@ def playStream():
 	sendIndexes()
 
 endStringReached = False
-Callback = WINFUNCTYPE(c_int, c_int, c_int, c_int, c_void_p)
-@Callback
-def callback (h, ms, lp, dt):
+
+@WINFUNCTYPE(c_int, c_int, c_int, c_int, c_void_p)
+def eciCallback (h, ms, lp, dt):
 	global audioStream, speaking, END_STRING_MARK, endMarkersCount, indexes, endStringReached
 	if speaking and ms == ECIMessage.eciWaveformBuffer:
 		audioStream.write(string_at(buffer, lp*2))
