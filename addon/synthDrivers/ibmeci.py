@@ -264,6 +264,7 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 		if self._sendParams:
 			embeds+=b"`vv%d `vs%d " % (_ibmeci.getVParam(ECIVoiceParam.eciVolume), _ibmeci.getVParam(ECIVoiceParam.eciSpeed))
 		outlist.append((_ibmeci.speak, (embeds,)))
+		speechSequence= self.combine_adjacent_strings(speechSequence)
 		for item in speechSequence:
 			if isinstance(item, string_types):
 				s = self.processText(item)
@@ -335,6 +336,21 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 		_ibmeci.eciQueue.put(outlist)
 		_ibmeci.process()
 
+	def combine_adjacent_strings(self, lst):
+		""" If several strings are sent at once, combines them into one large string so regular expressions can match on it, most useful for the date bug in English, but improves the experience for IBMTTS as well. """
+		result = []
+		current_string = ''
+		for item in lst:
+			if isinstance(item, str):
+				current_string += item
+			else:
+				if current_string:
+					result.append(current_string)
+					current_string = ''
+				result.append(item)
+		if current_string:
+			result.append(current_string)
+		return result
 	def processText(self,text):
 		#this converts to ansi for anticrash. If this breaks with foreign langs, we can remove it.
 		text = text.encode(self.currentEncoding, 'replace') # special unicode symbols may encode to backquote. For this reason, backquote processing is after this.
