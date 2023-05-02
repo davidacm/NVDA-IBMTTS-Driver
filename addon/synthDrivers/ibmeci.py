@@ -97,6 +97,9 @@ english_ibm_fixes = {
 	re.compile(br'\b(\d{1,3}),(000),(\d{1,3}),(\d{1,3})\b'): br'\1\2\3\4',
 	re.compile(br'\b(\d{1,3}),(000),(\d{1,3}),(\d{1,3}),(\d{1,3})\b'): br'\1\2\3\4\5',
 	re.compile(br'\b(\d{1,3}),(000),(\d{1,3}),(\d{1,3}),(\d{1,3}),(\d{1,3})\b'): br'\1\2\3\4\5\6',
+	#Remove the two spaces separator between strings containing left and right brackets and parentheses, to reduce the verbosity in IBMTTS.
+	re.compile(br'([\(\[]+)  (.)'): br'\1\2',
+	re.compile(br'(.)  ([\)\]]+)'): br'\1\2',
 }
 spanish_fixes = {
 	# Euros
