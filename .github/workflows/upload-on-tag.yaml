@@ -1,25 +1,31 @@
+permissions:
+  contents: write
 name: Upload on new tags
-
 on:
   push:
     tags:
-      '*'
+      ['*']
+  workflow_dispatch:
 
 jobs:
-  buildAndUpload:
+  build:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
-    - name: Set up Python 3.7
-      uses: actions/setup-python@v2
+      uses: actions/checkout@v3
+    - run: echo -e "pre-commit\nscons\nmarkdown">requirements.txt
+    - name: Set up Python
+      uses: actions/setup-python@v4
       with:
-        python-version: 3.7
+        python-version: 3.9
+        cache: 'pip'
+
     - name: Install dependencies
       run: |
         pip install scons markdown
         sudo apt update
         sudo apt install gettext
+
     - name: Add add-on version
       run: |
         import re
@@ -31,16 +37,34 @@ jobs:
           f.write(text)
           f.truncate()
       shell: python 
+
     - name: Build add-on
       run: scons
     - name: Calculate sha256
       run: sha256sum *.nvda-addon >> changelog.md
+
+    - uses: actions/upload-artifact@v3
+      with:
+        name: packaged_addon
+        path: |
+          ./*.nvda-addon
+          ./*.json
+
+  upload_release:
+    runs-on: ubuntu-latest
+    if: ${{ startsWith(github.ref, 'refs/tags/') }}
+    needs: ["build"]
+    steps:
+    - uses: actions/checkout@v3
+    - name: download releases files
+      uses: actions/download-artifact@v3
+    - name: Display structure of downloaded files
+      run: ls -R
+
     - name: Release
       uses: softprops/action-gh-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         files: |
-          *.nvda-addon
-        body_path: changelog.md
-        prerelease: ${{ endsWith(github.ref, '-dev') }}
+          packaged_addon/*.nvda-addon
+        fail_on_unmatched_files: true
+        prerelease: ${{ contains(github.ref, '-') }}

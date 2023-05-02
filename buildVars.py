@@ -19,7 +19,7 @@ addon_info = {
 	# Translators: Long description to be shown for this add-on on add-on information from add-ons manager
 	"addon_description" : _("""This is the IBMTTS synthesizer driver for NVDA."""),
 	# version
-	"addon_version" : "v23.02.1",
+	"addon_version" : "23.5.2",
 	# Author(s)
 	"addon_author" : u"David CM <dhf360@gmail.com>, x0 and others",
 	# URL for the add-on documentation support
@@ -32,6 +32,12 @@ addon_info = {
 	"addon_lastTestedNVDAVersion" : "2023.1.0",
 	# Add-on update channel (default is stable or None)
 	"addon_updateChannel" : None,
+	# Add-on license such as GPL 2
+	"addon_license": "GPL 2",
+	# URL for the license document the ad-on is licensed under
+	"addon_licenseURL": "https://www.gnu.org/licenses/old-licenses/gpl-2.0.html",
+	# URL for the add-on repository where the source code can be found
+	"addon_sourceURL": "https://github.com/davidacm/NVDA-IBMTTS-Driver",
 }
 
 
@@ -50,3 +56,14 @@ pythonSources.append(path.join("addon", "synthDrivers", "ibmtts", "*.*"))
 # Files that will be ignored when building the nvda-addon file
 # Paths are relative to the addon directory, not to the root directory of your addon sources.
 excludedFiles = []
+
+
+# Base language for the NVDA add-on
+baseLanguage = "en"
+
+# Markdown extensions for add-on documentation
+# Most add-ons do not require additional Markdown extensions.
+# If you need to add support for markup such as tables, fill out the below list.
+# Extensions string must be of the form "markdown.extensions.extensionName"
+# e.g. "markdown.extensions.tables" to add tables.
+markdownExtensions = []

@@ -217,11 +217,18 @@ class GithubService:
 		if res.code != 200:
 			raise RuntimeError(f"Checking for update failed with code {res.code} of url: {self.url}")
 		data = json.loads(res.read())
+		asset = None
+		for k in data['assets']:
+			if ".nvda-addon" in k['name']:
+				asset = k
+				break
+		if not asset:
+			raise RuntimeError("Unable to find the package addon file (.add-on) in the asset list")
 		return {
 			'version': data['name'],
-			'name': data['assets'][0]['name'],
-			'downloadUrl': data['assets'][0]['browser_download_url'],
-			'releaseDate': time.mktime(time.strptime(data['assets'][0]['updated_at'], "%Y-%m-%dT%H:%M:%SZ"))
+			'name': asset['name'],
+			'downloadUrl': asset['browser_download_url'],
+			'releaseDate': time.mktime(time.strptime(asset['updated_at'], "%Y-%m-%dT%H:%M:%SZ"))
 		}
 
 
