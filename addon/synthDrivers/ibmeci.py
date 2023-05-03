@@ -67,7 +67,7 @@ ibm_global_fixes = {
 	re.compile(br"([a-z]+)\s+(\(s\))", re.I): br"\1\2",
 	#Removes spaces if a string is followed by a punctuation mark, since ViaVoice doesn't tolerate that.
 	re.compile(br"([a-z]+|\d+|\W+)\s+([:.!;,?](?![a-z]|\d))", re.I): br"\1\2",
-	#Remove the two spaces separator between strings containing left and right brackets and parentheses, to reduce the verbosity in IBMTTS.
+	#Remove the two spaces separator between strings containing left and right brackets and parentheses to reduce verbosity.
 	re.compile(br'([\(\[]+)  (.)'): br'\1\2',
 	re.compile(br'(.)  ([\)\]]+)'): br'\1\2',
 }
