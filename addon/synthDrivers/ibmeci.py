@@ -67,6 +67,9 @@ ibm_global_fixes = {
 	re.compile(br"([a-z]+)\s+(\(s\))", re.I): br"\1\2",
 	#Removes spaces if a string is followed by a punctuation mark, since ViaVoice doesn't tolerate that.
 	re.compile(br"([a-z]+|\d+|\W+)\s+([:.!;,?](?![a-z]|\d))", re.I): br"\1\2",
+	#Remove the two spaces separator between strings containing left and right brackets and parentheses, to reduce the verbosity in IBMTTS.
+	re.compile(br'([\(\[]+)  (.)'): br'\1\2',
+	re.compile(br'(.)  ([\)\]]+)'): br'\1\2',
 }
 english_ibm_fixes = {
 	#Mostly duplicates english_fixes, but removes unneded replacements.
@@ -97,9 +100,6 @@ english_ibm_fixes = {
 	re.compile(br'\b(\d{1,3}),(000),(\d{1,3}),(\d{1,3})\b'): br'\1\2\3\4',
 	re.compile(br'\b(\d{1,3}),(000),(\d{1,3}),(\d{1,3}),(\d{1,3})\b'): br'\1\2\3\4\5',
 	re.compile(br'\b(\d{1,3}),(000),(\d{1,3}),(\d{1,3}),(\d{1,3}),(\d{1,3})\b'): br'\1\2\3\4\5\6',
-	#Remove the two spaces separator between strings containing left and right brackets and parentheses, to reduce the verbosity in IBMTTS.
-	re.compile(br'([\(\[]+)  (.)'): br'\1\2',
-	re.compile(br'(.)  ([\)\]]+)'): br'\1\2',
 }
 spanish_fixes = {
 	# Euros
