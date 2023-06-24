@@ -16,7 +16,6 @@ from ._settingsDB import appConfig, speechConfig
 
 addonHandler.initTranslation()
 
-
 class  ECIParam:
 	eciSynthMode=0
 	eciInputType=1
@@ -315,7 +314,7 @@ def setLast(lp):
 	lastindex = lp
 	onIndexReached(lp)
 
-def bgPlay(stri):
+def bgPlay(stri, onDone=None):
 	global player, currentSampleRate
 	if not player or len(stri) == 0: return
 	# Sometimes player.feed() tries to open the device when it's already open,
@@ -324,7 +323,7 @@ def bgPlay(stri):
 	tries = 0
 	while tries < 10:
 		try:
-			player.feed(stri)
+			player.feed(stri, onDone=onDone)
 			if tries > 0:
 				log.warning("Eloq speech retries: %d" % (tries))
 			return
@@ -339,17 +338,20 @@ def bgPlay(stri):
 	log.error("Eloq speech failed to feed one buffer.")
 
 indexes = []
-def sendIndexes():
-	global indexes
-	for i in indexes: _callbackExec(setLast, i)
-	indexes = []
+def sendIndexes(indexes):
+	for i in indexes: setLast(i)
 
 def playStream():
-	global audioStream
-	_callbackExec(bgPlay, audioStream.getvalue())
+	global audioStream, indexes
+	localIndexes = indexes[:]
+	indexes = []
+	onDone = lambda ii=localIndexes: sendIndexes(ii)
+	if audioStream.tell() == 0:
+		# onDone callback from player.feed behaves weirdly when buffer is empty, so writing a single 16-bit zero to avoid that
+		audioStream.write(b'\0\0')
+	_callbackExec(bgPlay, audioStream.getvalue(), onDone=onDone if len(localIndexes) > 0 else None)
 	audioStream.truncate(0)
 	audioStream.seek(0)
-	sendIndexes()
 
 endStringReached = False
 
@@ -362,13 +364,12 @@ def eciCallback (h, ms, lp, dt):
 		endStringReached = False
 	elif ms==ECIMessage.eciIndexReply:
 		if lp == END_STRING_MARK:
-			if audioStream.tell() > 0: playStream()
-			sendIndexes()
+			playStream()
 			_callbackExec(endStringEvent)
 			endStringReached = True
 		else:
-			if endStringReached: _callbackExec(setLast, lp)
-			else: indexes.append(lp)
+			indexes.append(lp)
+			playStream()
 	return ECICallbackReturn.eciDataProcessed
 
 class CallbackThread(threading.Thread):
