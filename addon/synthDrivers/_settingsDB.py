@@ -4,12 +4,13 @@
 #synthDrivers/settingsDB.py
 
 from ._configHelper import configSpec, registerConfig, boolValidator
+DEFAULT_LIB_FOLDER = 'ibmtts'
 
 # Add-on config database
 @configSpec("ibmeci")
 class _AppConfig:
 	dllName = ("string(default='eci.dll')", True)
-	TTSPath = ("string(default='ibmtts')", True)
+	TTSPath = ("string(default=DEFAULT_LIB_FOLDER)", True)
 	autoUpdate  = ('boolean(default=True)', True, boolValidator)
 appConfig = registerConfig(_AppConfig)
 
