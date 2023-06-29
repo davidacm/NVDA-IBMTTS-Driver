@@ -3,7 +3,7 @@
 # Author: David CM <dhf360@gmail.com> and others.
 #globalPlugins/_ibmttsutils.py
 
-import config, json, os, pickle, ssl, time, winUser, wx, zipfile
+import addonAPIVersion, config, json, os, pickle, ssl, time, winUser, wx, zipfile
 from os import path
 from ctypes import windll
 from urllib.request import urlopen
@@ -11,7 +11,7 @@ from urllib.request import urlopen
 import globalVars, gui, addonHandler
 from core import callLater
 from logHandler import log
-from gui.addonGui import _showAddonRequiresNVDAUpdateDialog, _showAddonTooOldDialog, promptUserForRestart
+from gui.addonGui import promptUserForRestart
 
 addonHandler.initTranslation()
 
@@ -140,7 +140,7 @@ def guiInstallAddon(addonPath):
 		)
 		return False
 	if not addonHandler.addonVersionCheck.hasAddonGotRequiredSupport(bundle):
-		_showAddonRequiresNVDAUpdateDialog(gui.MainFrame, bundle)
+		_showAddonRequiresNVDAUpdateDialog(gui.mainFrame, bundle)
 		return False
 	if not addonHandler.addonVersionCheck.isAddonTested(bundle):
 		_showAddonTooOldDialog(gui.mainFrame, bundle)
@@ -382,3 +382,43 @@ class UpdateHandler:
 			self.autoCheckUpdate()
 		else:
 			self.timer = callLater(nextTime, self.autoCheckUpdate)
+
+
+def _showAddonRequiresNVDAUpdateDialog(parent, bundle):
+	incompatibleMessage = _(
+		# Translators: The message displayed when installing an add-on package is prohibited,
+		# because it requires a later version of NVDA than is currently installed.
+		"Installation of {summary} {version} has been blocked. The minimum NVDA version required for "
+		"this add-on is {minimumNVDAVersion}, your current NVDA version is {NVDAVersion}"
+	).format(
+		summary=bundle.manifest['summary'],
+		version=bundle.manifest['version'],
+		minimumNVDAVersion=addonAPIVersion.formatForGUI(bundle.minimumNVDAVersion),
+		NVDAVersion=addonAPIVersion.formatForGUI(addonAPIVersion.CURRENT)
+	)
+	gui.messageBox(
+		# Translators: The message displayed when an error occurs when opening an add-on package for adding.
+		incompatibleMessage,
+		# Translators: The title of a dialog presented when an error occurs.
+		_("Add-on not compatible"),
+		wx.OK | wx.ICON_ERROR
+	)
+
+
+def _showAddonTooOldDialog(parent, bundle):
+	msg = _(
+		# Translators: A message informing the user that this addon can not be installed
+		# because it is not compatible.
+		"Installation of {summary} {version} has been blocked."
+		" An updated version of this add-on is required,"
+		" the minimum add-on API supported by this version of NVDA is {backCompatToAPIVersion}"
+	).format(
+		backCompatToAPIVersion=addonAPIVersion.formatForGUI(addonAPIVersion.BACK_COMPAT_TO),
+		**bundle.manifest
+	)
+	gui.messageBox(
+		msg,
+		# Translators: The title of the dialog presented when the add-on is too old.
+		_("Add-on not compatible"),
+		wx.OK | wx.ICON_ERROR
+	)
