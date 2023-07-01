@@ -156,7 +156,6 @@ dictHandles={}
 params = {}
 vparams = {}
 
-
 class EciThread(threading.Thread):
 	def run(self):
 		global vparams, params, speaking, endMarkersCount
@@ -315,7 +314,7 @@ def setLast(lp):
 	lastindex = lp
 	onIndexReached(lp)
 
-def bgPlay(stri):
+def bgPlay(stri, onDone=None):
 	global player, currentSampleRate
 	if not player or len(stri) == 0: return
 	# Sometimes player.feed() tries to open the device when it's already open,
@@ -324,7 +323,7 @@ def bgPlay(stri):
 	tries = 0
 	while tries < 10:
 		try:
-			player.feed(stri)
+			player.feed(stri, onDone=onDone)
 			if tries > 0:
 				log.warning("Eloq speech retries: %d" % (tries))
 			return
@@ -339,17 +338,27 @@ def bgPlay(stri):
 	log.error("Eloq speech failed to feed one buffer.")
 
 indexes = []
-def sendIndexes():
-	global indexes
-	for i in indexes: _callbackExec(setLast, i)
-	indexes = []
+def sendIndexes(indexes):
+	for i in indexes: setLast(i)
 
-def playStream():
-	global audioStream
-	_callbackExec(bgPlay, audioStream.getvalue())
+def playStream(flushSize=None):
+	global audioStream, indexes
+	localIndexes = indexes
+	indexes = []
+	onDone = None if len(localIndexes) == 0 else lambda localIndexes=localIndexes: sendIndexes(localIndexes)
+	if audioStream.tell() == 0:
+		# onDone callback from player.feed behaves weirdly when buffer is empty, so writing a single 16-bit zero to avoid that
+		# This can only happen when speech sequence starts with an index command and doesn't cause any audible crackling.
+		audioStream.write(b'\0\0')
+	flushBytes = audioStream.getvalue()
+	if flushSize is not None:
+		keepBytes = flushBytes[flushSize:]
+		flushBytes = flushBytes[:flushSize]
+	_callbackExec(bgPlay, flushBytes, onDone=onDone)
 	audioStream.truncate(0)
 	audioStream.seek(0)
-	sendIndexes()
+	if flushSize is not None:
+		audioStream.write(keepBytes)
 
 endStringReached = False
 
@@ -357,13 +366,25 @@ endStringReached = False
 def eciCallback (h, ms, lp, dt):
 	global audioStream, speaking, END_STRING_MARK, endMarkersCount, indexes, endStringReached
 	if speaking and ms == ECIMessage.eciWaveformBuffer:
+		if (
+			(
+				audioStream.tell() >= samples*2
+				and lp*2 >= samples*2
+			)
+			or len(indexes) > 0
+		):
+			playStream()
 		audioStream.write(string_at(buffer, lp*2))
-		if audioStream.tell() >= samples*2: playStream()
 		endStringReached = False
+		if audioStream.tell() >= samples*4:
+			# This condition doesn't trigger during normal operation. It only triggers when eci repeatedly sends small buffer chunks less than buffer size.
+			# Nevertheless we don't want to fail in case this happens due to unforeseen circumstances.
+			# Flushing leading flushSize bytes while keeping the rest in the buffer to avoid sending too short chunks to player.
+			flushSize = audioStream.tell() - samples*2
+			playStream(flushSize=flushSize)
 	elif ms==ECIMessage.eciIndexReply:
 		if lp == END_STRING_MARK:
-			if audioStream.tell() > 0: playStream()
-			sendIndexes()
+			playStream()
 			_callbackExec(endStringEvent)
 			endStringReached = True
 		else:
