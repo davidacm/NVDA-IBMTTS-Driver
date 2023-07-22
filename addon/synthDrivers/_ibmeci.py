@@ -557,7 +557,7 @@ def endStringEvent():
 	endMarkersCount -=1
 	if endMarkersCount == 0:
 		speaking = False
-		idleTimer = threading.Timer(0.3, idlePlayer)
+		idleTimer = threading.Timer(0.0001, idlePlayer)
 		idleTimer.start()
 
 def idlePlayer():
