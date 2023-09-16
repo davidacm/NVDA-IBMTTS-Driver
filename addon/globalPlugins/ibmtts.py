@@ -9,7 +9,7 @@ from ctypes import windll
 
 import globalVars, gui, globalPluginHandler, addonHandler
 from logHandler import log
-from gui import SettingsPanel
+from gui.settingsDialogs import SettingsPanel
 from synthDrivers._settingsDB import appConfig
 from ._ibmttsUtils import UpdateHandler, GithubService, guiCopiFiles
 addonHandler.initTranslation()
