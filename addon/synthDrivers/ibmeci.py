@@ -209,7 +209,7 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 		BooleanDriverSetting("backquoteVoiceTags", _("Enable backquote voice &tags"), False),
 		BooleanDriverSetting("ABRDICT", _("Enable &abbreviation expansion"), False),
 		BooleanDriverSetting("phrasePrediction", _("Enable phras&e prediction"), False),
-		DriverSetting("pauseMode", _("&Pause Mode"), defaultVal="2"),
+		DriverSetting("pauseMode", _("&Pauses"), defaultVal="2"),
 		BooleanDriverSetting("sendParams", _("Al&ways Send Current Speech Settings"), False, defaultVal=True),
 		DriverSetting('sampleRate', _("Sa&mple Rate"), defaultVal='1'),
 		)
@@ -547,9 +547,9 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 		return str(self._sample_rate)
 
 	_pausemodes={
-		"0": StringParameterInfo("0", "Do not shorten pauses"),
-		"1": StringParameterInfo("1", "Shorten pauses at text boundaries (E.G. a list control and its value)"),
-		"2": StringParameterInfo("2", "Shorten all pauses (including punctuation) similar to JAWS For Windows")
+		"0": StringParameterInfo("0", "Do not shorten"),
+		"1": StringParameterInfo("1", "Shorten at end of text only"),
+		"2": StringParameterInfo("2", "Shorten all pauses")
 	}
 	
 	def _get_availablePausemodes(self):
