@@ -209,7 +209,7 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 		BooleanDriverSetting("backquoteVoiceTags", _("Enable backquote voice &tags"), False),
 		BooleanDriverSetting("ABRDICT", _("Enable &abbreviation expansion"), False),
 		BooleanDriverSetting("phrasePrediction", _("Enable phras&e prediction"), False),
-		BooleanDriverSetting("shortPause", _("&Shorten pauses"), False, defaultVal=True),
+		DriverSetting("pauseMode", _("&Pause Mode"), defaultVal="2"),
 		BooleanDriverSetting("sendParams", _("Al&ways Send Current Speech Settings"), False, defaultVal=True),
 		DriverSetting('sampleRate', _("Sa&mple Rate"), defaultVal='1'),
 		)
@@ -242,6 +242,7 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 		self.speakingLanguage=lang
 		self.variant="1"
 		self.currentEncoding = "mbcs"
+		self._pause_mode=2
 		self.sampleRate = '1'
 
 	PROSODY_ATTRS = {
@@ -329,7 +330,7 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 		if last and last[-1] not in punctuation:
 			# check if a pitch command is at the end of the list, because p1 need to be send before this.
 			# index -2 is because -1 always seem to be an index command.
-			if self._shortPause:
+			if self._pause_mode >= 1:
 				if outlist[-2][0] == _ibmeci.setProsodyParam: outlist.insert(-2, (_ibmeci.speak, (b'`p1 ',)))
 				else: outlist.append((_ibmeci.speak, (b'`p1 ',)))
 		if charmode:
@@ -385,7 +386,7 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 				text = resub(german_fixes, text)
 		if not self._backquoteVoiceTags:
 			text=text.replace(b'`', b' ') # no embedded commands
-		if self._shortPause:
+		if self._pause_mode == 2:
 			if _ibmeci.isIBM:
 				text = ibm_pause_re.sub(br'\1 `p1\2\3\4', text) # this enforces short, JAWS-like pauses.
 			else:
@@ -403,7 +404,7 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 	_backquoteVoiceTags=False
 	_ABRDICT=False
 	_phrasePrediction=False
-	_shortPause=True
+	_pause_mode=2
 	_sendParams=True
 	def _get_backquoteVoiceTags(self):
 		return self._backquoteVoiceTags
@@ -424,12 +425,6 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 		if enable == self._phrasePrediction:
 			return
 		self._phrasePrediction = enable
-	def _get_shortPause(self):
-		return self._shortPause
-	def _set_shortPause(self, enable):
-		if enable == self._shortPause:
-			return
-		self._shortPause = enable
 	def _get_sendParams(self):
 		return self._sendParams
 	def _set_sendParams(self, enable):
@@ -550,6 +545,22 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 
 	def _get_sampleRate(self):
 		return str(self._sample_rate)
+
+	_pausemodes={
+		"0": StringParameterInfo("0", "Do not shorten pauses"),
+		"1": StringParameterInfo("1", "Shorten pauses at text boundaries (E.G. a list control and its value)"),
+		"2": StringParameterInfo("2", "Shorten all pauses (including punctuation) similar to JAWS For Windows")
+	}
+	
+	def _get_availablePausemodes(self):
+		return self._pausemodes
+
+	def _set_pauseMode(self, val):
+		val = int(val)
+		self._pause_mode = val
+
+	def _get_pauseMode(self):
+		return str(self._pause_mode)
 
 	def _get_lastIndex(self):
 		#fix?
