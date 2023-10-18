@@ -374,7 +374,7 @@ def eciCallback (h, ms, lp, dt):
 class CallbackThread(threading.Thread):
 	def __init__(self):
 		threading.Thread.__init__(self)
-		self.setDaemon(True)
+		self.daemon = True
 
 	def run(self):
 		try:
