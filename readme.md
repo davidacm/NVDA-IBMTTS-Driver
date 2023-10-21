@@ -29,7 +29,11 @@ ViaVoice TTS is a text-to-speech engine developed by IBM, which synthesizes text
 
 * Enable abbreviation expansion: toggles expannsion of abbreviations. Note that disabling this option will also disable the expansion of any abbreviations specified in user-provided abbreviation dictionaries.
 * Enable phrase prediction: if this option is enabled, the synthesizer will try to predict where pauses would occur in sentences based on their structure, for example, by using words like "and" or "the" as phrase boundaries. If this option is off, it will only pause if commas or other such punctuation is encountered.
-* Shorten pauses: enable this option for shorter punctuation pauses, like those seen in other screen readers.
+* Pauses: This is a combo box with three options.
+  * do not shorten: pauses will not be shortened at all, and the original pauses of IBMTTS will be used in all cases.
+  * shorten at end of text only: pauses of punctuation symbols such as periods and commas will not be shortened, but they will be shortened when text ends, for example when pressing NVDA+t twice quickly to spell the title bar of an application character by character
+  * Shorten all pauses: all pauses including punctuation pauses and pauses that occur at the end of text will be shortened
+
 * Always send current speech settings: there is a bug in the synthesizer that will occasionally cause the speech and pitch settings to be briefly reset to their default values. The cause of this issue is currently unknown, however a workaround is to continuously send the current speech rate and pitch settings. This option should generally be enabled. However, it should be disabled if reading text that contains backquote voice tags.
 * Sample rate: changes the synthesizer's sound quality. Most useful for IBMTTS, where setting the sample rate to 8 kHz enables access to a new set of voices.
 
