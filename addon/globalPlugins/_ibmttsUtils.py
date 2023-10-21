@@ -377,7 +377,7 @@ class UpdateHandler:
 		if self.isError:
 			nextTime = RETRY_INTERVAL
 		else:
-			nextTime = CHECK_INTERVAL -(time.time()*1000 -self.state.lastCheck)
+			nextTime = int(CHECK_INTERVAL - (time.time() * 1000 - self.state.lastCheck))
 		if nextTime <= 0:
 			self.autoCheckUpdate()
 		else:
