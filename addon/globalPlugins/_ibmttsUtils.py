@@ -422,3 +422,31 @@ def _showAddonTooOldDialog(parent, bundle):
 		_("Add-on not compatible"),
 		wx.OK | wx.ICON_ERROR
 	)
+
+
+class DonationDialog(gui.nvdaControls.MessageDialog):
+	def __init__(self, parent, title, message, donateOptions):
+		self.donateOptions = donateOptions
+		super().__init__(parent, title, message, dialogType=gui.nvdaControls.MessageDialog.DIALOG_TYPE_WARNING)
+
+	def _addButtons(self, buttonHelper):
+		for k in self.donateOptions:
+			btn = buttonHelper.addButton(self, label=k['label'], name=k['url'])
+			btn.Bind(wx.EVT_BUTTON, self.onDonate)
+		cancelBtn = buttonHelper.addButton(self, id=wx.ID_CANCEL, label=_("&Not now"))
+		cancelBtn.Bind(wx.EVT_BUTTON, lambda evt: self.EndModal(wx.CANCEL))
+
+	def onDonate(self, evt):
+		donateBtn = evt.GetEventObject()
+		donateUrl = donateBtn.Name
+		os.startfile(donateUrl)
+		self.EndModal(wx.OK)
+
+
+def showDonationsDialog(parentWindow, addonName, donateOptions):
+	title = _("Request for contributions to %s") % addonName
+	message = _("""Creating add-ons demands substantial time and effort. With limited job prospects in my country, your donations could significantly aid in dedicating more time to developing free plugins for the community.
+Your contribution would support the development of this and other free projects.
+Would you like to contribute to this cause? Select from our available payment methods below. You will be redirected to the corresponding website to complete your donation.
+Thank you for your support and generosity.""")
+	return DonationDialog(parentWindow, title,  message, donateOptions).ShowModal()

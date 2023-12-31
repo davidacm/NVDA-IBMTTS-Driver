@@ -546,14 +546,14 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 	def _get_sampleRate(self):
 		return str(self._sample_rate)
 
-	_pausemodes={
-		"0": StringParameterInfo("0", "Do not shorten"),
-		"1": StringParameterInfo("1", "Shorten at end of text only"),
-		"2": StringParameterInfo("2", "Shorten all pauses")
+	_pauseModes={
+		"0": StringParameterInfo("0", _("Do not shorten")),
+		"1": StringParameterInfo("1", _("Shorten at end of text only")),
+		"2": StringParameterInfo("2", _("Shorten all pauses"))
 	}
 	
 	def _get_availablePausemodes(self):
-		return self._pausemodes
+		return self._pauseModes
 
 	def _set_pauseMode(self, val):
 		val = int(val)

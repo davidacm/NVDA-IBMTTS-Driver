@@ -4,14 +4,14 @@
 #globalPlugins/ibmtts.py
 
 import wx, winUser
-from os import path
+from os import path, startfile
 from ctypes import windll
 
 import globalVars, gui, globalPluginHandler, addonHandler
 from logHandler import log
 from gui.settingsDialogs import SettingsPanel
 from synthDrivers._settingsDB import appConfig
-from ._ibmttsUtils import UpdateHandler, GithubService, guiCopiFiles
+from ._ibmttsUtils import UpdateHandler, GithubService, guiCopiFiles, showDonationsDialog
 addonHandler.initTranslation()
 
 ADDON_NAME = "IBMTTS"
@@ -19,6 +19,21 @@ ADDON_NAME = "IBMTTS"
 USER = 'davidacm'
 REPO = 'NVDA-IBMTTS-Driver'
 updateHandler = UpdateHandler(ADDON_NAME, GithubService(USER, REPO))
+
+DONATE_METHODS = (
+	{
+		'label': _('Using Paypal'),
+		'url': 'https://paypal.me/davicm'
+	},
+	{
+		'label': _('using Co-fi'),
+		'url': 'https://ko-fi.com/davidacm'
+	},
+	{
+		'label': _('See more methods on my github Page'),
+		'url': 'https://davidacm.github.io/donations/'
+	}
+)
 
 
 class IBMTTSSettingsPanel(SettingsPanel):
@@ -45,6 +60,8 @@ class IBMTTSSettingsPanel(SettingsPanel):
 		# Translators: This is the button to copy external IBMTTS files into synth driver Add-on.
 		self._setLocalButton = sHelper.addItem (wx.Button (self, label = _("&Copy IBMTTS files in an  add-on (may not work for some IBMTTS distributions)")))
 		self._setLocalButton.Bind(wx.EVT_BUTTON, self._onSetLocalClick)
+		self.donateButton = sHelper.addItem (wx.Button (self, label = _("&Support IBMTTS add-on")))
+		self.donateButton.Bind(wx.EVT_BUTTON, lambda e: showDonationsDialog(self, ADDON_NAME, DONATE_METHODS))
 		self._setValues()
 
 	def _setValues(self):
