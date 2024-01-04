@@ -60,7 +60,7 @@ class IBMTTSSettingsPanel(SettingsPanel):
 		# Translators: This is the button to copy external IBMTTS files into synth driver Add-on.
 		self._setLocalButton = sHelper.addItem (wx.Button (self, label = _("&Copy IBMTTS files in an  add-on (may not work for some IBMTTS distributions)")))
 		self._setLocalButton.Bind(wx.EVT_BUTTON, self._onSetLocalClick)
-		self.donateButton = sHelper.addItem (wx.Button (self, label = _("&Support IBMTTS add-on")))
+		self.donateButton = sHelper.addItem(wx.Button(self, label=_("&Support IBMTTS add-on")))
 		self.donateButton.Bind(wx.EVT_BUTTON, lambda e: showDonationsDialog(self, ADDON_NAME, DONATE_METHODS))
 		self._setValues()
 

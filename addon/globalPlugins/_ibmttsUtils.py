@@ -139,37 +139,7 @@ def guiInstallAddon(addonPath):
 			wx.OK | wx.ICON_ERROR
 		)
 		return False
-	if not addonHandler.addonVersionCheck.hasAddonGotRequiredSupport(bundle):
-		_showAddonRequiresNVDAUpdateDialog(gui.mainFrame, bundle)
-		return False
-	if not addonHandler.addonVersionCheck.isAddonTested(bundle):
-		_showAddonTooOldDialog(gui.mainFrame, bundle)
-		return False
-	gui.mainFrame.prePopup()
-	progressDialog = gui.IndeterminateProgressDialog(
-		gui.mainFrame,
-		# Translators: The title of the dialog presented while an Addon is being installed.
-		_("Installing %s") % bundle.manifest['name'],
-		# Translators: The message displayed while an addon is being installed.
-		_("Please wait while the add-on is being installed.")
-	)
-	try:
-		gui.ExecAndPump(bundle.extract, path.join(globalVars.appArgs.configPath, "addons", bundle.manifest['name']))
-	except:
-		res = False
-		log.error(f"Error installing  addon bundle from {addonPath}", exc_info=True)
-		gui.messageBox(
-			# Translators: The message displayed when an error occurs when installing an add-on package.
-			_("Failed to install add-on from %s") % addonPath,
-			# Translators: The title of a dialog presented when an error occurs.
-			_("Error"),
-			wx.OK | wx.ICON_ERROR
-		)
-	progressDialog.done()
-	progressDialog.Destroy()
-	del progressDialog
-	gui.mainFrame.postPopup()
-	return res
+	addonHandler.installAddonBundle(bundle)
 
 
 def _updateWindowsRootCertificates(url) -> None:
