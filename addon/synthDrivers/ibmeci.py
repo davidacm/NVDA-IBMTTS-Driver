@@ -3,9 +3,12 @@
 # Author: David CM <dhf360@gmail.com> and others.
 #synthDrivers/ibmeci.py
 
-import six, synthDriverHandler, languageHandler, os, re
+import os, sys, six, synthDriverHandler, languageHandler, os
+lib = os.path.join(os.path.dirname(__file__), "regex")
+sys.path.append(lib)
+import regex as re
+sys.path.remove(lib)
 from synthDriverHandler import synthDoneSpeaking, SynthDriver, synthIndexReached, VoiceInfo
-
 from collections import OrderedDict
 from six import string_types
 from logHandler import log
@@ -48,10 +51,10 @@ english_fixes = {
 	#Crash words, formerly part of anticrash_res.
 	re.compile(br'\b(.*?)c(ae|\xe6)sur(e)?', re.I): br'\1seizur',
 	re.compile(br"\b(|\d+|\W+)h'(r|v)[e]", re.I): br"\1h \2e",
-	re.compile(br"\b(\w+[bdfhjlmnqrvyz])(h[he]s)([abcdefghjklmnopqrstvwy]\w+)\b", re.I): br"\1 \2\3",
+	re.compile(br"\b(\w+[bdfhjlmnqrvz])(h[he]s)([abcdefghjklmnopqrstvwy]\w+)\b", re.I): br"\1 \2\3",
 	re.compile(br"\b(\w+[bdfhjlmnqrvz])(h[he]s)(iron+[degins]?)", re.I): br"\1 \2\3",
-	re.compile(br"\b(\w+'{1,}[bcdfghjklmnpqrstvwxyz])'*(h+[he]s)([abcdefghijklmnopqrstvwy]\w+)\b", re.I): br"\1 \2\3",
-	re.compile(br"\b(\w+[bcdfghjklmnpqrstvwxyz])('{1,}h+[he]s)([abcdefghijklmnopqrstvwy]\w+)\b", re.I): br"\1 \2\3",
+	re.compile(br"\b(\w+'{1,}[bcdfghjklmnpqrstvwxz])'*(h+[he]s)([abcdefghijklmnopqrstvwy]\w+)\b", re.I): br"\1 \2\3",
+	re.compile(br"\b(\w+[bcdfghjklmnpqrstvwxz])('{1,}h+[he]s)([abcdefghijklmnopqrstvwy]\w+)\b", re.I): br"\1 \2\3",
 	re.compile(br"(\d):(\d\d[snrt][tdh])", re.I): br"\1 \2",
 	re.compile(br"\b([bcdfghjklmnpqrstvwxz]+)'([bcdefghjklmnpqrstvwxz']+)'([drtv][aeiou]?)", re.I): br"\1 \2 \3",
 	re.compile(br"\b(you+)'(re)+'([drv]e?)", re.I): br"\1 \2 \3",
@@ -77,10 +80,10 @@ english_ibm_fixes = {
 	re.compile(br"\b(Mc)\s+([A-Z][a-z]|[A-Z][A-Z]+)"): br"\1\2",
 	re.compile(br'\b(.*?)c(ae|\xe6)sur(e)?', re.I): br'\1seizur',
 	re.compile(br"\b(|\d+|\W+)h'(r|v)[e]", re.I): br"\1h \2e",
-	re.compile(br"\b(\w+[bdfhjlmnqrvyz])(h[he]s)([abcdefghjklmnopqrstvwy]\w+)\b", re.I): br"\1 \2\3",
-	re.compile(br"\b(\w+[bdfhjlmnqrvyz])(h[he]s)(iron+[degins]?)", re.I): br"\1 \2\3",
-	re.compile(br"\b(\w+'{1,}[bcdfghjklmnpqrstvwxyz])'*(h+[he]s)([abcdefghijklmnopqrstvwy]\w+)\b", re.I): br"\1 \2\3",
-	re.compile(br"\b(\w+[bcdfghjklmnpqrstvwxyz])('{1,}h+[he]s)([abcdefghijklmnopqrstvwy]\w+)\b", re.I): br"\1 \2\3",
+	re.compile(br"\b(\w+[bdfhjlmnqrvz])(h[he]s)([abcdefghjklmnopqrstvwy]\w+)\b", re.I): br"\1 \2\3",
+	re.compile(br"\b(\w+[bdfhjlmnqrvz])(h[he]s)(iron+[degins]?)", re.I): br"\1 \2\3",
+	re.compile(br"\b(\w+'{1,}[bcdfghjklmnpqrstvwxz])'*(h+[he]s)([abcdefghijklmnopqrstvwy]\w+)\b", re.I): br"\1 \2\3",
+	re.compile(br"\b(\w+[bcdfghjklmnpqrstvwxz])('{1,}h+[he]s)([abcdefghijklmnopqrstvwy]\w+)\b", re.I): br"\1 \2\3",
 	re.compile(br"(\d):(\d\d[snrt][tdh])", re.I): br"\1 \2",
 	re.compile(br"\b([bcdfghjklmnpqrstvwxz]+)'([bcdefghjklmnpqrstvwxz']+)'([drtv][aeiou]?)", re.I): br"\1 \2 \3",
 	re.compile(br"\b(you+)'(re)+'([drv]e?)", re.I): br"\1 \2 \3",
@@ -131,6 +134,8 @@ portuguese_ibm_fixes = {
 	re.compile(br'(\d{1,2}):(00):(\d{1,2})'): br'\1:\2 \3',
 }
 french_fixes = {
+	# Fix for numbers starting with one or sevral 0. 
+	re.compile(br"(?:(?<=\b[1-9]\d{0,2}[\.\s](?:\d{3}[\.\s])*)(?!\d{3}\b)|(?<!\b[1-9]\d{0,2}[\.\s](?:\d{3}[\.\s])*))\b(0{2,}|0(?=\d{2,}))(?!:)(?!\b)", re.I): br"\1  ",
 	# Convert n  to num ro
 	re.compile(br'\bn\xb0', re.I): b'num\xe9ro',
 	# anticrash for "quil" that sometimes breaks Eloquence
@@ -386,6 +391,7 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 				text = resub(german_fixes, text)
 		if not self._backquoteVoiceTags:
 			text=text.replace(b'`', b' ') # no embedded commands
+		text=text.replace(b'\xa0', b' ') # no embedded commands
 		if self._pause_mode == 2:
 			if _ibmeci.isIBM:
 				text = ibm_pause_re.sub(br'\1 `p1\2\3\4', text) # this enforces short, JAWS-like pauses.
