@@ -1,3 +1,9 @@
+# Version 25.1.1
+
+* Added support for NVDA 2025.1.
+* Now the driver looks for the audio output in two config paths.
+* Deleted the audio output change handler. This was created because in some cases the driver was not synchronized with the current audio output, it needs more testing but seems that this doesn't happen in wasapi mode.
+
 # Version 23.12.1
 
 * Updated support for NVDA 2024.2.

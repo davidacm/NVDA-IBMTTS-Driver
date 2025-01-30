@@ -5,6 +5,8 @@ on:
   push:
     tags:
       ['*']
+  pull_request:
+    branches: [ main, master ]
   workflow_dispatch:
 
 jobs:
@@ -12,10 +14,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
-      - run: echo -e "scons\nmarkdown">requirements.txt
+        uses: actions/checkout@v4
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: 3.11
           cache: 'pip'
@@ -43,7 +44,7 @@ jobs:
         run: awk '/^# / && !flag {flag=1; next} /^# / && flag {exit} flag && NF' changelog.md > newChanges.md
       - name: Calculate sha256
         run: sha256sum *.nvda-addon >> newChanges.md
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: packaged_addon
           path: |
@@ -56,12 +57,12 @@ jobs:
     needs: ["build"]
     steps:
       - name: download releases files
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
       - name: Display structure of downloaded files
         run: ls -R
 
       - name: Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           body_path: packaged_addon/newChanges.md
           files: packaged_addon/*.nvda-addon

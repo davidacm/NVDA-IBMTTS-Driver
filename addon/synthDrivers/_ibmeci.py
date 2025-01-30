@@ -9,10 +9,11 @@ from os import path
 import queue
 
 import threading, time
-import config, languageHandler, nvwave, addonHandler
+import languageHandler, nvwave, addonHandler
+from config import conf
 from logHandler import log
 from fileUtils import getFileVersionInfo
-from ._settingsDB import appConfig, speechConfig
+from ._settingsDB import appConfig
 
 addonHandler.initTranslation()
 
@@ -297,7 +298,7 @@ def eciNew():
 	avLangs=(c_int*b.value)()
 	eci.eciGetAvailableLanguages(byref(avLangs),byref(b))
 	try:
-		handle=eci.eciNewEx(int(speechConfig.ibmtts['voice']))
+		handle=eci.eciNewEx(int(conf['speech']['ibmeci']['voice']))
 	except:
 		handle=eci.eciNewEx(getVoiceByLanguage(languageHandler.getLanguage())[0])
 	for i in ECIVoiceParam.params:
@@ -407,7 +408,7 @@ def initialize(indexCallback, doneCallback):
 	callbackQueue = queue.Queue()
 	callbackThread = CallbackThread()
 	callbackThread.start()
-	toggleProbileSwitchRegistration(config.post_configProfileSwitch.register)
+
 
 def speak(text):
 	# deleted the following fix because is incompatible with NVDA's speech change command. Now send it from speak in ibmeci.py
@@ -450,7 +451,6 @@ def terminate():
 	idleTimer.cancel()	
 	player.close()
 	callbackQueue= callbackThread= dll= eciQueue=eciThread= handle= idleTimer= onDoneSpeaking= onIndexReached= player = None
-	toggleProbileSwitchRegistration(config.post_configProfileSwitch.unregister)
 
 
 def setVoice(vl):
@@ -547,7 +547,10 @@ def idlePlayer():
 
 def createPlayer(sampleRate):
 	global currentSoundcardOutput, currentSampleRate
-	currentSoundcardOutput = speechConfig.outputDevice
+	try:
+		currentSoundcardOutput = conf['speech']['outputDevice']
+	except:
+		currentSoundcardOutput = conf["audio"]["outputDevice"]
 	currentSampleRate = sampleRate
 	if sampleRate == 0:
 		player = nvwave.WavePlayer(1, 8000, 16, outputDevice=currentSoundcardOutput)
@@ -558,24 +561,3 @@ def createPlayer(sampleRate):
 	else:
 		player = nvwave.WavePlayer(1, 11025, 16, outputDevice=currentSoundcardOutput)
 	return player
-
-def handleSoundcardChange():
-	global currentSoundcardOutput, currentSampleRate, player
-	# if player is none, this driver is not active.
-	# This may occur because post_configProfileSwitch.unregister is delaied by 1 second.
-	if player and currentSoundcardOutput != speechConfig.outputDevice:
-		player.close()
-		player = createPlayer(currentSampleRate)
-
-profileSwitchRegister = None
-def toggleProbileSwitchRegistration(fn):
-	""" the register or unregister of the handler for config changes can't be done when a profile switch is being done.
-	this function helps to avoid that.
-	fn: the function to be called (usually register or unregister)
-	"""
-	global profileSwitchRegister
-	if profileSwitchRegister:
-		profileSwitchRegister.cancel()
-		profileSwitchRegister = None
-	profileSwitchRegister = threading.Timer(1, fn, [handleSoundcardChange])
-	profileSwitchRegister.start()
