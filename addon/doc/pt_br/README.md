@@ -23,15 +23,18 @@ O ViaVoice TTS é um mecanismo de conversão de texto em fala desenvolvido pela 
 * Aumento especial de velocidade. Se o sintetizador não estiver falando rápido o suficiente, ative o aumento de velocidade e obtenha a velocidade máxima!
 * Mudança automática de idioma. Permite que o sintetizador leia o texto no idioma correto quando marcado.
 * Filtragem estendida. O driver inclui um extenso conjunto de filtros para lidar com falhas e outros comportamentos estranhos do sintetizador.
-* Suporte de dicionário. O driver suporta a integração de palavras especiais, dicionários de raiz e dicionários de abreviaturas do usuário para cada idioma. Conjuntos de dicionários prontos podem ser obtidos [no repositório de dicionários da comunidade](https://github.com/thunderdrop/IBMTTSDictionaries) ou [no repositório alternativo de mohamed00 (com dicionários de sintetizador IBM)](https:/ /github.com /mohamed00/AltIBMTTSDictionaries)
+* Suporte de dicionário. O driver suporta a integração de palavras especiais, dicionários de raiz e dicionários de abreviaturas do usuário para cada idioma. Conjuntos de dicionários prontos podem ser obtidos [no repositório de dicionários da comunidade](https://github.com/thunderdrop/IBMTTSDictionaries) ou [no repositório alternativo de mohamed00 (com dicionários do sintetizador IBM)](https:/ /github.com /mohamed00/AltIBMTTSDictionaries)
 
 ### Configurações adicionais:
 
 * Expandir Abreviaturas: Ativa a expansão de abreviaturas. Observe que desabilitar esta opção também desabilitará a expansão de quaisquer abreviações especificadas nos dicionários de abreviaturas fornecidos pelo usuário.
 * Habilitar previsão de frases: Se esta opção estiver habilitada, o sintetizador tentará prever onde as pausas nas frases ocorrerão com base em sua própria estrutura, por exemplo, usando palavras como "e" e "o" como limites de frase. Se estiver desligada, ele só fará uma pausa quando encontrar uma vírgula ou outros sinais de pontuação.
-* Reduzir pausas: marque esta opção para obter pausas de pontuação mais curtas, como as vistas em outros leitores de tela.
+* Pausas: Esta é uma caixa de combinação com três opções.
+  * Não encurtar: as pausas não serão encurtadas e as pausas originais do IBMTTS serão usadas em todos os casos.
+  * Encurtar somente no final do texto: pausas de símbolos de pontuação, como pontos e vírgulas, não serão encurtadas, mas serão encurtadas quando o texto terminar, por exemplo, ao pressionar NVDA+t duas vezes rapidamente para soletrar a barra de título de um aplicativo caractere por caractere.
+  * Encurtar todas as pausas: todas as pausas, incluindo pausas de pontuação e pausas que ocorrem no final do texto, serão encurtadas.
 * Sempre enviar as configurações de voz atuais: há um bug no sintetizador que ocasionalmente fará com que as configurações de velocidade e tom de voz sejam brevemente redefinidas para seus valores padrão. A causa desse problema é atualmente desconhecida, no entanto, uma solução alternativa é enviar continuamente as configurações atuais de velocidade e tom. Esta opção geralmente deve ser habilitada. No entanto, deve desabilitá-la se estiver lendo texto que contenha tags de mudança de voz.
-* Taxa de amostragem: altera a qualidade do som do sintetizador. Mais útil para o IBM ViaVoice, em que a definição da taxa de amostragem para 8 kHz permite o acesso a um novo conjunto de vozes.
+* Taxa de amostragem: altera a qualidade sonora do sintetizador. Mais útil para o IBM ViaVoice, em que a definição da taxa de amostragem para 8 kHz permite o acesso a um novo conjunto de vozes.
 
 ### Categoria de configurações do IBMTTS.
 
@@ -53,15 +56,15 @@ Observação: a funcionalidade de atualização automática ou manual não remov
 ### As bibliotecas do sintetizador IBMTTS.
   Este é apenas o driver, você deve procurar as bibliotecas em outro lugar.
   O driver oferece suporte às bibliotecas um pouco mais recentes que adicionam suporte aos idiomas do leste asiático e possui correções específicas para codificação de texto adequada. No entanto, bibliotecas mais antigas sem isso devem funcionar normalmente.
-  A partir da versão 21.03A1, o driver também funciona com as bibliotecas ainda mais recentes do IBM ViaVoice, em vez de apenas com as do SpeechWorks. Um conjunto separado de correções está incluído para essas bibliotecas, levando em consideração idiomas adicionais e outras diferenças. As vozes concatenativas são agora suportadas e podem ser acessadas definindo a taxa de amostragem para 8 kHz após a instalação das vozes. Para obter melhores resultados, use a compilação de Junho de 2005 da ibmeci.dll versão 7.0.0.0, pois as versões mais antigas podem ser instáveis ao receber texto rapidamente, por exemplo, ao navegar rapidamente pelos itens em uma lista. observe também que, se você estiver usando as bibliotecas do IBM ViaVoice em cantonês de Hong Kong ou chinês, convém desativar a opção "Usar soletragem melhorada quando suportado", para evitar que alguns caracteres nesses idiomas sejam soletrados usando o pinyin para o qual são convertidos internamente.
+  A partir da versão 21.03A1, o driver também funciona com as bibliotecas ainda mais recentes do IBM ViaVoice, em vez de apenas com as do SpeechWorks. Um conjunto separado de correções está incluído para essas bibliotecas, levando em consideração idiomas adicionais e outras diferenças. As vozes concatenativas são agora suportadas e podem ser acessadas definindo a taxa de amostragem para 8 kHz após a instalação das vozes. Para obter melhores resultados, use a compilação de Junho de 2005 da ibmeci.dll (versão 7.0.0.0), pois as versões mais antigas podem ser instáveis ao receber texto rapidamente, por exemplo, ao navegar rapidamente pelos itens em uma lista. observe também que, se você estiver usando as bibliotecas do IBM ViaVoice em cantonês de Hong Kong ou chinês, convém desativar a opção "Usar soletragem melhorada quando suportado", para evitar que alguns caracteres nesses idiomas sejam soletrados usando o pinyin para o qual são convertidos internamente.
 
 ## Instalação.
-  Você só precisa instalá-lo como qualquer outro complemento do NVDA. Em seguida, abra a caixa de diálogo de configurações do NVDA e, na categoria IBMTTS, defina o caminho dos arquivos IBMTTS.
+  Você só precisa instalá-lo como qualquer outro complemento do NVDA. Em seguida, abra a caixa de diálogo de configurações do NVDA e, na categoria IBMTTS, defina o caminho dos arquivos do IBMTTS.
   Nesta categoria você também pode copiar os arquivos externos do IBMTTS dentro do add-on.
 
 ## Contribuindo com a tradução.
 
-Para facilitar para os tradutores, deixei um [modelo de tradução no branch principal](https://raw.githubusercontent.com/davidacm/NVDA-IBMTTS-Driver/master/IBMTTS.pot).
+Para facilitar para os tradutores, deixei um [modelo de tradução no branch principal.](https://raw.githubusercontent.com/davidacm/NVDA-IBMTTS-Driver/master/IBMTTS.pot)
 Para a documentação, criei um arquivo chamado ["docChangelog-for-translators.md".](https://raw.githubusercontent.com/davidacm/NVDA-IBMTTS-Driver/master/docChangelog-for-translators.md)
 Você pode usar esse arquivo para ver o que foi alterado na documentação e atualizar a documentação para o seu idioma.
 Se você deseja traduzir o complemento para outro idioma e não deseja criar uma conta GitHub e instalar o Python e outras ferramentas necessárias para a tradução, execute as seguintes etapas:
@@ -80,12 +83,12 @@ Este é um método alternativo. Se desejar, você sempre pode usar o modo usual.
 
 ## Empacotando o add-on para distribuição.
 
-Nota de tradução: Estas instruções são apenas para desenvolvedores de complementos e não fazem sentido para o usuário comum.
+Nota de tradução: Estas instruções destinam-se a criadores de complementos e não têm significado para a maioria dos usuários.
 
-1. Instale o python, atualmente o python 3.7 é usado, mas você pode usar uma versão mais recente.
-2. Instale o gettext, você pode baixar uma distribuição para windows [neste link.](https://mlocati.github.io/articles/gettext-iconv-windows.html) Se estiver usando windows 64 bits, recomendo [esta versão.](https://github.com/mlocati/gettext-iconv-windows/releases/download/v0.21-v1.16/gettext0.21-iconv1.16-shared-64.exe)
-3. (etapa opcional, mas recomendada) crie um ambiente virtual python para ser usado para gerenciar complementos do NVDA. No console, use "python -m venv PAT_TO_FOLDER". Onde PAT_TO_FOLDER é o caminho desejado para o seu ambiente virtual.
-4. Se você fez o passo 2, vá até a pasta PAT_TO_FOLDER e dentro da pasta scripts, execute "activate". O nome do ambiente deve ser mostrado no prompt do console.
+1. Instale o python (atualmente o python 3.7 é usado, mas você pode usar uma versão mais recente).
+2. Instale o gettext (você pode baixar uma distribuição para windows [neste link.)](https://mlocati.github.io/articles/gettext-iconv-windows.html) Se estiver usando windows de 64 bits, recomendo [esta versão.](https://github.com/mlocati/gettext-iconv-windows/releases/download/v0.21-v1.16/gettext0.21-iconv1.16-shared-64.exe)
+3. Etapa opcional (mas recomendada) crie um ambiente virtual python para ser usado para gerenciar complementos do NVDA. No console, use "python -m venv PAT_TO_FOLDER". Onde PAT_TO_FOLDER é o caminho desejado para o seu ambiente virtual.
+4. Caso você tenha feito a etapa 3, vá até PAT_TO_FOLDER e, dentro da pasta de scripts, execute "activate". O nome do ambiente deve ser mostrado no prompt do console.
 5. Clone este repositório no caminho desejado: "git clone https://github.com/davidacm/NVDA-IBMTTS-Driver.git".
 6. Na mesma instância do console, vá para a pasta deste repositório.
 7. Instale os requisitos: "pip install -r requirements.txt".
@@ -94,17 +97,17 @@ Nota de tradução: Estas instruções são apenas para desenvolvedores de compl
 Depois de fechar o console, o ambiente virtual é desativado.
 
 ### Empacotando as bibliotecas como um complemento independente.
-Não é recomendado incluir as bibliotecas com este driver, pois se o usuário atualizar a partir do [repositório oficial](https://github.com/davidacm/NVDA-IBMTTS-Driver), usando o instalador de complementos do NVDA, a versão antiga será excluída incluindo as bibliotecas.
+Não é recomendado incluir as bibliotecas com este driver. Isso ocorre porque se o usuário atualizar o driver a partir do[repositório oficial](https://github.com/davidacm/NVDA-IBMTTS-Driver), usando o instalador de complementos do NVDA, a versão antiga será excluída incluindo as bibliotecas.
 Uma solução para isso é instalar as bibliotecas separadamente. [Siga este link](https://github.com/davidacm/ECILibrariesTemplate) para saber como empacotar as bibliotecas em um complemento separado.
 
 ### Notas:
 
 * Se você usar o recurso interno de atualizações manuais ou automáticas, as bibliotecas não serão excluídas, mesmo que estejam dentro do complemento.
 * se o sintetizador estiver dentro deste add-on ou do add-on ["eciLibraries"](https://github.com/davidacm/ECILibrariesTemplate), o driver atualizará os caminhos do arquivo ini automaticamente. Assim, você pode usá-lo em versões portáteis do NVDA.
-* Usar o botão "Copiar os arquivos do IBMTTS para um add-on" criará um novo complemento no NVDA. Portanto, se você deseja desinstalar o IBMTTS, será necessário desinstalar dois complementos: "Driver IBMTTS" e "eciLibraries".
-* As ferramentas scons e gettext neste projeto suportam apenas python 3. Elas não funcionam em python 2.7.
-* Você pode incluir os arquivos extras do IBMTTS necessários no add-on (somente para uso pessoal). Basta copiá-los para "addon\synthDrivers\ibmtts". Defina o nome da biblioteca padrão em "settingsDB.py" se necessário.
-* Se o caminho configurado para a biblioteca não for relativo, este driver não atualizará os caminhos do arquivo "eci.ini". O driver assume que, ao usar caminhos absolutos, os caminhos estão corretos no "eci.ini" e evitará fazer atualizações. Tenha isso em mente ao definir o caminho de suas bibliotecas. Se não estiverem corretos no arquivo "eci.ini", poderá causar erros que deixarão o NVDA mudo quando você usar este sintetizador.
+* Usar o botão "Copiar os arquivos do IBMTTS para um add-on" criará um novo complemento no NVDA. Portanto, se você desejar desinstalar o IBMTTS, será necessário desinstalar dois complementos: "Driver IBMTTS" e "eciLibraries".
+* As ferramentas scons e gettext neste projeto são compatíveis apenas com python 3. Não funcionam com python 2.7.
+* Você pode incluir os arquivos extras do IBMTTS necessários no add-on (somente para uso pessoal). Basta copiá-los para "addon\synthDrivers\ibmtts". Ajuste o nome da biblioteca padrão em "settingsDB.py" se necessário.
+* Se o caminho configurado para a biblioteca não for relativo, este driver não atualizará os caminhos do arquivo "eci.ini". O driver assume que, ao usar caminhos absolutos, os caminhos estão corretos no "eci.ini" e evitará fazer atualizações. Tenha isso em mente ao definir o caminho de suas bibliotecas. Se não estiverem corretos no arquivo "eci.ini", isto poderá causar erros que deixarão o NVDA mudo quando você usar este sintetizador.
 
 ## Reportar problemas:
 
@@ -113,7 +116,7 @@ Se você encontrar um problema de segurança com algumas das bibliotecas compat�
 Se o problema não travar o driver ou o leitor de tela, abra um [problema do github aqui.](https://github.com/davidacm/NVDA-IBMTTS-Driver/issues)
 
 ##Referências.
- Este driver é baseado no IBM ViaVoice SDK (IBMTTS). Você pode encontrar a documentação [neste link](http://web.archive.org/web/20191125091344/http://www.wizzardsoftware.com/docs/tts.pdf)
+ Este driver é baseado no IBM ViaVoice SDK (IBMTTS). a documentação está disponível [neste link](http://web.archive.org/web/20191125091344/http://www.wizzardsoftware.com/docs/tts.pdf)
 
 Também disponível no [site da Universidade de Columbia](http://www1.cs.columbia.edu/~hgs/research/projects/simvoice/simvoice/docs/tts.pdf)
 
@@ -121,7 +124,7 @@ há uma cópia  [neste repositório](https://github.com/david-acm/NVDA-IBMTTS-Dr
 
 [pyibmtts: projeto do IBM ViaVoice SDK em Python, desenvolvido por Peter Parente](https://sourceforge.net/projects/ibmtts-sdk/)
 
-Consulte os seguintes arquivos:
+Veja uma cópia dos arquivos aqui:
 
 [tts.pdf](https://cdn.jsdelivr.net/gh/davidacm/NVDA-IBMTTS-Driver/apiReference/tts.pdf)
 ou [tts.txt.](https://cdn.jsdelivr.net/gh/davidacm/NVDA-IBMTTS-Driver/apiReference/tts.txt)

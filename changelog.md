@@ -1,3 +1,9 @@
+# version 25.2.1
+
+* Temporary fix for an issue with translations when the add-on starts the first time that is installed.
+* updated portuguese translations.
+* Changed the default encoding. from mbs to cp1252.
+
 # Version 25.1.1
 
 * Added support for NVDA 2025.1.

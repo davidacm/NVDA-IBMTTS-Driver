@@ -13,7 +13,12 @@ from core import callLater
 from logHandler import log
 from gui.addonGui import promptUserForRestart
 
-addonHandler.initTranslation()
+try:
+	addonHandler.initTranslation()
+except addonHandler.AddonError:
+	log.warning(
+		"Unable to initialise translations. This may be because the addon is running from NVDA scratchpad."
+	)
 
 
 def loadPickle(fileName):

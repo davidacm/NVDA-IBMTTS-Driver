@@ -241,7 +241,7 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 		self.rate=50
 		self.speakingLanguage=lang
 		self.variant="1"
-		self.currentEncoding = "mbcs"
+		self.currentEncoding = "cp1252"
 		self._pause_mode=2
 		self.sampleRate = '1'
 
@@ -523,7 +523,7 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 		elif lang == EciLangs.HongKongCantonese:
 			self.currentEncoding = "big5"
 		else:
-			self.currentEncoding = "mbcs"
+			self.currentEncoding = "cp1252"
 
 	def _get_availableSamplerates(self):
 		rates = {}
