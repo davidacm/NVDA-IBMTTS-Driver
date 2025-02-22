@@ -9,6 +9,7 @@ Aunque este driver es compatible con librerías de Eloquence debido a que Eloque
 Este controlador fue desarrollado con la documentación disponible para IBMTTS, disponible públicamente en la web. Ver la sección referencias para más detalles.
 
 ## Descarga.
+
 La última versión está disponible para [descargar en este enlace](https://davidacm.github.io/getlatest/gh/davidacm/NVDA-IBMTTS-Driver)
 
 ## ¿Qué es el sintetizador IBMTTS?
@@ -16,6 +17,7 @@ La última versión está disponible para [descargar en este enlace](https://dav
 ViaVoice TTS es un motor de texto a voz desarrollado por IBM, que sintetiza la representación textual del lenguaje humano en voz.
 
 ## Características y configuraciones.
+
 * Soporte para las configuraciones de voz,variante, velocidad, tono, entonación y volumen.
 * Soporte de  parámetros  extra como  tamaño de la cabeza, carraspeo, respiración. ¡Crea tu propia voz!
 * Habilita o deshabilita las etiquetas de cambio de voz. Desactívalas para protegerte de códigos maliciosos de bromistas, actívalas para hacer muchas cosas divertidas con el sintetizador. Requiere un ajuste adicional con NVDA para que funcione correctamente.
@@ -46,7 +48,9 @@ Este complemento tiene su propia categoría de configuraciones dentro de las opc
 Nota: La funcionalidad de actualización automática o manual no borrará los archivos internos del complemento. Si mantienes tus librerías en ese lugar, puedes usar esta función con seguridad. Tus librerías estarán a salvo.
 
 ## requisitos.
+
 ### NVDA.
+
   Necesitas NVDA 2019.3 o posterior.
 
 ### Las librerías del sintetizador IBMTTS.
