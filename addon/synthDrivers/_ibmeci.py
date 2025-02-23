@@ -472,7 +472,7 @@ def setVParam(pr, vl):
 	param_event.clear()
 
 def setProsodyParam(pr, vl):
-	dll.eciSetVoiceParam(handle, 0, pr, vl)
+	dll.eciSetVoiceParam(handle, 0, pr, int(vl))
 
 def setVariant(v):
 	user32.PostThreadMessageA(eciThreadId, WM_COPYVOICE, v, 0)
