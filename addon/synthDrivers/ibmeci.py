@@ -118,14 +118,15 @@ spanish_ibm_anticrash = {
 }
 german_fixes = {
 # Crash words.
-	re.compile(br'dane-ben', re.I): br'dane- ben',
-	re.compile(br'dage-gen', re.I): br'dage- gen',
-	re.compile(br'(audio|video)(-)(en[bcdfghjklmnpqrsvwxz][a-z]+)', re.I): br'\1\2 \3',
+	re.compile(br'dane-ben', re.I): br'dane `0 ben',
+	re.compile(br'dage-gen', re.I): br'dage `0 gen',
+	re.compile(br'(audio|video)(-)(en[bcdfghjklmnpqrsvwxz][a-z]+)', re.I): br'\1 `0 \3',
+	re.compile(br'(macro)(-)(en[a-z]+)', re.I): br'\1 `0 \3',
 }
 german_ibm_fixes = {
 # Just like english_ibm_fixes, also avoids unneeded replacements
-	re.compile(br'dane-ben', re.I): br'dane- ben',
-	re.compile(br'dage-gen', re.I): br'dage- gen',
+	re.compile(br'dane-ben', re.I): br'dane `0 ben',
+	re.compile(br'dage-gen', re.I): br'dage `0 gen',
 }
 portuguese_ibm_fixes = {
 	re.compile(br'(\d{1,2}):(00):(\d{1,2})'): br'\1:\2 \3',
@@ -359,6 +360,8 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 		#this converts to ansi for anticrash. If this breaks with foreign langs, we can remove it.
 		text = text.encode(self.currentEncoding, 'replace') # special unicode symbols may encode to backquote. For this reason, backquote processing is after this.
 		text = text.rstrip()
+		if not self._backquoteVoiceTags:
+			text=text.replace(b'`', b' ') # no embedded commands. This needs to be before regex substitution so that German crash words can be fixed while replicating the intonation patterns that would normally be introduced by the words with emphasis tags.
 		# language crash fixes.
 		curLang = _ibmeci.params[_ibmeci.ECIParam.eciLanguageDialect]
 		if _ibmeci.isIBM:
@@ -384,8 +387,6 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 				text = resub(french_fixes, text)
 			if curLang in ('deu', EciLangs.StandardGerman):
 				text = resub(german_fixes, text)
-		if not self._backquoteVoiceTags:
-			text=text.replace(b'`', b' ') # no embedded commands
 		if self._pause_mode == 2:
 			if _ibmeci.isIBM:
 				text = ibm_pause_re.sub(br'\1 `p1\2\3\4', text) # this enforces short, JAWS-like pauses.
