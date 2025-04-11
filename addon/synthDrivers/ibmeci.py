@@ -361,7 +361,7 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 		text = text.encode(self.currentEncoding, 'replace') # special unicode symbols may encode to backquote. For this reason, backquote processing is after this.
 		text = text.rstrip()
 		if not self._backquoteVoiceTags:
-			text=text.replace(b'`', b' ') # no embedded commands. This needs to be before regex substitution so that German crash words can be fixed while replicating the intonation patterns that would normally be introduced by the words with emphasis tags.
+			text=text.replace(b'`', b' ') # no embedded commands. This needs to be before regex substitution to fix hyphen-based crash words in German while replicating the intonation patterns that would normally be introduced by the hyphens with emphasis tags.
 		# language crash fixes.
 		curLang = _ibmeci.params[_ibmeci.ECIParam.eciLanguageDialect]
 		if _ibmeci.isIBM:
