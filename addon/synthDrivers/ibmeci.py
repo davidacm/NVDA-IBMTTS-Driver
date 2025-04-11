@@ -117,14 +117,14 @@ spanish_ibm_anticrash = {
 	re.compile(br'(\d{12,}[123679])(\xaa)'): br'\1 \2',
 }
 german_fixes = {
-# Crash words.
+	# Crash words.
 	re.compile(br'dane-ben', re.I): br'dane `0 ben',
 	re.compile(br'dage-gen', re.I): br'dage `0 gen',
 	re.compile(br'(audio|video)(-)(en[bcdfghjklmnpqrsvwxz][a-z]+)', re.I): br'\1 `0 \3',
 	re.compile(br'(macro)(-)(en[a-z]+)', re.I): br'\1 `0 \3',
 }
 german_ibm_fixes = {
-# Just like english_ibm_fixes, also avoids unneeded replacements
+	# Just like english_ibm_fixes, also avoids unneeded replacements
 	re.compile(br'dane-ben', re.I): br'dane `0 ben',
 	re.compile(br'dage-gen', re.I): br'dage `0 gen',
 }
