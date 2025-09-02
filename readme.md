@@ -23,7 +23,7 @@ ViaVoice TTS is a text-to-speech engine developed by IBM, which synthesizes text
 * Rate boost. If the synthesizer does not speak very fast to  you, then enable it and get the maximum voice speed!
 * auto language switching. Let the synthesizer read text to you in the correct language when marked up.
 * comprehensive filtering. This driver includes a comprehensive set of filters to fix crashes and other odd behavior of the synthesizer.
-* dictionary support. This driver supports the integration of special words, roots, and abbreviation  user dictionaries for each language. Ready-made dictionary sets may be obtained from [the community dictionary repository](https://github.com/thunderdrop/IBMTTSDictionaries) or [mohamed00's alternative repository (with IBM synth dictionaries)](https://github.com/mohamed00/AltIBMTTSDictionaries)
+* dictionary support. This driver supports the integration of special words, roots, and abbreviation  user dictionaries for each language. Ready-made dictionary sets may be obtained from [the community dictionary repository](https://github.com/eigencrow/IBMTTSDictionaries) or [mohamed00's alternative repository (with IBM synth dictionaries)](https://github.com/mohamed00/AltIBMTTSDictionaries)
 
 ### Extra settings:
 
