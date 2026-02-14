@@ -32,15 +32,6 @@ try:
 except ImportError:
 	from driverHandler import BooleanDriverSetting, NumericDriverSetting, DriverSetting
 
-# Simple logging function for synthDriverHost32
-def _ibmtts_log(msg):
-	try:
-		with open('d:/ibm.log', 'a', encoding='utf-8') as f:
-			from datetime import datetime
-			timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-			f.write(f"{timestamp} - {msg}\n")
-	except Exception:
-		pass  # Fail silently
 
 minRate=40
 maxRate=156
