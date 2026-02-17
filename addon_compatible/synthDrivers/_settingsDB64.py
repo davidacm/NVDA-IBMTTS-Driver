@@ -4,12 +4,12 @@
 #synthDrivers/settingsDB.py
 
 try:
-    import addonHandler
-    addonHandler.initTranslation()
+	import addonHandler
+	addonHandler.initTranslation()
 except ImportError:
-    pass  # addonHandler may not be available in synthDriverHost32
+	pass  # addonHandler may not be available in synthDriverHost32
 
-from ._configHelper import configSpec, registerConfig, boolValidator
+from ._configHelper64 import configSpec, registerConfig, boolValidator
 
 # Add-on config database
 @configSpec("ibmeci")

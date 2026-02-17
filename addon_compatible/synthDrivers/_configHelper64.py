@@ -2,10 +2,10 @@
 # Copyright (C) 2022 David CM
 
 try:
-    import addonHandler
-    addonHandler.initTranslation()
+	import addonHandler
+	addonHandler.initTranslation()
 except ImportError:
-    pass  # addonHandler may not be available
+	pass  # addonHandler may not be available
 
 import config
 

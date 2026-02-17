@@ -4,7 +4,7 @@
   Não podemos distribuir as bibliotecas IBMTTS. Este é apenas o controlador.
   Se você quiser contribuir para melhorar este driver, sinta-se à vontade para nos enviar seus pull requests via GitHub!
 
-Embora este driver seja compatível com as bibliotecas do ETI Eloquence (já que o Eloquence tem a mesma api que o IBMTTS), não é recomendável usar o Eloquence com este driver devido a problemas de licenciamento. Antes de usar qualquer biblioteca de síntese com este driver, recomenda-se obter os direitos de uso da licença primeiro.
+Embora este driver seja compatível com as bibliotecas do Eloquence (já que o Eloquence tem a mesma api que o IBMTTS), não é recomendável usar o Eloquence com este driver devido a problemas de licenciamento. Antes de usar qualquer biblioteca de síntese com este driver, recomenda-se obter os direitos de uso da licença primeiro.
 
 Este driver foi desenvolvido com a documentação disponível para o IBMTTS, disponível publicamente na web. Consulte a seção de referências para obter mais detalhes.
 
@@ -18,7 +18,7 @@ O ViaVoice TTS é um mecanismo de conversão de texto em fala desenvolvido pela 
 ## Recursos e configurações.
 
 * Suporte para configurações de voz, variante, velocidade, tom, inflexão e volume.
-* Suporta parâmetros extras, como tamanho da cabeça, rouquidão, respiração. Crie a sua própria voz!
+* Suporta parâmetros extras, como tamanho da cabeça, rouquidão, respiração. Crie sua própria voz!
 * Ative ou desative as tags de mudanças de voz. Desative para se proteger contra códigos maliciosos de brincalhões, ative para permitir fazer muitas coisas divertidas com o sintetizador. Requer um ajuste adicional no NVDA para que funcione corretamente.
 * Aumento especial de velocidade. Se o sintetizador não estiver falando rápido o suficiente, ative o aumento de velocidade e obtenha a velocidade máxima!
 * Mudança automática de idioma. Permite que o sintetizador leia o texto no idioma correto quando marcado.
@@ -27,27 +27,27 @@ O ViaVoice TTS é um mecanismo de conversão de texto em fala desenvolvido pela 
 
 ### Configurações adicionais:
 
-* Expandir Abreviaturas: alterna a expansão de abreviaturas. Observe que desabilitar esta opção também desabilitará a expansão de quaisquer abreviações especificadas nos dicionários de abreviaturas fornecidos pelo usuário.
+* Expandir Abreviaturas: Ativa a expansão de abreviaturas. Observe que desabilitar esta opção também desabilitará a expansão de quaisquer abreviações especificadas nos dicionários de abreviaturas fornecidos pelo usuário.
 * Habilitar previsão de frases: Se esta opção estiver habilitada, o sintetizador tentará prever onde as pausas nas frases ocorrerão com base em sua própria estrutura, por exemplo, usando palavras como "e" e "o" como limites de frase. Se estiver desligada, ele só fará uma pausa quando encontrar uma vírgula ou outros sinais de pontuação.
 * Pausas: Esta é uma caixa de combinação com três opções.
-    * Não encurtar: as pausas não serão encurtadas e as pausas originais do IBMTTS serão usadas em todos os casos.
-    * Encurtar somente no final do texto: pausas de símbolos de pontuação, como pontos e vírgulas, não serão encurtadas, mas serão encurtadas quando o texto terminar, por exemplo, ao pressionar NVDA+t duas vezes rapidamente para soletrar a barra de título de um aplicativo caractere por caractere.
-    * Encurtar todas as pausas: todas as pausas, incluindo pausas de pontuação e pausas que ocorrem no final do texto, serão encurtadas.
+  * Não encurtar: as pausas não serão encurtadas e as pausas originais do IBMTTS serão usadas em todos os casos.
+  * Encurtar somente no final do texto: pausas de símbolos de pontuação, como pontos e vírgulas, não serão encurtadas, mas serão encurtadas quando o texto terminar, por exemplo, ao pressionar NVDA+t duas vezes rapidamente para soletrar a barra de título de um aplicativo caractere por caractere.
+  * Encurtar todas as pausas: todas as pausas, incluindo pausas de pontuação e pausas que ocorrem no final do texto, serão encurtadas.
 * Sempre enviar as configurações de voz atuais: há um bug no sintetizador que ocasionalmente fará com que as configurações de velocidade e tom de voz sejam brevemente redefinidas para seus valores padrão. A causa desse problema é atualmente desconhecida, no entanto, uma solução alternativa é enviar continuamente as configurações atuais de velocidade e tom. Esta opção geralmente deve ser habilitada. No entanto, deve desabilitá-la se estiver lendo texto que contenha tags de mudança de voz.
 * Taxa de amostragem: altera a qualidade sonora do sintetizador. Mais útil para o IBM ViaVoice, em que a definição da taxa de amostragem para 8 kHz permite o acesso a um novo conjunto de vozes.
 
 ### Categoria de configurações do IBMTTS.
 
-Este complemento possui a sua própria categoria de configurações nas opções do NVDA, para gerenciar algumas funcionalidades internas não relacionadas à síntese de fala.
+Este complemento possui sua própria categoria de configurações nas opções do NVDA, para gerenciar algumas funcionalidades internas não relacionadas à síntese de fala.
 
 * Procurar atualizações do IBMTTS automaticamente: Se esta opção estiver marcada, o complemento verificará diariamente se há novas versões disponíveis.
 * Botão Procurar atualização: verifique manualmente se há novas atualizações do complemento.
 * Endereço da pasta do IBMTTS: O caminho para carregar as bibliotecas do IBMTTS. Pode ser absoluto ou relativo.
 * Nome da biblioteca do IBMTTS (dll): O nome da biblioteca (dll). Não inclua caminhos, apenas o nome com a extensão, geralmente ".dll".
 * Procurar a biblioteca do IBMTTS... Abre uma caixa de diálogo de navegação de arquivo para procurar a biblioteca do IBMTTS no sistema. Será salvo como um caminho absoluto.
-* Copiar os arquivos do IBMTTS para um add-on. (pode não funcionar para algumas distribuições do IBMTTS): Se o caminho da biblioteca do IBMTTS tiver sido definido, esta opção copiará todos os arquivos da pasta para um novo complemento chamado eciLibraries e atualizará o caminho atual para um caminho relativo. É muito útil nas versões portáteis do NVDA. Funciona apenas para as bibliotecas que usam o arquivo "eci.ini" para as informações dos idiomas de voz. Se a biblioteca usar o registro do Windows, essa opção não funcionará.
+* Copiar os arquivos do IBMTTS para um add-on. (pode não funcionar para algumas distribuições do IBMTTS): Se o caminho da biblioteca do IBMTTS tiver sido definido, ele copiará todos os arquivos da pasta para um novo complemento chamado eciLibraries e atualizará o caminho atual para um caminho relativo. É muito útil nas versões portáteis do NVDA. Funciona apenas para as bibliotecas que usam o arquivo "eci.ini" para as informações dos idiomas de voz. Se a biblioteca usar o registro do Windows, essa opção não funcionará.
 
-Observação: a funcionalidade de atualização automática ou manual não removerá os arquivos internos do complemento. Se você mantiver as suas bibliotecas nesse local, poderá usar essa função com segurança. As suas bibliotecas estarão seguras.
+Observação: a funcionalidade de atualização automática ou manual não removerá os arquivos internos do complemento. Se você usar suas bibliotecas nesse local, poderá usar essa função com segurança. Suas bibliotecas estarão seguras.
 
 ## requisitos.
 ###NVDA.
@@ -56,15 +56,15 @@ Observação: a funcionalidade de atualização automática ou manual não remov
 ### As bibliotecas do sintetizador IBMTTS.
   Este é apenas o driver, você deve procurar as bibliotecas em outro lugar.
   O driver oferece suporte às bibliotecas um pouco mais recentes que adicionam suporte aos idiomas do leste asiático e possui correções específicas para codificação de texto adequada. No entanto, bibliotecas mais antigas sem isso devem funcionar normalmente.
-  A partir da versão 21.03A1, o driver também funciona com as bibliotecas ainda mais recentes do IBM ViaVoice, em vez de apenas com as do SpeechWorks. Um conjunto separado de correções está incluído para essas bibliotecas, levando em consideração idiomas adicionais e outras diferenças. As vozes concatenativas são suportadas e podem ser acessadas definindo a taxa de amostragem para 8 kHz após a instalação das vozes. Para obter melhores resultados, use a compilação de Junho de 2005 da ibmeci.dll (versão 7.0.0.0), pois as versões mais antigas podem ser instáveis ao receber texto rapidamente, por exemplo, ao navegar rapidamente pelos itens em uma lista. observe também que, se você estiver usando as bibliotecas do IBM ViaVoice em cantonês de Hong Kong ou chinês, convém desativar a opção "Usar soletragem melhorada quando suportado", para evitar que alguns caracteres nesses idiomas sejam soletrados usando o pinyin para o qual são convertidos internamente.
+  A partir da versão 21.03A1, o driver também funciona com as bibliotecas ainda mais recentes do IBM ViaVoice, em vez de apenas com as do SpeechWorks. Um conjunto separado de correções está incluído para essas bibliotecas, levando em consideração idiomas adicionais e outras diferenças. As vozes concatenativas são agora suportadas e podem ser acessadas definindo a taxa de amostragem para 8 kHz após a instalação das vozes. Para obter melhores resultados, use a compilação de Junho de 2005 da ibmeci.dll (versão 7.0.0.0), pois as versões mais antigas podem ser instáveis ao receber texto rapidamente, por exemplo, ao navegar rapidamente pelos itens em uma lista. observe também que, se você estiver usando as bibliotecas do IBM ViaVoice em cantonês de Hong Kong ou chinês, convém desativar a opção "Usar soletragem melhorada quando suportado", para evitar que alguns caracteres nesses idiomas sejam soletrados usando o pinyin para o qual são convertidos internamente.
 
 ## Instalação.
-  Basta instalá-lo como qualquer outro complemento do NVDA. Em seguida, abra a caixa de diálogo de configurações do NVDA e, na categoria IBMTTS, defina o caminho dos arquivos do IBMTTS.
+  Você só precisa instalá-lo como qualquer outro complemento do NVDA. Em seguida, abra a caixa de diálogo de configurações do NVDA e, na categoria IBMTTS, defina o caminho dos arquivos do IBMTTS.
   Nesta categoria você também pode copiar os arquivos externos do IBMTTS dentro do add-on.
 
 ## Contribuindo com a tradução.
 
-Para facilitar o seu trabalho, deixei um [modelo de tradução no branch principal.](https://raw.githubusercontent.com/davidacm/NVDA-IBMTTS-Driver/master/IBMTTS.pot)
+Para facilitar para os tradutores, deixei um [modelo de tradução no branch principal.](https://raw.githubusercontent.com/davidacm/NVDA-IBMTTS-Driver/master/IBMTTS.pot)
 Para a documentação, criei um arquivo chamado ["docChangelog-for-translators.md".](https://raw.githubusercontent.com/davidacm/NVDA-IBMTTS-Driver/master/docChangelog-for-translators.md)
 Você pode usar esse arquivo para ver o que foi alterado na documentação e atualizar a documentação para o seu idioma.
 Se você deseja traduzir o complemento para outro idioma e não deseja criar uma conta GitHub e instalar o Python e outras ferramentas necessárias para a tradução, execute as seguintes etapas:
@@ -107,7 +107,7 @@ Uma solução para isso é instalar as bibliotecas separadamente. [Siga este lin
 * Usar o botão "Copiar os arquivos do IBMTTS para um add-on" criará um novo complemento no NVDA. Portanto, se você desejar desinstalar o IBMTTS, será necessário desinstalar dois complementos: "Driver IBMTTS" e "eciLibraries".
 * As ferramentas scons e gettext neste projeto são compatíveis apenas com python 3. Não funcionam com python 2.7.
 * Você pode incluir os arquivos extras do IBMTTS necessários no add-on (somente para uso pessoal). Basta copiá-los para "addon\synthDrivers\ibmtts". Ajuste o nome da biblioteca padrão em "settingsDB.py" se necessário.
-* Se o caminho configurado para a biblioteca não for relativo, este driver não atualizará os caminhos do arquivo "eci.ini". O driver assume que, ao usar caminhos absolutos, os caminhos estão corretos no "eci.ini" e evitará fazer atualizações. Tenha isso em mente ao definir o caminho das  suas bibliotecas. Se não estiverem corretos no arquivo "eci.ini", isto poderá causar erros que deixarão o NVDA mudo quando você usar este sintetizador.
+* Se o caminho configurado para a biblioteca não for relativo, este driver não atualizará os caminhos do arquivo "eci.ini". O driver assume que, ao usar caminhos absolutos, os caminhos estão corretos no "eci.ini" e evitará fazer atualizações. Tenha isso em mente ao definir o caminho de suas bibliotecas. Se não estiverem corretos no arquivo "eci.ini", isto poderá causar erros que deixarão o NVDA mudo quando você usar este sintetizador.
 
 ## Reportar problemas:
 
