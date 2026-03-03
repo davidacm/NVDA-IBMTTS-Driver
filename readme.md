@@ -1,4 +1,4 @@
-# IBtMTTS driver, Add-on for NVDA #
+# IBMTTS driver, Add-on for NVDA #
 
   This add-on implements NVDA compatibility with the IBMTTS synthesizer.  
   We can not distribute the IBMTTS libraries. So it is just the driver.  
