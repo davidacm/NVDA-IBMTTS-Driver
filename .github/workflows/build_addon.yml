@@ -18,12 +18,12 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: 3.11
+          python-version: 3.13
           cache: 'pip'
       - name: Install dependencies
         run: |
-          pip install scons markdown
           sudo apt update
+          pip install scons markdown
           sudo apt install gettext
 
       - name: Set add-on version from tag
@@ -37,7 +37,17 @@ jobs:
             f.write(text)
             f.truncate()
         shell: python 
-
+      - name: Download DLL bridge
+        run: |
+          # get the latest release download URL using the GitHub API
+          URL=$(curl -s https://api.github.com/repos/davidacm/ibmtts-host32-bridge/releases/latest \
+            | grep "browser_download_url.*ibmtts_host32.dll" \
+            | cut -d : -f 2,3 \
+            | tr -d \"[:space:])
+          
+          # download the file directly to the driver folder
+          mkdir -p addon/synthDrivers
+          curl -L $URL -o addon/synthDrivers/ibmtts_host32.dll
       - name: Build add-on
         run: scons
       - name: load latest changes from changelog

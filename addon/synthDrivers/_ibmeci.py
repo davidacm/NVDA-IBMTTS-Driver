@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-#Copyright (C) 2009 - 2023 David CM, released under the GPL.
+#Copyright (C) 2009 - 2026 David CM, released under the GPL.
 # Author: David CM <dhf360@gmail.com> and others.
 #synthDrivers/_ibmeci.py
 
@@ -17,6 +17,12 @@ from ._settingsDB import appConfig
 
 addonHandler.initTranslation()
 
+
+# determine if 32 or 64 bits.
+import struct
+IS_64BIT = struct.calcsize("P") == 8
+from ._proxyEci import EciDLL
+from ._ipc import terminate_host_32
 
 class  ECIParam:
 	eciSynthMode=0
@@ -160,14 +166,18 @@ vparams = {}
 
 class EciThread(threading.Thread):
 	def run(self):
-		global vparams, params, speaking, endMarkersCount
+		global vparams, params, speaking, endMarkersCount, buffer
 		global eciThreadId, dll, handle
 		eciThreadId = windll.kernel32.GetCurrentThreadId()
 		msg = wintypes.MSG()
 		user32.PeekMessageA(byref(msg), None, 0x400, 0x400, 0)
 		(dll, handle) = eciNew()
 		dll.eciRegisterCallback(handle, eciCallback, None)
-		dll.eciSetOutputBuffer(handle, samples, pointer(buffer))
+		if IS_64BIT:
+			dll.eciSetOutputBuffer(handle, samples)
+			buffer = dll.get_audio_buffer_ptr()
+		else:
+			dll.eciSetOutputBuffer(handle, samples, pointer(buffer))
 		dll.eciSetParam(handle, ECIParam.eciSynthMode, 1)
 		dll.eciSetParam(handle, ECIParam.eciInputType, 1)
 		params[ECIParam.eciLanguageDialect] = dll.eciGetParam(handle, ECIParam.eciLanguageDialect)
@@ -272,6 +282,8 @@ def loadEciLibrary():
 		isIBM = False
 	if path.exists(etidevLibPath):
 		windll.LoadLibrary(etidevLibPath)
+	if IS_64BIT:
+		return EciDLL(eciLibPath)
 	return windll.LoadLibrary(eciLibPath)
 
 
@@ -293,10 +305,13 @@ def eciNew():
 	global avLangs
 	eciCheck()
 	eci = loadEciLibrary()
-	b=c_int()
-	eci.eciGetAvailableLanguages(0,byref(b))
-	avLangs=(c_int*b.value)()
-	eci.eciGetAvailableLanguages(byref(avLangs),byref(b))
+	if IS_64BIT:
+		avLangs = eci.eciGetAvailableLanguages()
+	else:
+		b=c_int()
+		eci.eciGetAvailableLanguages(0,byref(b))
+		avLangs=(c_int*b.value)()
+		eci.eciGetAvailableLanguages(byref(avLangs),byref(b))
 	try:
 		handle=eci.eciNewEx(int(conf['speech']['ibmeci']['voice']))
 	except:
@@ -450,6 +465,8 @@ def terminate():
 	callbackThread.join()
 	idleTimer.cancel()	
 	player.close()
+	if IS_64BIT:
+		terminate_host_32()
 	callbackQueue= callbackThread= dll= eciQueue=eciThread= handle= idleTimer= onDoneSpeaking= onIndexReached= player = None
 
 
@@ -472,7 +489,7 @@ def setVParam(pr, vl):
 	param_event.clear()
 
 def setProsodyParam(pr, vl):
-	dll.eciSetVoiceParam(handle, 0, pr, int(vl))
+	dll.eciSetVoiceParam(handle, 0, pr, vl)
 
 def setVariant(v):
 	user32.PostThreadMessageA(eciThreadId, WM_COPYVOICE, v, 0)
@@ -483,6 +500,8 @@ def process():
 		user32.PostThreadMessageA(eciThreadId, WM_PROCESS, 0, 0)
 
 def eciVersion():
+	if IS_64BIT:
+		return dll.eciVersion()
 	ptr=b"       "
 	dll.eciVersion(ptr)
 	return ptr.decode('ascii')

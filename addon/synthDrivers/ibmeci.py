@@ -3,11 +3,11 @@
 # Author: David CM <dhf360@gmail.com> and others.
 #synthDrivers/ibmeci.py
 
-import six, synthDriverHandler, languageHandler, os, re
+import synthDriverHandler, languageHandler, os, re
 from synthDriverHandler import synthDoneSpeaking, SynthDriver, synthIndexReached, VoiceInfo
 
 from collections import OrderedDict
-from six import string_types
+
 from logHandler import log
 
 from synthDrivers import _ibmeci
@@ -271,7 +271,7 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 		outlist.append((_ibmeci.speak, (embeds,)))
 		speechSequence= self.combine_adjacent_strings(speechSequence)
 		for item in speechSequence:
-			if isinstance(item, string_types):
+			if isinstance(item, str):
 				s = self.processText(item)
 				outlist.append((_ibmeci.speak, (s,)))
 				last = s
@@ -587,6 +587,6 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 	def _onDoneSpeaking(self): synthDoneSpeaking.notify(synth=self)
 
 def resub(dct, s):
-	for r in six.iterkeys(dct):
+	for r in dct.keys():
 		s = r.sub(dct[r], s)
 	return s

@@ -1,4 +1,4 @@
-# IBMTTS driver, Add-on for NVDA #
+# IBtMTTS driver, Add-on for NVDA #
 
   This add-on implements NVDA compatibility with the IBMTTS synthesizer.  
   We can not distribute the IBMTTS libraries. So it is just the driver.  
@@ -49,6 +49,34 @@ This add-on has its own category of settings within NVDA options, to manage some
 * Copy IBMTTS files in an  add-on (may not work for some IBMTTS distributions): If the library path for IBMTTS has been set, it will copy all the folder files to a new add-on called eciLibraries and update the current path to a relative path. It's very useful in NVDA portable versions. It only works for libraries that use "eci.ini" files for voice language information. If the library uses the Windows registry, then this option won't work.
 
 Note: The automatic or manual update functionality won't remove the internal files of the add-on. If you use your libraries in that place, you can safely use this function. Your libraries will be safe.
+
+## 64-bit Compatibility & Architecture
+
+Starting with **NVDA 2026**, the screen reader has transitioned to a 64-bit Python interpreter. Since native 64-bit IBMTTS libraries are unavailable, a custom compatibility layer has been implemented to bridge the 64-bit Python environment with the existing 32-bit IBMTTS libraries.
+
+### Implementation Details
+
+To achieve seamless integration, the driver utilizes the following architecture:
+
+* **32-bit DLL Host:** A specialized rust 32-bit host acts as a bridge for 64-bit processes. This host is capable of loading the required `eci.dll` dynamically.
+* **Inter-Process Communication (IPC):**
+* **Function Calls:** Communication is handled via **overlapped named pipes** in message mode.
+* **Audio Streaming:** High-performance audio data transfer is managed through **shared memory**, using synchronization events to signal read/write operations between processes.
+
+
+* **Execution:** The host process is instantiated using `rundll32`.
+* **Python Proxy:** A Python-based proxy replaces the standard `eci.dll`. It communicates with the host's endpoints and processes the audio stream directly from shared memory.
+* **Dynamic Loading:** The driver automatically detects the environment. The proxy is only initialized when running under **NVDA 64-bit**; on **NVDA 32-bit**, the original `eci.dll` is loaded natively.
+
+### Current Limitations
+
+In 64-bit mode, the driver is currently **not compatible** with IBMTTS versions that require the `etidev.dll` library.
+
+### 32 bits host bridge
+
+For detailed implementation details of the 32-bit host, please refer to the following repository:
+[ibmtts-host32-bridge](https://github.com/davidacm/ibmtts-host32-bridge)
+
 
 ## Requirements.
 ### NVDA.

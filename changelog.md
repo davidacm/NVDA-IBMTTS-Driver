@@ -1,3 +1,7 @@
+# version 26.3.1
+
+* Implemented 64-bit support while ensuring full backward compatibility with 32-bit systems. This is implemented via a 32-bit DLL host integrated with a 64-bit Python-based proxy DLL. Named pipes were used for calling functions, and shared memory between processes for the audio stream.
+
 # version 25.2.1
 
 * Temporary fix for an issue with translations when the add-on starts the first time that is installed.
