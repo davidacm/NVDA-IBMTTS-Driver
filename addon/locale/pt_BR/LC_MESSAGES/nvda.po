@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: IBMTTS for NVDA\n"
 "Report-Msgid-Bugs-To: 'nvda-translations@groups.io'\n"
 "POT-Creation-Date: 2023-12-30 22:55-0600\n"
-"PO-Revision-Date: 2024-06-29 13:09-0300\n"
+"PO-Revision-Date: 2026-02-14 00:51-0300\n"
 "Last-Translator: Rémy Ruiz <remyruiz@gmail.com>\n"
 "Language-Team: Wendrill Aksenow Brandão <wendrillaksenow@gmail.com>\n"
 "Language: pt_BR\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 3.4.4\n"
+"X-Generator: Poedit 3.4\n"
 "X-Poedit-SourceCharset: iso-8859-1\n"
 
 #: addon\synthDrivers\_ibmeci.py:92
@@ -146,7 +146,7 @@ msgid ""
 "server is not responding. Do you want to try again?"
 msgstr ""
 "Não foi possível baixar o arquivo. Talvez não haja acesso à Internet ou o "
-"servidor não esteja respondendo. Você quer tentar novamente?"
+"servidor não esteja respondendo. Gostaria de tentar novamente?"
 
 #. Translators: the title of a retry cancel dialog when downloading a file.
 #: addon\globalPlugins\_ibmttsUtils.py:79
@@ -237,12 +237,12 @@ msgid ""
 "update this add-on now?"
 msgstr ""
 "Uma nova versão do %s foi encontrada. A nova versão é %s. Deseja atualizar "
-"este complemento agora?"
+"agora?"
 
 #. Translators: Title for message asking if the user wishes to update the add-on.
 #: addon\globalPlugins\_ibmttsUtils.py:352
 msgid "Update add-on"
-msgstr "Atualizar complemento"
+msgstr "Atualização"
 
 #. Translators: The message displayed when installing an add-on package is prohibited,
 #. because it requires a later version of NVDA than is currently installed.
