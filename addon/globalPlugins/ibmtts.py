@@ -11,7 +11,7 @@ import globalVars, gui, globalPluginHandler, addonHandler
 from logHandler import log
 from gui.settingsDialogs import SettingsPanel
 from synthDrivers._settingsDB import appConfig
-from ._ibmttsUtils import UpdateHandler, GithubService, guiCopiFiles, showDonationsDialog
+from ._ibmttsUtils import UpdateHandler, GithubService, guiCopiFiles, showDonationsDialog, find_symbol_in_dll
 addonHandler.initTranslation()
 
 ADDON_NAME = "IBMTTS"
@@ -82,8 +82,8 @@ class IBMTTSSettingsPanel(SettingsPanel):
 			defaultDir=path.dirname(p), style=wx.FD_OPEN)
 			if not fd.ShowModal() == wx.ID_OK: break
 			p = fd.GetPath()
-			try:
-				windll.LoadLibrary(p).eciVersion
+			# check the validity by the symbol eciVersion
+			if find_symbol_in_dll(p, "eciVersion"):
 				self._ttsPath.SetValue(path.dirname(p))
 				self._dllName.SetValue(path.basename(p))
 				gui.messageBox(
@@ -93,8 +93,7 @@ class IBMTTSSettingsPanel(SettingsPanel):
 					_("Success"),wx.OK|wx.ICON_INFORMATION,self
 				)
 				break
-			except:
-				log.info("Error loading the IBMTTS library", exc_info=True)
+			else:
 				if gui.messageBox(
 					# Translators: The message displayed in the dialog that inform you the specified library is invalid.
 					_("The specified dll file seems to be an incorrect IBMTTS library. Would you like to select another library?"),

@@ -7,6 +7,8 @@ import addonAPIVersion, config, json, os, pickle, ssl, time, winUser, wx, zipfil
 from os import path
 from ctypes import windll
 from urllib.request import urlopen
+import mmap
+import struct
 
 import globalVars, gui, addonHandler
 from core import callLater
@@ -20,6 +22,85 @@ except addonHandler.AddonError:
 		"Unable to initialise translations. This may be because the addon is running from NVDA scratchpad."
 	)
 
+
+def find_symbol_in_dll(dll_path, target_symbol="eciVersion"):
+	""" Verifies if a specific function symbol exists in a Windows DLL's export table.
+
+	This function parses the Portable Executable (PE) format manually to avoid 
+	loading the library, allowing a 64-bit process to verify a 32-bit DLL 
+	without architecture mismatch errors.
+
+	Args:
+		dll_path (str): The absolute or relative path to the DLL file.
+		target_symbol (str): The name of the function to look for. 
+			Defaults to "eciVersion".
+
+	Returns:
+		bool: True if the symbol is found in the Export Name Pointer Table, 
+			False otherwise.
+	"""
+	try:
+		with open(dll_path, "rb") as f:
+			# Memory-map the file for efficient binary navigation
+			mm = mmap.mmap(f.fileno(), 0, access=mmap.ACCESS_READ)
+
+			# Locate the PE Header signature (offset stored at 0x3C)
+			pe_header_ptr = struct.unpack("<I", mm[0x3C:0x40])[0]
+			if mm[pe_header_ptr:pe_header_ptr+4] != b"PE\x00\x00":
+				return False # Not a valid PE file
+			# Navigate to the Optional Header's Data Directories.
+			# For 32-bit (PE32), the Export Table RVA is at offset 120 from the PE signature.
+			# This logic assumes a standard 32-bit library.
+			export_table_rva = struct.unpack("<I", mm[pe_header_ptr+120:pe_header_ptr+124])[0]
+			if export_table_rva == 0:
+				return False # No exports found in this library
+
+			# Translate the Relative Virtual Address (RVA) to a physical file offset.
+			# We must find which section contains the export table.
+			num_sections = struct.unpack("<H", mm[pe_header_ptr+6:pe_header_ptr+8])[0]
+			header_size = struct.unpack("<H", mm[pe_header_ptr+20:pe_header_ptr+22])[0]
+			section_entry_start = pe_header_ptr + 24 + header_size
+
+			file_offset_base = None
+			virtual_addr_base = None
+
+			for i in range(num_sections):
+				s_start = section_entry_start + (i * 40)
+				v_addr = struct.unpack("<I", mm[s_start+12:s_start+16])[0]
+				v_size = struct.unpack("<I", mm[s_start+8:s_start+12])[0]
+				r_ptr = struct.unpack("<I", mm[s_start+20:s_start+24])[0]
+				# Check if the export table RVA falls within this section's range
+				if v_addr <= export_table_rva < v_addr + v_size:
+					file_offset_base = r_ptr
+					virtual_addr_base = v_addr
+					break
+
+			if file_offset_base is None:
+				return False
+
+			# Calculate the physical file offset of the Export Directory
+			export_dir_offset = export_table_rva - virtual_addr_base + file_offset_base
+
+			# Parse the Export Directory to find the Name Pointer Table
+			num_names = struct.unpack("<I", mm[export_dir_offset+24:export_dir_offset+28])[0]
+			names_rva = struct.unpack("<I", mm[export_dir_offset+32:export_dir_offset+36])[0]
+
+			# Translate the Names RVA to file offset
+			names_ptr_offset = names_rva - virtual_addr_base + file_offset_base
+
+			for i in range(num_names):
+				name_rva = struct.unpack("<I", mm[names_ptr_offset + (i*4) : names_ptr_offset + (i*4) + 4])[0]
+				name_file_offset = name_rva - virtual_addr_base + file_offset_base
+				null_byte_idx = mm.find(b"\x00", name_file_offset)
+				function_name = mm[name_file_offset:null_byte_idx].decode("ascii", errors="ignore")
+				if function_name == target_symbol:
+					mm.close()
+					return True
+			mm.close()
+			return False
+	except (IOError, struct.error, UnicodeDecodeError):
+		# Handle cases where the file is locked, too small, or corrupted
+		return False
 
 def loadPickle(fileName):
 	with open(fileName, "rb") as f:
