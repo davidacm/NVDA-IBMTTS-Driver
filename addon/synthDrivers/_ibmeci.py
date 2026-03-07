@@ -178,7 +178,6 @@ class EciThread(threading.Thread):
 			buffer = dll.get_audio_buffer_ptr()
 		else:
 			dll.eciSetOutputBuffer(handle, samples, pointer(buffer))
-		dll.eciSetParam(handle, ECIParam.eciSynthMode, 1)
 		dll.eciSetParam(handle, ECIParam.eciInputType, 1)
 		params[ECIParam.eciLanguageDialect] = dll.eciGetParam(handle, ECIParam.eciLanguageDialect)
 		# loading of fallback root.dic/main.dic/abbr.dic officially removed as of 20.08-x0_personal, to make room for other languages' dictionaries.
