@@ -1,0 +1,91 @@
+permissions:
+  contents: write
+  issues: write
+
+name: Diagnostic Build for Issues
+on:
+  push:
+    branches:
+      - 'diag-*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Get Issue Number
+        id: info
+        run: |
+          ISSUE_NUMBER=$(echo "${{ github.ref_name }}" | cut -d'-' -f2)
+          echo "issue_nr=$ISSUE_NUMBER" >> $GITHUB_OUTPUT
+          echo "tag_name=debug-issue-$ISSUE_NUMBER" >> $GITHUB_OUTPUT
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.13
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          sudo apt update
+          pip install scons markdown
+          sudo apt install gettext
+
+      - name: Set add-on version (Diagnostic)
+        run: |
+          import re
+          with open("buildVars.py", 'r+', encoding='utf-8') as f:
+              text = f.read()
+              version = "diag-${{ steps.info.outputs.issue_nr }}-${{ github.run_number }}"
+              text = re.sub('"addon_version" *:.*,', '"addon_version" : "%s",' % version, text)
+              f.seek(0)
+              f.write(text)
+              f.truncate()
+        shell: python 
+
+      - name: Download DLL bridge
+        run: |
+          URL=$(curl -s https://api.github.com/repos/davidacm/ibmtts-host32-bridge/releases/latest \
+            | grep "browser_download_url.*ibmtts_host32.dll" \
+            | cut -d : -f 2,3 \
+            | tr -d \"[:space:])
+          mkdir -p addon/synthDrivers
+          curl -L $URL -o addon/synthDrivers/ibmtts_host32.dll
+
+      - name: Build add-on
+        run: scons
+
+      - name: Get Artifact Name
+        id: artifact
+        run: |
+          FILENAME=$(ls *.nvda-addon | head -n 1)
+          echo "filename=$FILENAME" >> $GITHUB_OUTPUT
+
+      - name: Generate Diagnostic Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.info.outputs.tag_name }}
+          name: "Diagnostic Build: Issue #${{ steps.info.outputs.issue_nr }}"
+          body: |
+            ### 🛠 Diagnostic Compilation
+            This is a test version for the issue #${{ steps.info.outputs.issue_nr }}.
+            **Commit:** ${{ github.sha }}
+            **Date:** ${{ github.event.head_commit.timestamp }}
+          files: ./*.nvda-addon
+          prerelease: true
+          make_latest: false 
+
+      - name: Comment on Issue
+        uses: peter-evans/create-or-update-comment@v4
+        with:
+          issue-number: ${{ steps.info.outputs.issue_nr }}
+          body: |
+            Hello! I have generated a test build for this case.
+            Could you try this diagnostic build?
+            You can download it directly here:
+            [Download Diagnostic build ${{ steps.artifact.outputs.filename }}](https://github.com/${{ github.repository }}/releases/download/${{ steps.info.outputs.tag_name }}/${{ steps.artifact.outputs.filename }})
+            
+            Please install it and confirm if you get any error.
