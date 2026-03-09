@@ -234,6 +234,7 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 		return _ibmeci.eciCheck()
 
 	def __init__(self):
+		_ibmeci.tts_name = self.name
 		_ibmeci.initialize(self._onIndexReached, self._onDoneSpeaking)
 		# This information doesn't really need to be displayed, and makes IBMTTS unusable if the addon is not in the same drive as NVDA executable.
 		# But display it only on debug mode in case of it can be useful

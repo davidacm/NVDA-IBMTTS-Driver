@@ -10,6 +10,8 @@ import queue
 
 import threading, time
 import languageHandler, nvwave, addonHandler
+from synthDriverHandler import findAndSetNextSynth
+import queueHandler
 from config import conf
 from logHandler import log
 from fileUtils import getFileVersionInfo
@@ -131,6 +133,7 @@ WM_INDEX=1032
 
 
 # global variables
+tts_name = None
 audioStream = BytesIO()
 player = None
 currentSoundcardOutput = None
@@ -163,9 +166,28 @@ dictHandles={}
 params = {}
 vparams = {}
 
+def post_message_to_eciThread(msg, wParam, lParam):
+	"""Send a message to the ECI thread first verifying that it is alive."""
+	global eciThread
+	if eciThread is None or not eciThread.is_alive():
+		raise RuntimeError("IBMTTS Engine thread is not running. Synthesizer failure.")
+	user32.PostThreadMessageA(eciThreadId, msg, wParam, lParam)
+
 
 class EciThread(threading.Thread):
 	def run(self):
+		try:
+			self._run()
+		except:
+			queueHandler.queueFunction(queueHandler.eventQueue, findAndSetNextSynth, tts_name)
+		finally:
+			started.set()
+			stopped.set()
+			param_event.set()
+			if dll:
+				dll.eciDelete(handle)
+
+	def _run(self):
 		global vparams, params, speaking, endMarkersCount, buffer
 		global eciThreadId, dll, handle
 		eciThreadId = windll.kernel32.GetCurrentThreadId()
@@ -408,6 +430,9 @@ def _callbackExec(func, *args, **kwargs):
 
 def initialize(indexCallback, doneCallback):
 	global callbackQueue, callbackThread, eciQueue, eciThread, idleTimer, onIndexReached, onDoneSpeaking, player
+	started.clear()
+	stopped.clear()
+	param_event.clear()
 	onIndexReached = indexCallback
 	onDoneSpeaking = doneCallback
 	idleTimer = threading.Timer(0.3, time.sleep) # fake timer because this can't be None.
@@ -419,6 +444,8 @@ def initialize(indexCallback, doneCallback):
 	eciThread.start()
 	started.wait()
 	started.clear()
+	if eciThread is None or not eciThread.is_alive():
+		raise RuntimeError("IBMTTS Engine thread is not running. Synthesizer failure.")
 	callbackQueue = queue.Queue()
 	callbackThread = CallbackThread()
 	callbackThread.start()
@@ -449,14 +476,14 @@ def synth():
 	dll.eciSynthesize(handle)
 
 def stop():
-	user32.PostThreadMessageA(eciThreadId, WM_SILENCE, 0, 0)
+	post_message_to_eciThread(WM_SILENCE, 0, 0)
 
 def pause(switch):
 	player.pause(switch)
 
 def terminate():
 	global callbackQueue, callbackThread, dll, eciQueue,eciThread, handle, idleTimer, onDoneSpeaking, onIndexReached, player
-	user32.PostThreadMessageA(eciThreadId, WM_KILL, 0, 0)
+	post_message_to_eciThread(WM_KILL, 0, 0)
 	stopped.wait()
 	stopped.clear()
 	callbackQueue.put((None, None, None))
@@ -470,12 +497,12 @@ def terminate():
 
 
 def setVoice(vl):
-	user32.PostThreadMessageA(eciThreadId, WM_PARAM, vl, ECIParam.eciLanguageDialect)
+	post_message_to_eciThread(WM_PARAM, vl, ECIParam.eciLanguageDialect)
 	param_event.wait()
 	param_event.clear()
 
 def setParam(param, val):
-	user32.PostThreadMessageA(eciThreadId, WM_PARAM, val, param)
+	post_message_to_eciThread(WM_PARAM, val, param)
 	param_event.wait()
 	param_event.clear()
 
@@ -483,7 +510,7 @@ def getVParam(pr):
 	return vparams[pr]
 
 def setVParam(pr, vl):
-	user32.PostThreadMessageA(eciThreadId, WM_VPARAM, pr, vl)
+	post_message_to_eciThread(WM_VPARAM, pr, vl)
 	param_event.wait()
 	param_event.clear()
 
@@ -491,12 +518,12 @@ def setProsodyParam(pr, vl):
 	dll.eciSetVoiceParam(handle, 0, pr, vl)
 
 def setVariant(v):
-	user32.PostThreadMessageA(eciThreadId, WM_COPYVOICE, v, 0)
+	post_message_to_eciThread(WM_COPYVOICE, v, 0)
 	param_event.wait()
 	param_event.clear()
 
 def process():
-		user32.PostThreadMessageA(eciThreadId, WM_PROCESS, 0, 0)
+		post_message_to_eciThread(WM_PROCESS, 0, 0)
 
 def eciVersion():
 	if IS_64BIT:

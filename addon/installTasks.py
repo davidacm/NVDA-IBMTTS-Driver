@@ -40,7 +40,6 @@ def preserveFiles(addonName, folder):
 	addonName: the unique identifier of the add-on
 	folder: a path for a folder inside the addonName directory where the files must be preserved.
 	"""
-	print(os.path.dirname(__file__))
 	absFolderPath = os.path.join(buildAddonAbsPath(addonName), folder)
 	tempFolder = os.path.join(buildAddonAbsPath(addonName) + addonHandler.ADDON_PENDINGINSTALL_SUFFIX, folder)
 	if os.path.isdir(absFolderPath):

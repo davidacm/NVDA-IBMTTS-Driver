@@ -4,7 +4,7 @@
 #synthDrivers/_ipc.py
 
 import ctypes
-from ctypes import wintypes
+from ctypes import wintypes, byref
 import threading
 import subprocess
 import os
@@ -171,6 +171,7 @@ def parse_response(data: bytes):
     1 = unsigned int
     2 = 0 ended byte string
     3 = utf-8 string
+    4 = Host error (string)
     the rest of bytes are the parsed data.
     Returns: an int or byte string.
     """
@@ -179,18 +180,20 @@ def parse_response(data: bytes):
     
     resp_type = data[0]
     resp_data = data[1:]
+    match resp_type:
+        case 0:  # signed int
+            return int.from_bytes(resp_data, "little", signed=True)
+        case 1:  # unsigned int
+            return int.from_bytes(resp_data, "little", signed=False)
+        case 2:  # byte string
+            return resp_data
+        case 3: # utf-8 string
+            return resp_data.decode('utf-8', errors='ignore')
+        case 4: # error string
+            raise Exception("Host error", resp_data.decode('utf-8', errors='ignore'))
+        case _:
+            raise ValueError(f"Unknown response type: {resp_type}")
 
-    if resp_type == 0:  # signed int
-        return int.from_bytes(resp_data, "little", signed=True)
-    elif resp_type == 1:  # unsigned int
-        return int.from_bytes(resp_data, "little", signed=False)
-    elif resp_type == 2:  # byte string
-        return resp_data
-    elif resp_type == 3: # utf-8 string
-        return resp_data.decode('utf-8', errors='ignore')
-    else:
-        return data
-        # raise ValueError(f"Unknown response type: {resp_type}")
 
 
 class HostIds:
@@ -285,20 +288,23 @@ class SharedMemory:
         self.evt_proc_name = f"Local\\eci_proc_{eci_id:x}"
         self.h_map = None
         self.view = None
-        self.h_evt_ready = None
+        self._h_evt_ready = None
         self.h_evt_proc = None
         self.header = None
 
-        self._stop_event = threading.Event()
+        self._stop_event = kernel32.CreateEventW(None, True, False, None)
         self._open_resources()
         self._thread = threading.Thread(target=self._worker_loop, name=f"ECI_Audio_{eci_id:x}", daemon=True)
         self._thread.start()
 
     def _worker_loop(self):
+        handles = (wintypes.HANDLE * 2)(self._stop_event, self._h_evt_ready)
         try:
-            while not self._stop_event.is_set():
-                res = WaitForSingleObject(self.h_evt_ready, INFINITE)
-                if res == 0: # WAIT_OBJECT_0
+            while True:
+                res = kernel32.WaitForMultipleObjects(2, byref(handles), False, INFINITE)
+                if res == 0: # stop thread
+                    break
+                elif res == 1: # host pipe event
                     # 1. header
                     handle = self.header.eciHandle
                     msg = self.header.msg
@@ -318,7 +324,7 @@ class SharedMemory:
         if not self.view: raise OSError(ctypes.get_last_error(), "MapViewOfFile failed")
 
         self.header = SharedHeader.from_address(self.view)
-        self.h_evt_ready = OpenEventW(SYNCHRONIZE | 0x0002, False, self.evt_ready_name)
+        self._h_evt_ready = OpenEventW(SYNCHRONIZE | 0x0002, False, self.evt_ready_name)
         self.h_evt_proc = OpenEventW(SYNCHRONIZE | 0x0002, False, self.evt_proc_name)
 
     def get_audio_buffer_ptr(self):
@@ -327,10 +333,10 @@ class SharedMemory:
         return self.view + 12
 
     def stop(self):
-        self._stop_event.set()
+        kernel32.SetEvent(self._stop_event)
 
     def _cleanup(self):
         if self.view: UnmapViewOfFile(self.view)
         if self.h_map: CloseHandle(self.h_map)
-        if self.h_evt_ready: CloseHandle(self.h_evt_ready)
+        if self._h_evt_ready: CloseHandle(self._h_evt_ready)
         if self.h_evt_proc: CloseHandle(self.h_evt_proc)

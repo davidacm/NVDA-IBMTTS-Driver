@@ -7,7 +7,6 @@ import addonAPIVersion, config, json, os, pickle, ssl, time, winUser, wx, zipfil
 from os import path
 from ctypes import windll
 from urllib.request import urlopen
-import mmap
 import struct
 
 import globalVars, gui, addonHandler
@@ -39,10 +38,12 @@ def find_symbol_in_dll(dll_path, target_symbol="eciVersion"):
 		bool: True if the symbol is found in the Export Name Pointer Table, 
 			False otherwise.
 	"""
+	# import mmap here, to avoid issues with NVDA 2025 or less.
+	import mmap
 	try:
 		with open(dll_path, "rb") as f:
 			# Memory-map the file for efficient binary navigation
-			mm = mmap.mmap(f.fileno(), 0, access=mmap.ACCESS_READ)
+			mm = mmap.mmap(	f.fileno(), 0, access=mmap.ACCESS_READ)
 
 			# Locate the PE Header signature (offset stored at 0x3C)
 			pe_header_ptr = struct.unpack("<I", mm[0x3C:0x40])[0]

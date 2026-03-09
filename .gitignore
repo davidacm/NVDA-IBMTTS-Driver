@@ -9,3 +9,5 @@ addon/doc/en/
 .sconsign.dblite
 *.code-workspace
 *.json
+*.dll
+*.zip
