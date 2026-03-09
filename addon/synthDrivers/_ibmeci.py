@@ -178,8 +178,9 @@ class EciThread(threading.Thread):
 	def run(self):
 		try:
 			self._run()
-		except:
+		except Exception as e:
 			queueHandler.queueFunction(queueHandler.eventQueue, findAndSetNextSynth, tts_name)
+			raise e
 		finally:
 			started.set()
 			stopped.set()

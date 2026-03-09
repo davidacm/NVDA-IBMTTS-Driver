@@ -150,14 +150,14 @@ def pack(id: int, *args):
             # Prepare the string data (UTF-8 encoded, null-terminated)
             string_data += arg + b'\x00'
         elif isinstance(arg, int):
-            # Write the integer as 4 bytes (little-endian)
-            payload += arg.to_bytes(4, "little", signed=True)
+            try:
+                # Write the integer as 4 bytes (little-endian)
+                payload += arg.to_bytes(4, "little", signed=True)
+            except Exception as e:
+                raise Exception(f"{e} | args={args}") from e
         else:
-            raise TypeError(f"Unsupported argument type: {type(arg).__name__}")
-    
-    # Append all strings
+            raise TypeError(f"Unsupported argument type: {type(arg).__name__}", args)
     payload += string_data
-    
     return payload
 
 def parse_response(data: bytes):
