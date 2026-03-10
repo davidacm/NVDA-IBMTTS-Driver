@@ -1,3 +1,8 @@
+# version 26.3.5
+
+Fixed an issue where, in some cases, small initial audio chunks were not processed. This was introduced when the line eciSynthMode = manual was removed.
+Fixed issues that occurred when the ECI thread died, improving exception handling. As a result, the driver will no longer block the NVDA session if something fails in the eci lib or the host, and NVDA will be able to switch to another TTS.
+
 # version 26.3.4
 
 Added some checks in case the tts thread dies

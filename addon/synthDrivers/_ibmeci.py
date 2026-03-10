@@ -166,10 +166,10 @@ dictHandles={}
 params = {}
 vparams = {}
 
-def post_message_to_eciThread(msg, wParam, lParam):
-	"""Send a message to the ECI thread first verifying that it is alive."""
+def post_message_to_eciThread(msg, wParam, lParam, exceptOnDie=True):
+	"""Send a message to the ECI thread. First verifying that it is alive."""
 	global eciThread
-	if eciThread is None or not eciThread.is_alive():
+	if exceptOnDie and (eciThread is None or not eciThread.is_alive()):
 		raise RuntimeError("IBMTTS Engine thread is not running. Synthesizer failure.")
 	user32.PostThreadMessageA(eciThreadId, msg, wParam, lParam)
 
@@ -201,6 +201,8 @@ class EciThread(threading.Thread):
 			buffer = dll.get_audio_buffer_ptr()
 		else:
 			dll.eciSetOutputBuffer(handle, samples, pointer(buffer))
+		# next line is required to process audio properly
+		dll.eciSetParam(handle, ECIParam.eciSynthMode, 1)
 		dll.eciSetParam(handle, ECIParam.eciInputType, 1)
 		params[ECIParam.eciLanguageDialect] = dll.eciGetParam(handle, ECIParam.eciLanguageDialect)
 		# loading of fallback root.dic/main.dic/abbr.dic officially removed as of 20.08-x0_personal, to make room for other languages' dictionaries.
@@ -477,16 +479,19 @@ def synth():
 	dll.eciSynthesize(handle)
 
 def stop():
-	post_message_to_eciThread(WM_SILENCE, 0, 0)
+	post_message_to_eciThread(WM_SILENCE, 0, 0, False)
 
 def pause(switch):
 	player.pause(switch)
 
 def terminate():
 	global callbackQueue, callbackThread, dll, eciQueue,eciThread, handle, idleTimer, onDoneSpeaking, onIndexReached, player
-	post_message_to_eciThread(WM_KILL, 0, 0)
-	stopped.wait()
-	stopped.clear()
+	try:
+		post_message_to_eciThread(WM_KILL, 0, 0)
+		stopped.wait()
+		stopped.clear()
+	except:
+		log.info("Error terminating the IBMTTS thread", exc_info=True)
 	callbackQueue.put((None, None, None))
 	eciThread.join()
 	callbackThread.join()
