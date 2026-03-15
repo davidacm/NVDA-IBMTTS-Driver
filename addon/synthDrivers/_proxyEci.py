@@ -7,16 +7,21 @@ import struct
 from ._ipc import IBMTTSClient, HostIds, SharedMemory, launch_host_32
 
 class EciDLL:
-    def __init__(self, dll_path):
+    def __init__(self, dll_path, etidev_path=None):
         launch_host_32()
         self._client = IBMTTSClient()
         self._client.connect()
         self._shm = None       
         self._callback = None
+        if etidev_path:
+            self.eciLoadEtidev(etidev_path)
         self.eciLoadLibrary(dll_path)
 
     def eciLoadLibrary(self, path):
         return self._client.call(HostIds.LOAD_LIBRARY, path)
+
+    def eciLoadEtidev(self, path):
+        return self._client.call(HostIds.LOAD_ETIDEV, path)
 
     def eciVersion(self):
         return self._client.call(HostIds.ECI_VERSION)

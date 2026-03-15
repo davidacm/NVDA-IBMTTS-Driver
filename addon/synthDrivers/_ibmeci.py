@@ -298,16 +298,18 @@ def loadEciLibrary():
 	# if the dll has been loaded, it won't load the library again.
 	if dll:
 		return dll
-	etidevLibPath = path.join(ttsPath, "etidev.dll")
 	eciLibPath = path.join(ttsPath, dllName)
+	etidevLibPath = path.join(ttsPath, "etidev.dll")
+	if not path.exists(etidevLibPath):
+		etidevLibPath = None
 	if getFileVersionInfo(eciLibPath, 'ProductName')['ProductName'] == 'IBMECI':
 		isIBM = True
 	else:
 		isIBM = False
-	if path.exists(etidevLibPath):
-		windll.LoadLibrary(etidevLibPath)
 	if IS_64BIT:
-		return EciDLL(eciLibPath)
+		return EciDLL(eciLibPath, etidevLibPath)
+	if etidevLibPath:
+		windll.LoadLibrary(etidevLibPath)
 	return windll.LoadLibrary(eciLibPath)
 
 

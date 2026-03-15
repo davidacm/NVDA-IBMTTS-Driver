@@ -216,6 +216,7 @@ class HostIds:
     ECI_LOAD_DICT = 17
     ECI_SET_DICT = 18
     ECI_DELETE = 19
+    LOAD_ETIDEV = 242
 
 
 class IBMTTSClient:
