@@ -200,6 +200,26 @@ langsAnnotations={
 	"da_DK":b"`l15.0"
 }
 
+
+import ctypes
+
+def windows_best_fit_cp1252(text):
+	"""This function is used with encoding cp1252.
+	when mbcs is used, the symbol replacement works properly, but when cp1252 is used, some symbols like "Đđ" are replaced by "??".
+	mbcs is not secure because if the windows system has the UTF8 enabled, then mbcs will be 65001.
+	"""
+	size = ctypes.windll.kernel32.WideCharToMultiByte(1252, 0, text, len(text), None, 0, None, None)
+	buf = ctypes.create_string_buffer(size)
+	ctypes.windll.kernel32.WideCharToMultiByte(1252, 0, text, len(text), buf, size, None, None)
+	return buf.value
+
+
+def encode(text, encoding):
+	if encoding == "cp1252":
+		return windows_best_fit_cp1252(text)
+	return text.encode(encoding, 'replace')
+
+
 class SynthDriver(synthDriverHandler.SynthDriver):
 	supportedSettings=(SynthDriver.VoiceSetting(), SynthDriver.VariantSetting(), SynthDriver.RateSetting(),
 		BooleanDriverSetting("rateBoost", _("Rate boos&t"), True),
@@ -359,7 +379,7 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 		return result
 	def processText(self,text):
 		#this converts to ansi for anticrash. If this breaks with foreign langs, we can remove it.
-		text = text.encode(self.currentEncoding, 'replace') # special unicode symbols may encode to backquote. For this reason, backquote processing is after this.
+		text = encode(text, self.currentEncoding) # special unicode symbols may encode to backquote. For this reason, backquote processing is after this.
 		text = text.rstrip()
 		if not self._backquoteVoiceTags:
 			text=text.replace(b'`', b' ') # no embedded commands. This needs to be before regex substitution to fix hyphen-based crash words in German while replicating the intonation patterns that would normally be introduced by the hyphens with emphasis tags.

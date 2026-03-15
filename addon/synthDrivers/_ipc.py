@@ -232,7 +232,6 @@ class IBMTTSClient:
             )
             if self.h_pipe != -1:
                 break
-            
             err = kernel32.GetLastError()
             if err != 231: # ERROR_PIPE_BUSY
                 raise ConnectionError(f"unable to connect to the pipe. Error: {err}")

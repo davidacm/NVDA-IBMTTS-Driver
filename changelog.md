@@ -1,3 +1,9 @@
+# version 26.3.6
+
+* Restore best-fit symbol mapping for IBMTTS: The change from 'mbcs' to 'cp1252' in version 25.2.1 broke certain character replacements. This fix ensures that some symbols outside ansi (such as "Đđ") are properly transliterated when using CP1252.
+* Support for etidev.dll: Now it supports those IBMTTS libs that require etidev.dll. For this, the new IPC endpoint was added, with the ID 242. That id will tell to the host to load etidev.dll lib.
+* Updated french translations, thanks to Michel Such.
+
 # version 26.3.5
 
 Fixed an issue where, in some cases, small initial audio chunks were not processed. This was introduced when the line eciSynthMode = manual was removed.
