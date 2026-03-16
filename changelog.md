@@ -1,5 +1,7 @@
 # version 26.3.6
 
+* fix issue #109: In Spanish, when IBMTTS encounters two or more consecutive numbers where the second one has three digits, it incorrectly reads them as a single large number. This is now fixed by inserting two spaces between the first and second number groups to force a separation.
+Fixes #109
 * Restore best-fit symbol mapping for IBMTTS: The change from 'mbcs' to 'cp1252' in version 25.2.1 broke certain character replacements. This fix ensures that some symbols outside ansi (such as "Đđ") are properly transliterated when using CP1252.
 * Support for etidev.dll: Now it supports those IBMTTS libs that require etidev.dll. For this, the new IPC endpoint was added, with the ID 242. That id will tell to the host to load etidev.dll lib.
 * Updated french translations, thanks to Michel Such.

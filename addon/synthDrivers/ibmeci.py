@@ -104,6 +104,9 @@ english_ibm_fixes = {
 spanish_fixes = {
 	# Euros
 	re.compile(b'([\x80$]\\d{1,3})((\\s\\d{3})+\\.\\d{2})'): br'\1 \2',
+	# fix when numbers are separated by space, adds an extra space to speak them separated.
+	# this happens when the second number has 3 digits, e.g. 3 456
+	re.compile(b'(\\d+) (\\d{3})'): br'\1  \2',
 	# fix 0xaa (ordinal femenino) of 13 or more digits ended in (1 2 3 6 7 9).
 	re.compile(br'(\d{12,}[123679])(\xaa)'): br'\1 \2',
 }

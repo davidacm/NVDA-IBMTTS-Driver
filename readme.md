@@ -68,15 +68,10 @@ To achieve seamless integration, the driver utilizes the following architecture:
 * **Python Proxy:** A Python-based proxy replaces the standard `eci.dll`. It communicates with the host's endpoints and processes the audio stream directly from shared memory.
 * **Dynamic Loading:** The driver automatically detects the environment. The proxy is only initialized when running under **NVDA 64-bit**; on **NVDA 32-bit**, the original `eci.dll` is loaded natively.
 
-### Current Limitations
-
-In 64-bit mode, the driver is currently **not compatible** with IBMTTS versions that require the `etidev.dll` library.
-
 ### 32 bits host bridge
 
 For detailed implementation details of the 32-bit host, please refer to the following repository:
 [ibmtts-host32-bridge](https://github.com/davidacm/ibmtts-host32-bridge)
-
 
 ## Requirements.
 ### NVDA.
