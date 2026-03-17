@@ -1,27 +1,15 @@
-# version 26.3.6
-
-* fix issue #109: In Spanish, when IBMTTS encounters two or more consecutive numbers where the second one has three digits, it incorrectly reads them as a single large number. This is now fixed by inserting two spaces between the first and second number groups to force a separation.
-Fixes #109
-* Restore best-fit symbol mapping for IBMTTS: The change from 'mbcs' to 'cp1252' in version 25.2.1 broke certain character replacements. This fix ensures that some symbols outside ansi (such as "Đđ") are properly transliterated when using CP1252.
-* Support for etidev.dll: Now it supports those IBMTTS libs that require etidev.dll. For this, the new IPC endpoint was added, with the ID 242. That id will tell to the host to load etidev.dll lib.
-* Updated french translations, thanks to Michel Such.
-
-# version 26.3.5
-
-Fixed an issue where, in some cases, small initial audio chunks were not processed. This was introduced when the line eciSynthMode = manual was removed.
-Fixed issues that occurred when the ECI thread died, improving exception handling. As a result, the driver will no longer block the NVDA session if something fails in the eci lib or the host, and NVDA will be able to switch to another TTS.
-
-# version 26.3.4
-
-Added some checks in case the tts thread dies
-added error handling for the host bridge in 64 bits.
-implemented the function to change to another tts if IBMTTS fails.
-now the host thread closes properly if the driver is closed.
-Fixed #137 when reinstalling the add-on in NVDA 2025 or less. Importing Mmap in _ibmttsUtils was causing issues when it-s imported in installTasks.py. so I moved that import to the function that requires it only. Seems that NVDA tries to get the attrib __file__ in a C module like mmap.
-
-# version 26.3.1
+# version 26.3.7
 
 * Implemented 64-bit support while ensuring full backward compatibility with 32-bit systems. This is implemented via a 32-bit DLL host integrated with a 64-bit Python-based proxy DLL. Named pipes were used for calling functions, and shared memory between processes for the audio stream.
+* Support for etidev.dll in 64 bits: Now it supports those IBMTTS libs that require etidev.dll. For this, the new IPC endpoint was added, with the ID 242. That id will tell to the host to load etidev.dll lib.
+* Fixed issues that occurred when the ECI thread died, improving exception handling. As a result, the driver will no longer block the NVDA session if something fails in the eci lib or the host, and NVDA will be able to switch to another TTS.
+* Added some checks in case the tts thread dies. Now the driver will catch more errors in the background thread, allowing NVDA to detect that and change to another voice engine.
+* implemented the function to change to another tts if IBMTTS fails.
+* fix issue #109: In Spanish, when IBMTTS encounters two or more consecutive numbers where the second one has three digits, it incorrectly reads them as a single large number. This is now fixed by inserting two spaces between the first and second number groups to force a separation.
+* fix issue #127: Restore best-fit symbol mapping for IBMTTS: The change from 'mbcs' to 'cp1252' in version 25.2.1 broke certain character replacements. This fix ensures that some symbols outside ansi (such as "Đđ") are properly transliterated when using CP1252.
+* Updated french translations, thanks to Michel Such.
+* added error handling for the host bridge in 64 bits.
+* Fixed #137 when reinstalling the add-on in NVDA 2025 or less. Importing Mmap in _ibmttsUtils was causing issues when it-s imported in installTasks.py. so I moved that import to the function that requires it only. Seems that NVDA tries to get the attrib __file__ in a C module like mmap.
 
 # version 25.2.1
 
