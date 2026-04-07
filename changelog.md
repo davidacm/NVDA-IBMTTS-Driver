@@ -1,4 +1,4 @@
-# version 26.3.7
+# version 26.4.1
 
 * Implemented 64-bit support while ensuring full backward compatibility with 32-bit systems. This is implemented via a 32-bit DLL host integrated with a 64-bit Python-based proxy DLL. Named pipes were used for calling functions, and shared memory between processes for the audio stream.
 * Support for etidev.dll in 64 bits: Now it supports those IBMTTS libs that require etidev.dll. For this, the new IPC endpoint was added, with the ID 242. That id will tell to the host to load etidev.dll lib.
@@ -10,6 +10,7 @@
 * Updated french translations, thanks to Michel Such.
 * added error handling for the host bridge in 64 bits.
 * Fixed #137 when reinstalling the add-on in NVDA 2025 or less. Importing Mmap in _ibmttsUtils was causing issues when it-s imported in installTasks.py. so I moved that import to the function that requires it only. Seems that NVDA tries to get the attrib __file__ in a C module like mmap.
+* Added a new dialog to show new changes when updating the add-on
 
 # version 25.2.1
 

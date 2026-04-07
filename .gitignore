@@ -1,5 +1,6 @@
 addon/doc/*.css
 addon/doc/en/
+addon/synthDrivers/ibmtts
 *_docHandler.py
 *.html
 *.ini

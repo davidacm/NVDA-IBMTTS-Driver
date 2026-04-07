@@ -212,22 +212,49 @@ def guiCopiFiles(src, dest, title, msg):
 	return res
 
 
-def guiInstallAddon(addonPath):
-	res = True
+def parseVersion(v):
 	try:
-		bundle = addonHandler.AddonBundle(addonPath)
+		parts = v.strip().replace("v", "").split(".")
+		return tuple(int(p) for p in parts)
 	except:
-		log.error(f"Error opening addon update from {addonPath}", exc_info=True)
+		return (0, 0, 0)
+
+
+def isNewerVersion(newVersion, currentVersion):
+	return parseVersion(newVersion) > parseVersion(currentVersion)
+
+
+def guiInstallAddon(addonPath):
+	try:
+		from systemUtils import ExecAndPump
+		from gui.message import DisplayableError
+
+		bundle = addonHandler.AddonBundle(addonPath)
+
+		prevAddon = None
+		for a in addonHandler.getAvailableAddons():
+			if a.name == bundle.manifest.get("name"):
+				prevAddon = a
+				break
+		result = ExecAndPump(addonHandler.installAddonBundle, bundle)
+		addonObj = result.funcRes
+		if getattr(bundle, "_installExceptions", None):
+			for e in bundle._installExceptions:
+				log.error(e, exc_info=True)
+			raise DisplayableError(_("Failed to install add-on from %s") % addonPath)
+		if prevAddon:
+			prevAddon.requestRemove()
+		if addonObj:
+			addonObj._cleanupAddonImports()
+		return True
+	except Exception:
+		log.error(f"Error installing addon from {addonPath}", exc_info=True)
 		gui.messageBox(
-			# Translators: The message displayed when an error occurs when opening an add-on package for adding.
-			_("Failed to open add-on update file at %s - missing file or invalid file format") % addonPath,
-			# Translators: The title of a dialog presented when an error occurs.
+			_("Failed to install the update."),
 			_("Error"),
 			wx.OK | wx.ICON_ERROR
 		)
 		return False
-	addonHandler.installAddonBundle(bundle)
-
 
 def _updateWindowsRootCertificates(url) -> None:
 	import updateCheck
@@ -265,7 +292,6 @@ class GithubService:
 		try:
 			res = urlopen(self.url)
 		except IOError as e:
-			# this was taken from the NVDA source code
 			if isinstance(e.reason, ssl.SSLCertVerificationError) and e.reason.reason == "CERTIFICATE_VERIFY_FAILED":
 				_updateWindowsRootCertificates(self.url)
 				res = urlopen(self.url)
@@ -274,20 +300,22 @@ class GithubService:
 		if res.code != 200:
 			raise RuntimeError(f"Checking for update failed with code {res.code} of url: {self.url}")
 		data = json.loads(res.read())
+
 		asset = None
 		for k in data['assets']:
 			if ".nvda-addon" in k['name']:
 				asset = k
 				break
 		if not asset:
-			raise RuntimeError("Unable to find the package addon file (.add-on) in the asset list")
+			raise RuntimeError("Unable to find the package addon file (.nvda-addon)")
+
 		return {
-			'version': data['name'],
+			'version': data['tag_name'].replace("v", ""), # use tag_name as version
 			'name': asset['name'],
 			'downloadUrl': asset['browser_download_url'],
-			'releaseDate': time.mktime(time.strptime(asset['updated_at'], "%Y-%m-%dT%H:%M:%SZ"))
+			'releaseDate': time.mktime(time.strptime(asset['updated_at'], "%Y-%m-%dT%H:%M:%SZ")),
+			'body': data.get('body', _("No release notes available."))
 		}
-
 
 class UpdateState:
 	def __init__(self):
@@ -296,6 +324,44 @@ class UpdateState:
 		self.releaseDate = None
 		self.ignoreCurrentVersion = False
 		self.pendingFile = ""
+
+class UpdateDialog(wx.Dialog):
+	def __init__(self, parent, addonName, version, body):
+		super().__init__(parent, title=_("Update available"), size=(500, 400))
+
+		mainSizer = wx.BoxSizer(wx.VERTICAL)
+		msg = wx.StaticText(
+			self,
+			label=_("A new version of %s is available (%s). Do you want to update?") % (addonName, version)
+		)
+		mainSizer.Add(msg, 0, wx.ALL, 10)
+
+		notesLabel = wx.StaticText(self, label=_("What's new:"))
+		mainSizer.Add(notesLabel, 0, wx.LEFT | wx.TOP, 10)
+
+		self.notesCtrl = wx.TextCtrl(
+			self,
+			value=body,
+			style=wx.TE_MULTILINE | wx.TE_READONLY | wx.TE_RICH2
+		)
+		mainSizer.Add(self.notesCtrl, 1, wx.EXPAND | wx.ALL, 10)
+
+		btnSizer = self.CreateButtonSizer(wx.YES | wx.NO)
+		mainSizer.Add(btnSizer, 0, wx.EXPAND | wx.ALL, 10)
+
+		self.Bind(wx.EVT_BUTTON, lambda evt: self.onOk(), id=wx.ID_YES)
+		self.Bind(wx.EVT_BUTTON, lambda evt: self.onCancel(), id=wx.ID_NO)
+
+		self.SetSizer(mainSizer)
+		self.Centre()
+
+	def onOk(self):
+		self.EndModal(wx.ID_YES)
+		self.Destroy()
+
+	def onCancel(self):
+		self.EndModal(wx.ID_NO)
+		self.Destroy()
 
 
 #: The time to wait between checks.
@@ -332,7 +398,9 @@ class UpdateHandler:
 
 	def installAddon(self):
 		dest = self.state.pendingFile
+		gui.mainFrame.prePopup()
 		res = guiInstallAddon(dest)
+		gui.mainFrame.postPopup()
 		if res:
 			self.state.pendingFile = ""
 			self.saveState()
@@ -389,7 +457,7 @@ class UpdateHandler:
 		self.state.lastReleaseVersion = d['version']
 		self.state.releaseDate = d['releaseDate']
 		self.saveState()
-		if curAddon.version == d['version']:
+		if not isNewerVersion(d['version'], curAddon.version):
 			self.updateTimer()
 			if fromGui:
 				gui.messageBox(
@@ -401,18 +469,9 @@ class UpdateHandler:
 					gui.mainFrame
 				)
 			return
-		updateMsg = _(
-			# Translators: A message asking the user if they wish to update the add-on
-			"A new version of %s was found. The new version is %s. Would you like to update this add-on now?"
-		) % (self.addonName, d['version'])
-		# Translators: Title for message asking if the user wishes to update the add-on.
-		updateTitle = _("Update add-on")
-		result = gui.messageBox(
-			message=updateMsg,
-			caption=updateTitle,
-			style=wx.YES | wx.NO | wx.ICON_WARNING
-		)
-		if wx.YES == result:
+		dlg = UpdateDialog(gui.mainFrame, self.addonName, d['version'], d.get('body', ''))
+		res = dlg.ShowModal()
+		if res == wx.ID_YES:
 			self.startUpdateProcess(d)
 		self.updateTimer()
 
