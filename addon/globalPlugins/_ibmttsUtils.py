@@ -21,6 +21,11 @@ except addonHandler.AddonError:
 		"Unable to initialise translations. This may be because the addon is running from NVDA scratchpad."
 	)
 
+try:
+	from systemUtils import ExecAndPump
+except ImportError:
+	from gui import ExecAndPump
+
 
 def find_symbol_in_dll(dll_path, target_symbol="eciVersion"):
 	""" Verifies if a specific function symbol exists in a Windows DLL's export table.
@@ -157,7 +162,7 @@ def guiDownloadFile(url, dest, title, msg):
 	res = True
 	while True:
 		try:
-			gui.ExecAndPump(downloadFile, url, dest, update)
+			ExecAndPump(downloadFile, url, dest, update)
 			break
 		except:
 			# Translators: a message dialog asking to retry or cancel when downloading a file.
@@ -195,7 +200,7 @@ def guiCopiFiles(src, dest, title, msg):
 	res = True
 	while True:
 		try:
-			gui.ExecAndPump(copyFiles, src, dest)
+			ExecAndPump(copyFiles, src, dest)
 			break
 		except:
 			# Translators: a message dialog asking to retry or cancel when copying files.
@@ -214,7 +219,7 @@ def guiCopiFiles(src, dest, title, msg):
 
 def parseVersion(v):
 	try:
-		parts = v.strip().replace("v", "").split(".")
+		parts = v.strip().replace("-dev", "").split(".")
 		return tuple(int(p) for p in parts)
 	except:
 		return (0, 0, 0)
@@ -225,12 +230,9 @@ def isNewerVersion(newVersion, currentVersion):
 
 
 def guiInstallAddon(addonPath):
+	from gui.message import DisplayableError
 	try:
-		from systemUtils import ExecAndPump
-		from gui.message import DisplayableError
-
 		bundle = addonHandler.AddonBundle(addonPath)
-
 		prevAddon = None
 		for a in addonHandler.getAvailableAddons():
 			if a.name == bundle.manifest.get("name"):

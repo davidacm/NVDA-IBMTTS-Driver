@@ -10,7 +10,7 @@ import config, globalVars, gui, os, shutil, sys, wx, addonHandler
 
 addonDir = os.path.abspath(os.path.join(os.path.dirname(__file__), "globalPlugins"))
 sys.path.append(addonDir)
-from _ibmttsUtils import showDonationsDialog
+from _ibmttsUtils import showDonationsDialog, parseVersion
 sys.path.remove(sys.path[-1])
 
 addonHandler.initTranslation()
@@ -48,6 +48,42 @@ def preserveFiles(addonName, folder):
 		os.rename(absFolderPath, tempFolder)
 
 
+def handleOldNVDAUpdate():
+	"""
+	Detects if there is a previous version of the add-on <= 26.3.x
+	and apply a workaround to avoid deleting old add-on errors
+	during the update (file locks).
+	"""
+	try:
+		cur = addonHandler.getCodeAddon()
+		if not cur:
+			return
+		addonName = cur.manifest.get("name")
+		prevAddon = next(
+			addonHandler.getAvailableAddons(
+				filterFunc=lambda x: x.name == addonName and x is not cur
+			),
+			None
+		)
+		if not prevAddon:
+			return
+		prevVersion = parseVersion(prevAddon.version)
+		# Only act on problematic versions
+		if prevVersion < (26,4):
+			log.info(f"Old add-on version detected ({prevAddon.version}). Applying update workaround.")
+			try:
+				prevAddon.requestRemove()
+			except Exception:
+				log.warning("Failed to request removal of previous add-on", exc_info=True)
+			gui.messageBox(
+				_("You may require to restart NVDA manually due to an incompatibility with older versions in the update process."),
+				_("Update scheduled"),
+				wx.OK | wx.ICON_INFORMATION
+			)
+	except Exception:
+		log.error("Error while handling old add-on update workaround", exc_info=True)
+
+
 try:
 	TTSPath = config.conf['ibmeci']['TTSPath']
 	dllName = config.conf['ibmeci']['dllName']
@@ -62,6 +98,7 @@ def onInstall():
 	gui.mainFrame.postPopup()
 	try:
 		preserveFiles("ibmtts", r"synthDrivers\ibmtts")
+		handleOldNVDAUpdate()
 	except:
 		log.warning("error backing data", exc_info=True)
 
