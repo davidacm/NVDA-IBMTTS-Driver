@@ -124,8 +124,7 @@ german_fixes = {
 	# Crash words.
 	re.compile(br'dane-ben', re.I): br'dane `0 ben',
 	re.compile(br'dage-gen', re.I): br'dage `0 gen',
-	re.compile(br'(audio|video)(-)(en[bcdfghjklmnpqrsvwxz][a-z]+)', re.I): br'\1 `0 \3',
-	re.compile(br'(macro)(-)(en[a-z]+)', re.I): br'\1 `0 \3',
+	re.compile(br'(audio|macro|video)(-)(en[a-z]+)', re.I): br'\1 `0 \3',
 }
 german_ibm_fixes = {
 	# Just like english_ibm_fixes, also avoids unneeded replacements
