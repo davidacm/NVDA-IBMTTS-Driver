@@ -1,135 +1,170 @@
-# IBMTTS sürücüsü, NVDA için Eklenti #
+# IBMTTS sürücüsü, NVDA için eklenti
 
-  Bu eklenti, IBMTTS sentezleyici ile NVDA uyumluluğunu sağlar.  
-  IBMTTS kitaplıklarını dağıtamıyoruz. Yani bu sadece sürücü.  
-  Bu sürücüyü geliştirmek istiyorsanız, çekme isteklerinizi göndermekten çekinmeyin!  
+Bu eklenti, NVDA ile IBMTTS sentezleyicisi arasında uyumluluk sağlar.
+IBMTTS kütüphanelerini dağıtamıyoruz. Bu nedenle bu sadece sürücüdür.
+Bu sürücüyü geliştirmek isterseniz, Çekme isteklerinizi göndermekten çekinmeyin!
 
-Bu sürücü Eloquence kitaplıklarıyla uyumlu olsa da (Eloquence, IBMTTS ile aynı api'ye sahip olduğundan) lisans sorunları nedeniyle Eloquence'ın bu sürücüyle kullanılması önerilmez. Bu sürücü ile herhangi bir sentezleyici kitaplığını kullanmadan önce lisans kullanım haklarını almanız önerilir.  
+Bu sürücü Eloquence kütüphaneleriyle uyumludur (çünkü Eloquence, IBMTTS ile aynı API’ye sahiptir) ancak lisans sorunları nedeniyle bu sürücüyle Eloquence kullanılması önerilmez. Bu sürücüyle herhangi bir sentez kütüphanesi kullanmadan önce, öncelikle kullanım lisansı haklarını almanız önerilir.
 
-Bu sürücü, IBMTTS için web'de halka açık olan belgelerle geliştirilmiştir. Daha fazla ayrıntı için referanslar bölümüne bakın.  
+Bu sürücü, web üzerinde herkese açık olarak bulunan IBMTTS dokümantasyonu kullanılarak geliştirilmiştir. Daha fazla ayrıntı için referanslar bölümüne bakın.
 
 ## İndirme.
-En son sürüm [bu bağlantıdan indirilebilir](https://davidacm.github.io/getlatest/gh/davidacm/NVDA-IBMTTS-Driver)
 
-## IBMTTS sentezleyici nedir?
+En son sürüm şu bağlantıdan indirilebilir:  
+[Sürücüyü bu bağlantıdan indirebilirsiniz.](https://davidacm.github.io/getlatest/gh/davidacm/NVDA-IBMTTS-Driver)
 
-ViaVoice TTS, IBM tarafından geliştirilen ve insan dilinin metinsel temsilini konuşmaya dönüştüren bir metinden konuşmaya motorudur.
+## IBMTTS sentezleyicisi nedir?
+
+ViaVoice TTS, IBM tarafından geliştirilmiş bir metin-konuşma motorudur ve insan dilinin metinsel temsilini konuşmaya dönüştürür.
 
 ## Özellikler ve ayarlar.
 
-* Ses, varyant, hız, perde, çekim ve ses ayarı desteği.
-* Ekstra kafa boyutu, Pürüzlülük, Nefes alma parametreleri ayarları desteği. Kendi sesini yarat!
-* Ters alıntı ses etiketlerini etkinleştirin veya devre dışı bırakın. Kendinizi şakacılardan gelen kötü amaçlı kodlardan korumak için devre dışı bırakın, sentezleyici ile birçok eğlenceli şey yapmasını etkinleştirin. Düzgün çalışması için NVDA ile biraz daha ince ayar yapılması gerekiyor.
-* Hız artışı. Sentezleyici sizinle çok hızlı konuşmuyorsa etkinleştirin ve maksimum ses hızını elde edin!
-* otomatik dil değiştirme. İşaretlendiğinde sentezleyicinin metni size doğru dilde okumasına izin verir.
-* kapsamlı filtreleme Bu sürücü, sentezleyicinin çökmelerini ve diğer garip davranışlarını düzeltmek için kapsamlı bir filtre seti içerir.
-* sözlük desteği. Bu sürücü, her dil için özel kelimelerin, köklerin ve kısaltma kullanıcı sözlüklerinin entegrasyonunu destekler. Hazır sözlük setleri, [topluluk sözlük deposundan](https://github.com/thunderdrop/IBMTTSDictionaries) veya [mohamed00'in alternatif deposundan (IBM synth sözlükleriyle)](https://github.com/mohamed00) elde edilebilir.
+* Ses, varyant, hız, perde, tonlama ve ses seviyesi ayarlarını destekler.
+* Ek kafa boyutu, pürüzlülük, nefeslilik parametre ayarlarını destekler. Kendi sesinizi oluşturun!
+* Ters tırnak ses etiketlerini etkinleştir veya devre dışı bırak. Şakacılardan gelebilecek kötü amaçlı kodlardan korunmak için devre dışı bırakın, sentezleyici ile birçok eğlenceli şey yapmak için etkinleştirin. Ancak düzgün çalışması için NVDA’da bazı ek ayarlamalar gerekir.
+* Hız artırma. Sentezleyici sizin için çok hızlı konuşmuyorsa, bunu etkinleştirin ve maksimum ses hızını elde edin!
+* Otomatik dil değiştirme. İşaretlendiğinde metni doğru dilde okumasını sağlayın.
+* Kapsamlı filtreleme. Bu sürücü, çökmeleri ve sentezleyicinin diğer garip davranışlarını düzeltmek için kapsamlı bir filtre seti içerir.
+* Sözlük desteği. Bu sürücü, her dil için özel kelimeler, kökler ve kısaltmalar için kullanıcı sözlüklerinin entegrasyonunu destekler. Hazır sözlük setleri [the community dictionary repository](https://github.com/eigencrow/IBMTTSDictionaries) veya [mohamed00's alternative repository (with IBM synth dictionaries)](https://github.com/mohamed00/AltIBMTTSDictionaries) adreslerinden elde edilebilir.
 
 ### Ek ayarlar:
 
-* Kısaltma genişletmeyi etkinleştir: kısaltmaların genişletilmesini değiştirir. Bu seçeneği devre dışı bırakmanın, kullanıcı tarafından sağlanan kısaltma sözlüklerinde belirtilen kısaltmaların genişletilmesini de devre dışı bırakacağını unutmayın.
-* Tümce tahminini etkinleştir: Bu seçenek etkinleştirilirse, sentezleyici, örneğin "ve" veya "the" gibi sözcükleri tümce sınırları olarak kullanarak yapılarına göre cümlelerde duraklamaların nerede olacağını tahmin etmeye çalışır. Bu seçenek kapalıysa, yalnızca virgül veya benzeri noktalama işaretleriyle karşılaşıldığında duraklar.
-* Duraklamaları kısaltın: diğer ekran okuyucularda görülenler gibi daha kısa noktalama duraklamaları için bu seçeneği etkinleştirin.
-* Her zaman geçerli konuşma ayarlarını gönder: Sentezleyicide, konuşma ve perde ayarlarının zaman zaman kısa süreliğine varsayılan değerlerine sıfırlanmasına neden olan bir hata vardır. Bu sorunun nedeni şu anda bilinmiyor, ancak geçici bir çözüm, geçerli konuşma hızını ve perde ayarlarını sürekli olarak göndermektir. Bu seçenek genellikle etkinleştirilmelidir. Ancak, ters alıntı ses etiketleri içeren metin okunurken devre dışı bırakılmalıdır.
-* Örnekleme hızı: sentezleyicinin ses kalitesini değiştirir. Örnek hızının 8 kHz olarak ayarlanmasının yeni bir ses grubuna erişim sağladığı IBMTTS için en kullanışlıdır.
+* Kısaltma genişletmeyi etkinleştir: kısaltmaların genişletilmesini açıp kapatır. Bu seçeneği devre dışı bırakmanın, kullanıcı tarafından sağlanan kısaltma sözlüklerinde belirtilen kısaltmaların genişletilmesini de devre dışı bırakacağını unutmayın.
+* Cümle tahminini etkinleştir: bu seçenek etkinleştirildiğinde, sentezleyici cümle yapısına göre duraklamaların nerede olacağını tahmin etmeye çalışır; örneğin "and" veya "the" gibi kelimeleri ifade sınırları olarak kullanarak. Bu seçenek kapalıysa, yalnızca virgül veya benzeri noktalama işaretleriyle karşılaşıldığında duraklar.
+* Duraklamalar: Bu üç seçeneğe sahip bir açılır kutudur.
+  * Kısaltma yapma: duraklamalar hiçbir şekilde kısaltılmaz ve her durumda IBMTTS’in orijinal duraklamaları kullanılır.
+  * Sadece metin sonunda kısalt: nokta ve virgül gibi noktalama işaretlerinin duraklamaları kısaltılmaz, ancak metin sona erdiğinde kısaltılır; örneğin NVDA+t tuşuna hızlıca iki kez basarak bir uygulamanın başlık çubuğunu harf harf hecelemek gibi durumlarda.
+  * Tüm duraklamaları kısalt: noktalama duraklamaları ve metin sonundaki duraklamalar dahil tüm duraklamalar kısaltılır.
+* Her zaman mevcut konuşma ayarlarını gönder: sentezleyicide konuşma ve perde ayarlarının zaman zaman kısa süreliğine varsayılan değerlere sıfırlanmasına neden olan bir hata vardır. Bu sorunun nedeni şu anda bilinmemektedir, ancak geçici çözüm olarak mevcut konuşma hızı ve perde ayarlarını sürekli göndermektir. Bu seçenek genellikle etkinleştirilmelidir. Ancak ters tırnak ses etiketleri içeren metinler okunurken devre dışı bırakılmalıdır.
+* Örnekleme oranı: sentezleyicinin ses kalitesini değiştirir. Özellikle IBMTTS için kullanışlıdır; örnekleme oranını 8 kHz olarak ayarlamak yeni bir ses setine erişim sağlar.
 
 ### IBMTTS kategori ayarları.
 
-Bu eklentinin, konuşma senteziyle ilgili olmayan bazı dahili işlevleri yönetmek için NVDA Terciler iletişim kutusu içinde kendi ayar kategorisi vardır.
+Bu eklenti, NVDA Ayarlar iletişim kutusu içinde, konuşma senteziyle ilgili olmayan bazı dahili işlevleri yönetmek için kendi ayar kategorisine sahiptir.
 
-* IBMTTS için güncellemeleri otomatik olarak denetle: Bu seçenek işaretlenirse, eklenti mevcut yeni sürümleri günlük olarak kontrol eder.
-* Güncellemeleri Denetle düğmesi: Güncellemeleri el ile denetleme imkanı verir.
-* IBMTTS klasör adresi: IBMTTS kitaplığını yükleme yolu. Mutlak veya göreceli olabilir.
-* IBMTTS kitaplık adı (dll): Kitaplığın adı (dll). Yolları dahil etmeyin, yalnızca uzantılı ad, genellikle ".dll".
-* BirIBMTTS kitaplığı Bul... Sistemde IBMTTS kitaplığını aramak için bir dosya gözat iletişim kutusu açar. Mutlak bir yol olarak kaydedilecektir.
-* IBMTTS dosyalarını bir eklentide kopyalayın (bazı IBMTTS dağıtımları için çalışmayabilir): IBMTTS için kitaplık yolu ayarlanmışsa, tüm klasör dosyalarını eciLibraries adlı yeni bir eklentiye kopyalar ve mevcut yolu bir göreceli yol. NVDA'nın taşınabilir sürümlerinde çok kullanışlıdır. Yalnızca sesli dil bilgileri için "eci.ini" dosyalarını kullanan kitaplıklar için çalışır. Kitaplık Windows kayıt defterini kullanıyorsa bu seçenek çalışmaz.
+* IBMTTS için güncellemeleri otomatik Denetle: Bu seçenek işaretliyse, eklenti her gün yeni sürümleri denetler.
+* Güncellemeleri Denetle düğmesi: Yeni eklenti güncellemelerini elle denetler.
+* IBMTTS klasör adresi: IBMTTS kütüphanesini yüklemek için yol. Mutlak veya göreli olabilir.
+* IBMTTS kütüphane adı (dll): Kütüphanenin adı (dll). Yol eklemeyin, sadece uzantıyla birlikte adı yazın, genellikle ".dll".
+* IBMTTS kütüphanesi için gözat... Sistem üzerinde IBMTTS kütüphanesini aramak için dosya seçme penceresi açar. Mutlak yol olarak kaydedilir.
+* IBMTTS dosyalarını bir eklentiye kopyala (bazı IBMTTS dağıtımlarında çalışmayabilir): IBMTTS için kütüphane yolu ayarlanmışsa, tüm klasör dosyalarını eciLibraries adlı yeni bir eklentiye kopyalar ve mevcut yolu göreli bir yol olarak günceller. NVDA’nın taşınabilir sürümlerinde çok kullanışlıdır. Yalnızca ses dil bilgileri için "eci.ini" dosyalarını kullanan kütüphanelerle çalışır. Kütüphane Windows kayıt defterini kullanıyorsa bu seçenek çalışmaz.
 
-Not: Otomatik veya manuel güncelleme işlevi, eklentinin dahili dosyalarını kaldırmaz. O yerdeki kitaplıklarınızı kullanırsanız, bu işlevi güvenle kullanabilirsiniz. Kitaplıklarınız güvende olacak.
+Not: Otomatik veya manuel güncelleme işlevi eklentinin dahili dosyalarını kaldırmaz. Kütüphanelerinizi bu konumda kullanıyorsanız, bu işlevi güvenle kullanabilirsiniz. Kütüphaneleriniz güvende olacaktır.
+
+## 64-bit Uyumluluk & Mimari
+
+**NVDA 2026** ile birlikte ekran okuyucu 64-bit Python yorumlayıcısına geçmiştir. Yerel 64-bit IBMTTS kütüphaneleri mevcut olmadığından, 64-bit Python ortamı ile mevcut 32-bit IBMTTS kütüphaneleri arasında köprü kurmak için özel bir uyumluluk katmanı uygulanmıştır.
+
+### Uygulama Ayrıntıları
+
+Sorunsuz entegrasyon sağlamak için sürücü aşağıdaki mimariyi kullanır:
+
+* **32-bit DLL Host:** Özel bir Rust 32-bit host, 64-bit süreçler için köprü görevi görür. Bu host gerekli `eci.dll` dosyasını dinamik olarak yükleyebilir.
+* **Süreçler Arası İletişim (IPC):**
+* **Fonksiyon Çağrıları:** İletişim, mesaj modunda **overlapped named pipes** aracılığıyla sağlanır.
+* **Ses Akışı:** Yüksek performanslı ses veri aktarımı, süreçler arasında okuma/yazma işlemlerini sinyallemek için senkronizasyon olayları kullanılarak **paylaşılan bellek** üzerinden yönetilir.
+* **Çalıştırma:** Host süreci `rundll32` kullanılarak başlatılır.
+* **Python Proxy:** Python tabanlı bir proxy, standart `eci.dll` yerine geçer. Host uç noktalarıyla iletişim kurar ve ses akışını doğrudan paylaşılan bellekten işler.
+* **Dinamik Yükleme:** Sürücü ortamı otomatik algılar. Proxy yalnızca **NVDA 64-bit** altında başlatılır; **NVDA 32-bit** altında orijinal `eci.dll` yerel olarak yüklenir.
+
+### 32 bit host bridge
+
+32-bit host’un uygulama ayrıntıları için şu depoya bakın:
+[ibmtts-host32-bridge](https://github.com/davidacm/ibmtts-host32-bridge)
 
 ## Gereksinimler.
-### NVDA.
-  NVDA 2019.3 veya sonrasına ihtiyacınız var.
 
-### IBMTTS sentezleyici kitaplıkları.
-  Bu sadece sürücü, kütüphaneleri başka bir yerden almalısınız.  
-  Bu sürücü, Doğu Asya dili desteği ekleyen biraz daha yeni kitaplıkları destekler ve metnin uygun şekilde kodlanması için özel düzeltmelere sahiptir. Yine de, bunun olmadığı eski kütüphaneler çalışmalıdır.
-  21.03A1 sürümünden itibaren bu sürücü, yalnızca SpeechWorks kitaplıkları yerine IBM'in daha yeni kitaplıklarıyla da çalışır. Bu kitaplıklar için bir dizi bağımsız düzeltme dahil edilmiştir ve ek diller ve diğer farklılıklar hesaba katılmıştır. Art arda gelen sesler desteklenir ve sesler yüklendikten sonra örnekleme hızı 8 kHz olarak ayarlanarak erişilebilir. En iyi sonuçları elde etmek için, ibmeci.dll'nin 7.0.0.0 sürümünün Haziran 2005 derlemesini kullanın, çünkü eski sürümler hızlı bir şekilde metin alırken, örneğin bir listedeki öğeler arasında hızla gezinirken, kararsız olabilir.
+### NVDA.
+
+NVDA 2019.3 veya daha yenisine ihtiyacınız var.
+
+### IBMTTS sentezleyici kütüphaneleri.
+
+Bu sadece sürücüdür, kütüphaneleri başka bir yerden edinmeniz gerekir.
+Bu sürücü, Doğu Asya dil desteği ekleyen biraz daha yeni kütüphaneleri destekler ve metnin doğru kodlanması için özel düzeltmeler içerir. Ancak bu özelliklere sahip olmayan eski kütüphaneler de çalışmalıdır.
+21.03A1 sürümünden itibaren bu sürücü, sadece SpeechWorks kütüphaneleriyle değil, IBM’in daha yeni kütüphaneleriyle de çalışır. Bu kütüphaneler için bağımsız düzeltmeler eklenmiştir ve ek diller ile diğer farklar dikkate alınmıştır. Concatenative sesler desteklenir ve sesler kurulduktan sonra örnekleme oranı 8 kHz olarak ayarlanarak erişilebilir. En iyi sonuçlar için ibmeci.dll’in Haziran 2005 derlemesini (sürüm 7.0.0.0) kullanın; daha eski sürümler, örneğin listede hızlı gezinirken olduğu gibi metin hızlı geldiğinde kararsız olabilir. Ayrıca Hong Kong Kantoncası veya Çince IBMTTS kütüphanelerini kullanıyorsanız, bazı karakterlerin içsel olarak dönüştürüldüğü pinyin ile hecelenmesini önlemek için, destekleniyorsa “yazım işlevini kullan” seçeneğini devre dışı bırakmak isteyebilirsiniz.
 
 ## Kurulum.
-Sadece bir NVDA eklentisi olarak kurun. Daha sonra NVDA Konuşma ayarlarını açın ve IBMTTS klasöründeki dosyaları IBMTTS kategorisinde ayarlayın.
-  Ayrıca bu kategoride, harici IBMTTS dosyalarını yerel olarak kullanmak için bir Eklentiye kopyalayabilirsiniz.
 
-## Çeviriye katkıda bulunmak.
+NVDA eklentisi olarak yükleyin. Ardından NVDA ayarlarını açın ve IBMTTS kategorisinde IBMTTS klasör dosyalarını ayarlayın.
+Ayrıca bu kategoride harici IBMTTS dosyalarını bir eklentiye kopyalayarak yerel olarak da kullanabilirsiniz.
 
-İşinizi kolaylaştırmak için bir not bıraktım.
-[ana şubedeki çeviri şablonu.](https://raw.githubusercontent.com/davidacm/NVDA-IBMTTS-Driver/master/IBMTTS.pot)
-Bu eklentiyi başka bir dile çevirmek istiyor ve github hesabı açmak ya da çeviri için gerekli python ve diğer araçları yüklemek istemiyorsanız aşağıdaki adımları uygulayın:
+## Çeviriye katkıda bulunma.
 
-1. Aşağıdaki bağlantıdan
-[bu şablonu](https://raw.githubusercontent.com/davidacm/NVDA-IBMTTS-Driver/master/IBMTTS.pot),
-hedef dil için bir temel olarak kullanın.
-2. Bağlantıdan
-["poedit" programını indirin](https://poedit.net/),
-bu yazılım, çeviri dizilerini yönetmenize yardımcı olacaktır.
-3. Belgeleri de çevirmek istiyorsanız,
-[İngilizce belgeler bu bağlantıda.](https://raw.githubusercontent.com/davidacm/NVDA-IBMTTS-Driver/master/README.md)
-4. Çeviriyi bitirdikten sonra bana <dhf360@gmail.com> adresine gönderebilirsiniz.
+İşinizi kolaylaştırmak için master dalında bir
+[translation template in the master branch.](https://raw.githubusercontent.com/davidacm/NVDA-IBMTTS-Driver/master/IBMTTS.pot)
 
-Kaynak dosyaları derlemeniz gerekmez. Yeni bir eklenti sürümü yayınlarken yapacağım. Adınızı ilgili taahhütte belirteceğim. Adınızın açıklanmasını istemiyorsanız, bana e-posta ile belirtebilirsiniz.  
+Dokümantasyon için ["docChangelog-for-translators.md".](https://raw.githubusercontent.com/davidacm/NVDA-IBMTTS-Driver/master/docChangelog-for-translators.md) adlı bir dosya oluşturdum.
+Bu dosyayı kullanarak dokümantasyonda nelerin değiştiğini görebilir ve kendi diliniz için güncelleyebilirsiniz.
 
-Not: En son çeviri dizeleri şablonunu kullandığınızdan emin olun.  
+Bu eklentiyi başka bir dile çevirmek istiyorsanız ve github hesabı açmak ya da python ve diğer araçları kurmak istemiyorsanız, aşağıdaki adımları izleyin:
 
-Bu alternatif bir yöntemdir. Eğer isterseniz, her zamanki yoldan gidebilirsiniz. Bu depoyu çatallayın, çeviriyi kendi dilinize göre güncelleyin ve bana bir PR gönderin. Ancak bu yol, sizin için daha fazla karmaşıklık katacaktır.
+1. Hedef dil için temel olarak
+   [bu şablonu](https://raw.githubusercontent.com/davidacm/NVDA-IBMTTS-Driver/master/IBMTTS.pot) kullanın.
+2. ["poedit"](https://poedit.net/) indirin,
+bu yazılım çeviri dizelerini yönetmenize yardımcı olur.
+3. Dokümantasyonu da çevirmek istiyorsanız, yeni değişiklikleri
+[at this link.](https://raw.githubusercontent.com/davidacm/NVDA-IBMTTS-Driver/master/docChangelog-for-translators.md) adresinden görebilirsiniz. Tüm İngilizce dokümantasyonu [Tam İngilizce belgeler burada.](https://raw.githubusercontent.com/davidacm/NVDA-IBMTTS-Driver/master/readme.md)
+4. Çeviriyi bitirdiğinizde bana şu adrese gönderebilirsiniz: "[dhf360@gmail.com](mailto:dhf360@gmail.com)".
+
+Kaynak dosyaları derlemeniz gerekmez. Yeni bir eklenti sürümü yayınlanırken bunu ben yapacağım. İlgili commit’te adınızı belirteceğim. Eğer adınızın belirtilmesini istemiyorsanız, bunu e-postada belirtin.
+
+Not: En güncel çeviri şablonunu kullandığınızdan emin olun.
+
+Bu alternatif bir yöntemdir. İsterseniz her zaman normal yolu da izleyebilirsiniz. Bu repo’yu fork edip, kendi diliniz için çeviriyi güncelleyip PR gönderebilirsiniz. Ancak bu yöntem sizin için daha karmaşık olacaktır.
 
 ## Dağıtım için paketleme.
 
-1. Python'u yükleyin, şu anda python 3.7 kullanılıyor, ancak daha yeni bir sürüm kullanabilirsiniz.
-2. Gettext'i yükleyin, [bu bağlantıdan Windows için bir dağıtım indirebilirsiniz.](https://mlocati.github.io/articles/gettext-iconv-windows.html) Windows 64 bit kullanıyorsanız, [bu sürümü tavsiye ederim.](https://github.com/mlocati/gettext-iconv-windows/releases/download/v0.21-v1.16/gettext0.21-iconv1.16-shared-64.exe)
-3. (isteğe bağlı ancak önerilen adım) NVDA eklentilerini yönetmek için kullanılacak bir python sanal ortamı oluşturun. Konsolda "python -m venv PAT_TO_FOLDER" kullanın. PAT_TO_FOLDER, sanal ortam için istediğiniz yolun yoludur.
-4. 2. adımı yaptıysanız, PAT_TO_FOLDER'a gidin ve betikler klasörü içinde "etkinleştir" komutunu çalıştırın. Ortamın adı konsol prontunda gösterilmelidir.
-5. Bu repoyu istediğiniz yola kopyalayın: "git clone https://github.com/davidacm/NVDA-IBMTTS-Driver.git".
-6. Aynı konsol örneğinde, bu deponun klasörüne gidin.
+1. Python kurun, şu anda python 3.7 kullanılıyor, ancak daha yeni bir sürüm de kullanabilirsiniz.
+2. gettext kurun, Windows için dağıtımı [this link.](https://mlocati.github.io/articles/gettext-iconv-windows.html) adresinden indirebilirsiniz. Windows 64 bit kullanıyorsanız [bu sürüm.](https://github.com/mlocati/gettext-iconv-windows/releases/download/v0.21-v1.16/gettext0.21-iconv1.16-shared-64.exe) önerilir.
+3. (isteğe bağlı ama önerilir) NVDA eklentilerini yönetmek için bir python sanal ortamı oluşturun. Konsolda "python -m venv PAT_TO_FOLDER" komutunu kullanın. PAT_TO_FOLDER, sanal ortam için istediğiniz yol olmalıdır.
+4. 2. adımı yaptıysanız, PAT_TO_FOLDER içine gidin ve scripts klasörü içinde "activate" komutunu çalıştırın. Ortam adı konsol isteminde görünmelidir.
+5. Bu repo’yu istediğiniz konuma klonlayın: "git klonu [https://github.com/davidacm/NVDA-IBMTTS-Driver.git](https://github.com/davidacm/NVDA-IBMTTS-Driver.git)".
+6. Aynı konsolda bu Depo’nun klasörüne gidin.
 7. Gereksinimleri yükleyin: "pip install -r requirements.txt".
-8. scons komutunu çalıştırın. Oluşturulan eklenti, herhangi bir hata yoksa, bu deponun kök dizinine yerleştirilir.
+8. scons komutunu çalıştırın. Hata yoksa oluşturulan eklenti bu repo’nun kök dizinine yerleştirilir.
 
-Konsolu kapattığınızda sanal ortam devre dışı kalır.
+Konsolu kapattığınızda sanal ortam devre dışı bırakılır.
 
-### Kitaplıkları bağımsız bir eklenti olarak paketleyin.
+### Kütüphaneleri bağımsız bir eklenti olarak paketleme.
 
-Kitaplıkların bu sürücüye dahil edilmesi önerilmez. Bunun nedeni, kullanıcının sürücüyü sürücüden güncellemesidir.
-[resmi repo](https://github.com/davidacm/NVDA-IBMTTS-Driver),
-NVDA eklenti yükleyicisi kullanılarak, kitaplıklar da dahil olmak üzere eski sürüm silinir. Bunun için bir çözüm, kitaplıkları ayrı bir eklentiye yüklemektir.
-[Bu bağlantıdaki yönergeleri takip ederek](https://github.com/davidacm/ECILibrariesTemplate)
-kitaplıkları ayrı bir eklentide nasıl paketleyeceğinizi öğrenebilirsiniz.
+Kütüphaneleri bu sürücüyle birlikte dahil etmek önerilmez. Bunun nedeni, kullanıcı sürücüyü
+[resmi depo](https://github.com/davidacm/NVDA-IBMTTS-Driver) üzerinden NVDA eklenti yükleyicisi ile güncellediğinde, eski sürümün kütüphaneler dahil silinecek olmasıdır. Bunun bir çözümü, kütüphaneleri ayrı bir eklentiye kurmaktır.
+[Bu bağlantıyı takip edin](https://github.com/davidacm/ECILibrariesTemplate) bağlantısından kütüphaneleri ayrı bir eklenti olarak nasıl paketleyeceğinizi öğrenebilirsiniz.
 
-### notlar:
+### Notlar:
 
-* Dahili güncelleme özelliğini (el ile veya otomatik) kullanırsanız, kitaplıklar eklenti içinde olsalar bile silinmez.
-* sentezleyici eklentinin içindeyse veya
-["eciLibraries"](https://github.com/davidacm/ECILibrariesTemplate)
-eklenti, sürücü ini kitaplığı yollarını otomatik olarak güncelleyecektir. Böylece taşınabilir NVDA sürümlerinde kullanabilirsiniz.
-* "IBMTTS dosyalarını bir eklentiye kopyala" düğmesini kullandığınızda, yeni bir eklenti oluşturacaktır. Dolayısıyla, IBMTTS'yi kaldırmak istiyorsanız, iki eklentiyi kaldırmanız gerekir: "IBMTTS sürücüsü" ve "Eci kitaplıkları".
-* bu projedeki scons ve gettext araçları yalnızca python 3 ile uyumludur. piton 2.7 ile çalışmaz.
-* Ek IBMTTS gerekli dosyalarını eklentiye koyabilirsiniz (yalnızca kişisel kullanım için). Bunları "addon\synthDrivers\ibmtts" klasörüne kopyalamanız yeterlidir. Gerekirse "settingsDB.py" içindeki varsayılan kitaplık adını ayarlayın.
+* Dahili güncelleme özelliğini (manuel veya otomatik) kullanırsanız, kütüphaneler eklenti içinde olsa bile silinmez.
+* Sentezleyici eklenti içinde veya
+  ["eciLibraries"](https://github.com/davidacm/ECILibrariesTemplate) eklentisinde bulunuyorsa, sürücü ini kütüphane yollarını otomatik olarak günceller. Böylece taşınabilir NVDA sürümlerinde kullanabilirsiniz.
+* "IBMTTS dosyalarını bir eklentiye kopyala" düğmesini kullandığınızda yeni bir eklenti oluşturulur. Bu nedenle IBMTTS’i kaldırmak isterseniz iki eklentiyi kaldırmanız gerekir: "IBMTTS driver" ve "Eci libraries".
+* Bu projede scons ve gettext araçları yalnızca python 3 ile uyumludur. Python 2.7 ile çalışmaz.
+* Ek IBMTTS gerekli dosyalarını eklenti içine koyabilirsiniz (yalnızca kişisel kullanım için). Bunları "addon\synthDrivers\ibmtts" klasörüne kopyalayın. Gerekirse "settingsDB.py" içinde varsayılan kütüphane adını ayarlayın.
+* Yapılandırılmış kütüphane yolu göreli değilse, bu eklenti "eci.ini" dosyasındaki yolları güncellemez. Sürücü, mutlak yollar kullanıldığında yolların doğru olduğunu varsayar ve güncelleme yapmaz. Kütüphane yolunu ayarlarken bunu göz önünde bulundurun. Yanlışsa, bu durum NVDA’nın bu sentezleyici ile konuşamamasına neden olabilir.
 
-## Sorun raporlama:
+## Sorun bildirme:
 
-Bu sürücüyle uyumlu bazı kitaplıklarda bir güvenlik sorunu bulursanız, lütfen Bir github sorunu açın veya sorun çözülmeden önce forumlarda yorum yapın. Lütfen sorunu [bu formda bildirin.](https://docs.google.com/forms/d/123gSqayOAsIQLx1NiI98fEqr46oiJRZ9nNq0_KIF9WU/edit)
+Bu sürücüyle uyumlu bazı kütüphanelerde bir güvenlik açığı bulursanız, sorun çözülmeden önce lütfen GitHub’da issue açmayın veya forumlarda paylaşmayın. Lütfen sorunu
+[bu formda.](https://docs.google.com/forms/d/123gSqayOAsIQLx1NiI98fEqr46oiJRZ9nNq0_KIF9WU/edit) üzerinden bildirin.
 
-Sorun, sürücüyü veya ekran okuyucuyu çökertmezse, buradan bir [github sorunu açın.](https://github.com/davidacm/NVDA-IBMTTS-Driver/issues)
+Sorun sürücüyü veya ekran okuyucuyu çökertmiyorsa, buradan bir GitHub sorunu açın:
+[github sorunu burada.](https://github.com/davidacm/NVDA-IBMTTS-Driver/issues)
 
 ## Referanslar.
-Bu sürücü, IBM tts sdk'yi temel alır, belgeler şu adreste bulunur:
-[İlgili bağlantı](http://web.archive.org/web/20191125091344/http://www.wizzardsoftware.com/docs/tts.pdf)
 
-ayrıca columbia üniversitesinde
+Bu sürücü IBM TTS SDK üzerine kuruludur, dokümantasyon şu adreste mevcuttur:
+[bu bağlantı](http://web.archive.org/web/20191125091344/http://www.wizzardsoftware.com/docs/tts.pdf)
+
+ayrıca Columbia Üniversitesi’nde de:
 [bu bağlantı](http://www1.cs.columbia.edu/~hgs/research/projects/simvoice/simvoice/docs/tts.pdf)
 
-Veya [bu repo üzerinden bir yedek kopya alabilirsiniz.](https://github.com/david-acm/NVDA-IBMTTS-Driver)
+Veya şu repodan bir yedek kopya alabilirsiniz:
+[Bu depo](https://github.com/david-acm/NVDA-IBMTTS-Driver)
 
-[pyibmtts: Peter Parente tarafından geliştirilen IBM TTS için Python sarıcı](https://sourceforge.net/projects/ibmtts-sdk/)
+[pyibmtts: Peter Parente tarafından geliştirilen IBM TTS için Python sarmalayıcı](https://sourceforge.net/projects/ibmtts-sdk/)
 
-Buradaki yedekleme dosyalarına bakın:
+Yedek dosyalar için buraya bakın:
 
 [tts.pdf](https://cdn.jsdelivr.net/gh/davidacm/NVDA-IBMTTS-Driver/apiReference/tts.pdf)
+
 veya [tts.txt.](https://cdn.jsdelivr.net/gh/davidacm/NVDA-IBMTTS-Driver/apiReference/tts.txt)

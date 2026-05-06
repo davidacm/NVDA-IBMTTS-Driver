@@ -10,12 +10,16 @@ import queue
 
 import threading, time
 import languageHandler, nvwave, addonHandler
-from synthDriverHandler import findAndSetNextSynth
 import queueHandler
 from config import conf
 from logHandler import log
 from fileUtils import getFileVersionInfo
 from ._settingsDB import appConfig
+try:
+	from synthDriverHandler import findAndSetNextSynth
+except ImportError:
+	log.info("Couldn't import findAndSetNextSynth from synthDriverHandler. So the IBMTTS engine won't be able to switch to another synth if it fails.", exc_info=True)
+	findAndSetNextSynth = lambda x: None
 
 addonHandler.initTranslation()
 
@@ -23,8 +27,9 @@ addonHandler.initTranslation()
 # determine if 32 or 64 bits.
 import struct
 IS_64BIT = struct.calcsize("P") == 8
-from ._proxyEci import EciDLL
-from ._ipc import terminate_host_32
+if IS_64BIT:
+	from ._proxyEci import EciDLL
+	from ._ipc import terminate_host_32
 
 class  ECIParam:
 	eciSynthMode=0

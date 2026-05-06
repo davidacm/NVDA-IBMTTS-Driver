@@ -1,3 +1,8 @@
+# version 26.5.1
+* Restored support for NVDA 2019.3. This fixes issue #151.
+* Updated Turkish translations.
+* Simplified German anticrash expression, removing the second one for macro, fixing macro - enabled by folding it into the existing expression for audio and video. Fixes #144.
+
 # version 26.4.1
 
 * Implemented 64-bit support while ensuring full backward compatibility with 32-bit systems. This is implemented via a 32-bit DLL host integrated with a 64-bit Python-based proxy DLL. Named pipes were used for calling functions, and shared memory between processes for the audio stream.
