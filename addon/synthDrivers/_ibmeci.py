@@ -21,15 +21,19 @@ except ImportError:
 	log.info("Couldn't import findAndSetNextSynth from synthDriverHandler. So the IBMTTS engine won't be able to switch to another synth if it fails.", exc_info=True)
 	findAndSetNextSynth = lambda x: None
 
-addonHandler.initTranslation()
-
 
 # determine if 32 or 64 bits.
 import struct
 IS_64BIT = struct.calcsize("P") == 8
 if IS_64BIT:
 	from ._proxyEci import EciDLL
-	from ._ipc import terminate_host_32
+	from ._ipc import terminate_host_32, is_host_process_alive
+else:
+	is_host_process_alive = lambda: True
+
+
+addonHandler.initTranslation()
+
 
 class  ECIParam:
 	eciSynthMode=0
@@ -190,7 +194,7 @@ class EciThread(threading.Thread):
 			started.set()
 			stopped.set()
 			param_event.set()
-			if dll:
+			if dll and is_host_process_alive():
 				dll.eciDelete(handle)
 
 	def _run(self):

@@ -56,9 +56,20 @@ WaitNamedPipeW.restype = wintypes.BOOL
 
 # Host process handle functions
 
+def is_host_process_alive():
+    """
+    Check if the 32-bit host process is still active.
+    Returns True if it is alive, False if it was terminated.
+    """
+    global process_host32
+    if process_host32 is None:
+        return False
+    return process_host32.poll() is None
+
+
 def terminate_host_32():
     global process_host32
-    if process_host32:
+    if is_host_process_alive():
         try:
             process_host32.terminate()
             process_host32.wait(timeout=1.0)
@@ -70,6 +81,7 @@ def terminate_host_32():
         finally:
             process_host32 = None
 
+
 def launch_host_32(dll_filename="ibmtts_host32.dll", timeout=5.0):
     """
     Launch the 32-bit host and wait for the Pipe to become available.
@@ -78,7 +90,7 @@ def launch_host_32(dll_filename="ibmtts_host32.dll", timeout=5.0):
     pid = os.getpid()
     
     # If there is already one, we try not to launch another (the Mutex in host will still protect)
-    if process_host32 and process_host32.poll() is None:
+    if is_host_process_alive():
         return process_host32
 
     base_path = os.path.dirname(os.path.abspath(__file__))
