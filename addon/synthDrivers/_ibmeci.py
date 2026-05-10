@@ -8,6 +8,7 @@ from io import BytesIO
 from os import path
 import queue
 
+
 import threading, time
 import languageHandler, nvwave, addonHandler
 import queueHandler
@@ -35,7 +36,7 @@ else:
 addonHandler.initTranslation()
 
 
-class  ECIParam:
+class  ECIParam():
 	eciSynthMode=0
 	eciInputType=1
 	eciTextMode=2
@@ -53,19 +54,19 @@ class ECIVoiceParam:
 	eciGender, eciHeadSize, eciPitchBaseline, eciPitchFluctuation, eciRoughness, eciBreathiness, eciSpeed, eciVolume = range(8)
 
 
-class ECIDictVolume:
+class ECIDictVolume():
 	eciMainDict, eciRootDict, eciAbbvDict, eciMainDictExt = range(4)
 
 
-class ECIMessage:
+class ECIMessage():
 	eciWaveformBuffer, eciPhonemeBuffer, eciIndexReply, eciPhonemeIndexReply, eciWordIndexReply = range(5)
 
 
-class ECICallbackReturn:
+class ECICallbackReturn():
 	eciDataNotProcessed, eciDataProcessed, eciDataAbort= range(3)
 
 
-class ECILanguageDialect:
+class ECILanguageDialect():
 	NODEFINEDCODESET = 0x00000000
 	GeneralAmericanEnglish = 0x00010000
 	BritishEnglish = 0x00010001
@@ -174,6 +175,17 @@ handle = None
 dictHandles={}
 params = {}
 vparams = {}
+
+def check_lang_param(lang):
+	if lang in avLangs:
+		return lang
+	log.warning("Language %s is not supported by the IBMTTS engine. Changing to a default language" % lang)
+	lang = getVoiceByLanguage(languageHandler.getLanguage())[0]
+	if lang in avLangs:
+		return lang
+	log.warning("Couldn't find a default language for the IBMTTS engine. Changing to the first available language.")
+	return avLangs[0]
+
 
 def post_message_to_eciThread(msg, wParam, lParam, exceptOnDie=True):
 	"""Send a message to the ECI thread. First verifying that it is alive."""
@@ -286,11 +298,18 @@ def setPathsFromConfig():
 
 def updateIniPaths():
 	iniPath = path.join(ttsPath, dllName[:-3] +"ini")
-	if path.isabs(appConfig.TTSPath) or not path.exists(iniPath):
+	if not path.exists(iniPath):
+		# some libs don't have an ini file, so we just
 		return
 	ini=open(iniPath, "r+")
 	ini.seek(12)
-	tml=ini.readline()[:-8]
+	synFile = ini.readline()[:-1]
+	if path.exists(synFile):
+		# the path is correct, so we don't need to change it.
+		ini.close()
+		return
+	log.warning("The path in the IBMTTS ini file is incorrect. Updating it to the correct path. This may fail if NVDA doesn't have permission to write to the ini file, in which case the IBMTTS synth may not work.")
+	tml = synFile[:-7]
 	newPath = ttsPath + "\\"
 	if tml != newPath:
 		ini.seek(12)
@@ -347,10 +366,12 @@ def eciNew():
 		eci.eciGetAvailableLanguages(0,byref(b))
 		avLangs=(c_int*b.value)()
 		eci.eciGetAvailableLanguages(byref(avLangs),byref(b))
-	try:
-		handle=eci.eciNewEx(int(conf['speech']['ibmeci']['voice']))
-	except:
-		handle=eci.eciNewEx(getVoiceByLanguage(languageHandler.getLanguage())[0])
+	if 'voice' in conf['speech']['ibmeci']:
+		lang = int(conf['speech']['ibmeci']['voice'])
+	else:
+		lang = getVoiceByLanguage(languageHandler.getLanguage())[0]
+	lang = check_lang_param(lang)
+	handle = eci.eciNewEx(lang)
 	for i in ECIVoiceParam.params:
 		vparams[i] = eci.eciGetVoiceParam(handle, 0, i)
 	return eci,handle
@@ -514,6 +535,7 @@ def terminate():
 
 
 def setVoice(vl):
+	vl = check_lang_param(vl)
 	post_message_to_eciThread(WM_PARAM, vl, ECIParam.eciLanguageDialect)
 	param_event.wait()
 	param_event.clear()
