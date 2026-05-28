@@ -140,6 +140,41 @@ WM_COPYVOICE=1029
 WM_KILL=1030
 WM_SYNTH=1031
 WM_INDEX=1032
+WM_PROCESS_NEXT_CHUNK=1033
+
+# Chunking parameters: split very long texts so each eciSynthesize call processes
+# a small piece. The internal index is placed at the end of each chunk; the request
+# for the next chunk is posted from the playback path so the player's feed-backpressure
+# (a second player.feed blocks until the first is done) paces our synthesis.
+CHUNK_SIZE = 2000
+INTERNAL_CHUNK_INDEX = 0xfffe  # reserved internal marker (END_STRING_MARK is 0xffff)
+# Encodings that are always one byte per character — split anywhere is safe.
+_SINGLE_BYTE_ENCODINGS = frozenset(('cp1252', 'mbcs'))
+
+
+class _PendingChunkSource:
+	"""Holds a reference to a big text being chunked plus the current offset and the
+	encoding it was produced with. The big payload is referenced (bytes are immutable)
+	so it is not copied."""
+	__slots__ = ('data', 'encoding', 'offset')
+	def __init__(self, data, encoding):
+		self.data = data
+		self.encoding = encoding
+		self.offset = 0
+
+
+def _findChunkSplit(data, target, encoding):
+	"""Return a split position <= target that is safe for the given encoding.
+	For single-byte encodings, returns target unchanged. For the multi-byte encodings
+	used by this driver (gb18030/cp932/cp949/big5), scans backwards for a byte that
+	can never be a trail byte (< 0x30) and returns the position right after it."""
+	if not encoding or encoding in _SINGLE_BYTE_ENCODINGS:
+		return target
+	start = max(target - 512, 0)
+	for i in range(target - 1, start - 1, -1):
+		if data[i] < 0x30:
+			return i + 1
+	return target
 
 
 # global variables
@@ -159,6 +194,13 @@ idleTimer = None
 onIndexReached = None
 onDoneSpeaking = None
 endMarkersCount = 0
+# Chunking and flow-control state. Only touched on the ECI thread.
+pendingChunkSource = None
+deferredOps = []
+# Set after each synth() in an outlist; cleared once the synth's audio has been fed to
+# the player. While set, any newly arriving outlist is parked on deferredOps so the
+# engine doesn't race ahead of playback.
+waitingForDrain = False
 
 buffer = create_string_buffer(samples*2)
 
@@ -211,7 +253,7 @@ class EciThread(threading.Thread):
 
 	def _run(self):
 		global vparams, params, speaking, endMarkersCount, buffer
-		global eciThreadId, dll, handle
+		global eciThreadId, dll, handle, pendingChunkSource, waitingForDrain
 		eciThreadId = windll.kernel32.GetCurrentThreadId()
 		msg = wintypes.MSG()
 		user32.PeekMessageA(byref(msg), None, 0x400, 0x400, 0)
@@ -237,6 +279,8 @@ class EciThread(threading.Thread):
 			user32.TranslateMessage(byref(msg))
 			if msg.message == WM_PROCESS:
 				processEciQueue()
+			elif msg.message == WM_PROCESS_NEXT_CHUNK:
+				sendNextChunk()
 			elif msg.message == WM_SILENCE:
 				speaking=False
 				audioStream.seek(0)
@@ -250,6 +294,9 @@ class EciThread(threading.Thread):
 						pass
 				player.stop()
 				endMarkersCount = 0
+				pendingChunkSource = None
+				deferredOps.clear()
+				waitingForDrain = False
 			elif msg.message == WM_PARAM:
 				dll.eciSetParam(handle, msg.lParam, msg.wParam)
 				params[msg.lParam] = msg.wParam
@@ -283,9 +330,83 @@ class EciThread(threading.Thread):
 
 def processEciQueue():
 	lst = eciQueue.get()
-	for (func, args) in lst:
-		func(*args)
 	eciQueue.task_done()
+	if pendingChunkSource is not None or waitingForDrain:
+		# Either mid-chunking or waiting for the previous outlist's audio to be fed.
+		# Either way, park the new ops so they run in order once we resume.
+		deferredOps.extend(lst)
+		return
+	runOps(lst)
+
+
+def runOps(ops):
+	"""Execute ops sequentially. Two things make us return early and defer the rest:
+	(a) the first speak op larger than CHUNK_SIZE — it starts chunked playback;
+	(b) a synth op — that synth's audio must be fed to the player before anything else
+	    is sent to the engine, so we set waitingForDrain and stop here. The drain is
+	    cleared when END_STRING_MARK fires (see eciCallback) and the
+	    _postNextChunkMessage queued behind this synth's bgPlay items runs."""
+	global pendingChunkSource, waitingForDrain
+	for i, (func, args) in enumerate(ops):
+		if func is speak and len(args[0]) > CHUNK_SIZE:
+			data = args[0]
+			encoding = args[1] if len(args) > 1 else None
+			pendingChunkSource = _PendingChunkSource(data, encoding)
+			deferredOps.clear()
+			deferredOps.extend(ops[i+1:])
+			sendNextChunk()
+			return
+		if func is synth:
+			# Set the flag *before* calling synth so the END_STRING_MARK callback that
+			# fires inside eciSynthesize sees a consistent state.
+			waitingForDrain = True
+			func(*args)
+			if i + 1 < len(ops):
+				deferredOps.extend(ops[i+1:])
+			return
+		func(*args)
+
+
+def sendNextChunk():
+	"""Drives both flow-control mechanisms. When chunking is active, push the next
+	chunk (or finish the source and resume deferred ops). Otherwise treat this as
+	drain-done from a previous outlist's synth: clear the flag and run any deferred
+	ops queued while we were waiting."""
+	global pendingChunkSource, waitingForDrain
+	if pendingChunkSource is not None:
+		data = pendingChunkSource.data
+		encoding = pendingChunkSource.encoding
+		offset = pendingChunkSource.offset
+		remaining = len(data) - offset
+		if remaining <= CHUNK_SIZE:
+			# Last chunk: send the rest as a single piece (no internal index needed)
+			# and let the deferred ops (setEndStringMark + synth) close out the speech.
+			speak(data[offset:])
+			pendingChunkSource = None
+			ops = list(deferredOps)
+			deferredOps.clear()
+			runOps(ops)
+			return
+		# Not the last chunk: emit the chunk + an internal index at its end, then synth.
+		# The next-chunk request is posted from the playback path (see eciCallback), so
+		# the player's natural backpressure (feed blocks while the previous chunk is
+		# still playing) keeps us from running ahead of audio.
+		chunk_end = _findChunkSplit(data, offset + CHUNK_SIZE, encoding)
+		if chunk_end <= offset:
+			chunk_end = offset + CHUNK_SIZE  # forced split — may cut a multi-byte char
+		speak(data[offset:chunk_end])
+		index(INTERNAL_CHUNK_INDEX)
+		synth()
+		pendingChunkSource.offset = chunk_end
+		return
+	# No active chunking: we got here because END_STRING_MARK fired and the audio for
+	# the previous outlist's synth has been fed to the player.
+	if waitingForDrain:
+		waitingForDrain = False
+	if deferredOps:
+		ops = list(deferredOps)
+		deferredOps.clear()
+		runOps(ops)
 
 
 def setPathsFromConfig():
@@ -437,7 +558,20 @@ def eciCallback (h, ms, lp, dt):
 			if audioStream.tell() > 0: playStream()
 			sendIndexes()
 			_callbackExec(endStringEvent)
+			# Also resume the ECI thread once this outlist's audio has been fed to the
+			# player. Queued *after* endStringEvent so it runs strictly after every
+			# bgPlay item for this outlist (the callback thread is FIFO).
+			_callbackExec(_postNextChunkMessage)
 			endStringReached = True
+		elif lp == INTERNAL_CHUNK_INDEX:
+			# Internal flow control: the engine reached the end of a chunk. Flush this
+			# chunk's remaining audio, then queue the next-chunk request behind the
+			# playback items so it only runs after this chunk has been fed to the
+			# player. The player's backpressure (feed blocks while the previous chunk
+			# is still playing) is what paces our synthesis. Not forwarded to NVDA.
+			if audioStream.tell() > 0: playStream()
+			sendIndexes()
+			_callbackExec(_postNextChunkMessage)
 		else:
 			if endStringReached: _callbackExec(setLast, lp)
 			else: indexes.append(lp)
@@ -464,10 +598,13 @@ def _callbackExec(func, *args, **kwargs):
 	callbackQueue.put((func, args, kwargs))
 
 def initialize(indexCallback, doneCallback):
-	global callbackQueue, callbackThread, eciQueue, eciThread, idleTimer, onIndexReached, onDoneSpeaking, player
+	global callbackQueue, callbackThread, eciQueue, eciThread, idleTimer, onIndexReached, onDoneSpeaking, player, pendingChunkSource, waitingForDrain
 	started.clear()
 	stopped.clear()
 	param_event.clear()
+	pendingChunkSource = None
+	deferredOps.clear()
+	waitingForDrain = False
 	onIndexReached = indexCallback
 	onDoneSpeaking = doneCallback
 	idleTimer = threading.Timer(0.3, time.sleep) # fake timer because this can't be None.
@@ -486,11 +623,13 @@ def initialize(indexCallback, doneCallback):
 	callbackThread.start()
 
 
-def speak(text):
+def speak(text, encoding=None):
 	# deleted the following fix because is incompatible with NVDA's speech change command. Now send it from speak in ibmeci.py
 	#Sometimes the synth slows down for one string of text. Why?
 	#Trying to fix it here.
 	# if ECIVoiceParam.eciSpeed in vparams: text = b"`vs%d%s" % (vparams[ECIVoiceParam.eciSpeed], text)
+	# `encoding` is metadata used only by the chunking layer to pick safe split points;
+	# the engine itself already knows the encoding from the active language.
 	dll.eciAddText(handle, text)
 
 def index(x):
@@ -614,6 +753,12 @@ def loadDictForLanguage():
 			dll.eciLoadDict(handle, dictionaryHandle, 2, path.join(path.abspath(ttsPath), langid+"abbr.dic").encode('mbcs'))
 		return (params[ECIParam.eciLanguageDialect], dictionaryHandle)
 	else: return None
+
+def _postNextChunkMessage():
+	"""Run on the callback thread, after the player has been fed this chunk's audio.
+	Asks the ECI thread to synthesize the next chunk."""
+	user32.PostThreadMessageA(eciThreadId, WM_PROCESS_NEXT_CHUNK, 0, 0)
+
 
 def endStringEvent():
 	global idleTimer, speaking, endMarkersCount

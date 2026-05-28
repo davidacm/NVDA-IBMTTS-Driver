@@ -297,7 +297,9 @@ class SynthDriver(synthDriverHandler.SynthDriver):
 		for item in speechSequence:
 			if isinstance(item, str):
 				s = self.processText(item)
-				outlist.append((_ibmeci.speak, (s,)))
+				# Capture the encoding active for this item so the chunking layer in
+				# _ibmeci can pick safe split points without having to guess.
+				outlist.append((_ibmeci.speak, (s, self.currentEncoding)))
 				last = s
 			elif isinstance(item,IndexCommand):
 				outlist.append((_ibmeci.index, (item.index,)))
