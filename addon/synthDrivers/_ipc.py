@@ -105,9 +105,10 @@ def launch_host_32(dll_filename="ibmtts_host32.dll", timeout=5.0):
         rundll32 = os.path.join(system_root, 'System32', 'rundll32.exe')
     cmd = f'{rundll32} "{dll_path}",StartHost {pid}'
     process_host32 = subprocess.Popen(
-        cmd, 
-        creationflags=0x08000000, 
-        stdout=subprocess.DEVNULL, 
+        cmd,
+        creationflags=0x08000000,
+        stdin=subprocess.DEVNULL,
+        stdout=subprocess.DEVNULL,
         stderr=subprocess.DEVNULL
     )
 
