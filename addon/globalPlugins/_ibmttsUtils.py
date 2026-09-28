@@ -354,6 +354,8 @@ class UpdateDialog(wx.Dialog):
 
 		self.Bind(wx.EVT_BUTTON, lambda evt: self.onOk(), id=wx.ID_YES)
 		self.Bind(wx.EVT_BUTTON, lambda evt: self.onCancel(), id=wx.ID_NO)
+		self.Bind(wx.EVT_CLOSE, lambda evt: self.onCancel())
+		self.SetEscapeId(wx.ID_NO)
 
 		self.SetSizer(mainSizer)
 		self.Centre()
