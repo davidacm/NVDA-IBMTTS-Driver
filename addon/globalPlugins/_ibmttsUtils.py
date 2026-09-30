@@ -352,19 +352,28 @@ class UpdateDialog(wx.Dialog):
 		btnSizer = self.CreateButtonSizer(wx.YES | wx.NO)
 		mainSizer.Add(btnSizer, 0, wx.EXPAND | wx.ALL, 10)
 
+		self.SetEscapeId(wx.ID_NO)
+		self.SetAffirmativeId(wx.ID_YES)
+
 		self.Bind(wx.EVT_BUTTON, lambda evt: self.onOk(), id=wx.ID_YES)
 		self.Bind(wx.EVT_BUTTON, lambda evt: self.onCancel(), id=wx.ID_NO)
+		self.Bind(wx.EVT_CLOSE, lambda evt: self.onCancel())
+		self.Bind(wx.EVT_CHAR_HOOK, self.onCharHook)
 
 		self.SetSizer(mainSizer)
 		self.Centre()
 
-	def onOk(self):
-		self.EndModal(wx.ID_YES)
-		self.Destroy()
+	def onCharHook(self, evt):
+		if evt.GetKeyCode() == wx.WXK_ESCAPE:
+			self.onCancel()
+			return
+		evt.Skip()
 
-	def onCancel(self):
+	def onOk(self, evt=None):
+		self.EndModal(wx.ID_YES)
+
+	def onCancel(self, evt=None):
 		self.EndModal(wx.ID_NO)
-		self.Destroy()
 
 
 #: The time to wait between checks.
@@ -473,7 +482,10 @@ class UpdateHandler:
 				)
 			return
 		dlg = UpdateDialog(gui.mainFrame, self.addonName, d['version'], d.get('body', ''))
-		res = dlg.ShowModal()
+		try:
+			res = dlg.ShowModal()
+		finally:
+			dlg.Destroy()
 		if res == wx.ID_YES:
 			self.startUpdateProcess(d)
 		self.updateTimer()
