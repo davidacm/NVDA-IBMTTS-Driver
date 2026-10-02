@@ -306,7 +306,7 @@ class UpdateHandler:
 	handles the update of the add-on. You must provide the service class to get the update information.
 	"""
 	def __init__(self, addonName, service):
-		if config.isAppX:
+		if getattr(config, "isAppX", False):
 			return
 		self.service = service
 		self.addonName = addonName
@@ -367,7 +367,7 @@ class UpdateHandler:
 
 	def checkUpdate(self, fromGui=False):
 		log.info(f"checking for an update of the addon {self.addonName}")
-		if config.isAppX:
+		if getattr(config, "isAppX", False):
 			return
 		self.isError = False
 		if self.state.pendingFile and path.exists(self.state.pendingFile):
@@ -425,7 +425,7 @@ class UpdateHandler:
 			self.timer = None
 
 	def updateTimer(self):
-		if config.isAppX:
+		if getattr(config, "isAppX", False):
 			return
 		self.stopTimer()
 		if not self.isAutoUpdate:
