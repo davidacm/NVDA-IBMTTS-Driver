@@ -211,9 +211,10 @@ def windows_best_fit_cp1252(text):
 	when mbcs is used, the symbol replacement works properly, but when cp1252 is used, some symbols like "Đđ" are replaced by "??".
 	mbcs is not secure because if the windows system has the UTF8 enabled, then mbcs will be 65001.
 	"""
-	size = ctypes.windll.kernel32.WideCharToMultiByte(1252, 0, text, len(text), None, 0, None, None)
+	# -1: let the API measure the string. len(text) counts code points, not UTF-16 units, so characters above U+FFFF would truncate the text.
+	size = ctypes.windll.kernel32.WideCharToMultiByte(1252, 0, text, -1, None, 0, None, None)
 	buf = ctypes.create_string_buffer(size)
-	ctypes.windll.kernel32.WideCharToMultiByte(1252, 0, text, len(text), buf, size, None, None)
+	ctypes.windll.kernel32.WideCharToMultiByte(1252, 0, text, -1, buf, size, None, None)
 	return buf.value
 
 

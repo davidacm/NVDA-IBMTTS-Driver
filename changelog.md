@@ -1,3 +1,7 @@
+# Unreleased
+
+* Fixed text being cut off at the end when it contains characters above U+FFFF, such as cuneiform or some decorative Unicode in usernames. The length passed to WideCharToMultiByte counted code points instead of UTF-16 units, which dropped one character from the end of the string for each of those characters. Introduced in 26.4.1.
+
 # version 26.6.2
 
 Version 26.6.1 introduced a big issue when solving #148. In some cases, The antivirus detected the bridge as a false positive because the intermediary process between 64 and 32 bits tried to remain active during the shutdown processes, until NVDA was closed, and not before.
